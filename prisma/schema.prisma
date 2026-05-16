@@ -75,3 +75,13 @@ model Breed {
     speciesId Int
     species   Species @relation(fields: [speciesId], references: [id])
 }
+
+// enables individual breeds to alter probabilities
+model AlleleOverride {
+    id          Int    @id @default(autoincrement())
+    probability Float // Replaces probability in Allele
+    alleleId    Int
+    allele      Allele @relation(fields: [alleleId], references: [id])
+    breedId     Int
+    breed       Breed  @relation(fields: [breedId], references: [id])
+}
