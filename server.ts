@@ -1,5 +1,6 @@
 // Import middleware
 import prisma from "./lib/prisma";
+import logger from "./lib/prisma";
 import express from "express";
 import pino from "pino";
 import PinoHttp from "pino-http";
@@ -9,8 +10,7 @@ import speciesRoutes from "./routes/species";
 import breedRoutes from "./routes/breeds";
 import animalRoutes from "./routes/animals"
 
-// Creates logger instance
-const logger = pino();
+
 
 // Creates the Express app
 const app = express();
