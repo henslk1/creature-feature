@@ -68,3 +68,10 @@ model ExpressionRule {
     geneId             Int
     gene               Gene @relation(fields: [geneId], references: [id])
 }
+
+model Breed {
+    id        Int @id @default(autoincrement())
+    name      String
+    speciesId Int
+    species   Species @relation(fields: [speciesId], references: [id])
+}
