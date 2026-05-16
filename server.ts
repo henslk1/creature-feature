@@ -30,3 +30,7 @@ const port = 3001;
 
 // Creates the Prisma client instance - queries the database.
 const prisma = new PrismaClient();
+
+app.use("/species", speciesRoutes);
+app.use("/breeds", breedRoutes);
+app.use("animals", animalRoutes);
