@@ -31,7 +31,6 @@ app.use(PinoHttp({
   autoLogging: process.env.NODE_ENV === "production"
 }));
 
-
 app.use("/species", speciesRoutes);
 app.use("/breeds", breedRoutes);
 app.use("/animals", animalRoutes);
@@ -39,5 +38,5 @@ app.use("/animals", animalRoutes);
 
 // Starts the server and listens for incoming requests.
 app.listen(port, () => {
-  logger.info({ port }, "Example app listening on");
+  logger.info({ port }, "Creature feature app listening on");
 })
