@@ -4,6 +4,10 @@ import express from "express";
 import pino from "pino";
 import PinoHttp from "pino-http";
 import cors from "cors";
+// Import the routes
+import speciesRoutes from "./routes/species";
+import breedRoutes from "./routes/breeds";
+import animalRoutes from "./routes/animals"
 
 // Creates logger instance
 const logger = pino();
