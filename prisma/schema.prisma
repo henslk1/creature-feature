@@ -85,3 +85,12 @@ model AlleleOverride {
     breedId     Int
     breed       Breed  @relation(fields: [breedId], references: [id])
 }
+
+model Modifier {
+    id      Int @id @default(autoincrement())
+    name    String
+    stat    String // Must match a Stat in StatDefinition
+    value   Float
+    breedId Int
+    breed   Breed @relation(fields: [breedId], references: [id])
+}
