@@ -1,6 +1,5 @@
 // Import middleware
-import prisma from "./lib/prisma";
-import logger from "./lib/prisma";
+import logger from "./lib/logger";
 import express from "express";
 import PinoHttp from "pino-http";
 import cors from "cors";
