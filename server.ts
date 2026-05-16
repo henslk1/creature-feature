@@ -1,3 +1,4 @@
+// Import middleware
 import { PrismaClient } from "@prisma/client";
 import express from "express";
 import pino from "pino";
