@@ -34,3 +34,11 @@ model StatDefinition {
     speciesId Int
     species   Species @relation(fields: [speciesId], references: [id])
 }
+
+model Gene {
+    id        Int @id @default(autoincrement())
+    name      String
+    category  String // Groups genes by type/scope
+    speciesId Int
+    species   Species @relation(fields: [speciesId], references: [id])
+}
