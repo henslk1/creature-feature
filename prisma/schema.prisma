@@ -11,6 +11,10 @@ model Species {
     id          Int    @id @default(autoincrement())
     name        String @unique
     description String?
+    attributes  AttributeDefinition[]
+    stats       StatDefinition[]
+    genes       Gene[]
+    breeds      Breed[]
 }
 
 model AttributeDefinition {
@@ -36,18 +40,21 @@ model StatDefinition {
 }
 
 model Gene {
-    id        Int @id @default(autoincrement())
-    name      String
-    category  String // Groups genes by type/scope
-    speciesId Int
-    species   Species @relation(fields: [speciesId], references: [id])
+    id              Int     @id @default(autoincrement())
+    name            String
+    category        String // Groups genes by type/scope
+    loci            Locus[]
+    expressionRules ExpressionRule[]
+    speciesId       Int
+    species         Species @relation(fields: [speciesId], references: [id])
 }
 
 model Locus {
-    id     Int @id @default(autoincrement())
-    name   String // e.g. "Extension Locus"
-    geneId Int
-    gene   Gene @relation(fields: [geneId], references: [id])
+    id      Int @id @default(autoincrement())
+    name    String // e.g. "Extension Locus"
+    alleles Allele[]
+    geneId  Int
+    gene    Gene @relation(fields: [geneId], references: [id])
 }
 
 model Allele {
@@ -56,6 +63,7 @@ model Allele {
     symbol      String // "E", "e"
     dominance   String
     probability Float  // default
+    overrides   AlleleOverride[]
     locusId     Int
     locus       Locus @relation(fields: [locusId], references: [id])
 }
@@ -72,6 +80,9 @@ model ExpressionRule {
 model Breed {
     id        Int @id @default(autoincrement())
     name      String
+    overrides AlleleOverride[]
+    modifiers Modifier[]
+    animals   Animal[]
     speciesId Int
     species   Species @relation(fields: [speciesId], references: [id])
 }
