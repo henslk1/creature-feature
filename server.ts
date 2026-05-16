@@ -34,3 +34,9 @@ const prisma = new PrismaClient();
 app.use("/species", speciesRoutes);
 app.use("/breeds", breedRoutes);
 app.use("animals", animalRoutes);
+
+
+// Starts the server and listens for incoming requests.
+app.listen(port, () => {
+  logger.info({ port }, "Example app listening on");
+})
