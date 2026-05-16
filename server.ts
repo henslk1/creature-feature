@@ -1,5 +1,5 @@
 // Import middleware
-import { PrismaClient } from "@prisma/client";
+import prisma from "./lib/prisma";
 import express from "express";
 import pino from "pino";
 import PinoHttp from "pino-http";
@@ -16,9 +16,6 @@ const logger = pino();
 const app = express();
 
 const port = 3001;
-
-// Creates the Prisma client instance - queries the database.
-const prisma = new PrismaClient();
 
 // Requests from this URL is allowed - for React
 app.use(cors({ origin: "http://localhost:5173"}));
