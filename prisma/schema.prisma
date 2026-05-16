@@ -49,3 +49,13 @@ model Locus {
     geneId Int
     gene   Gene @relation(fields: [geneId], references: [id])
 }
+
+model Allele {
+    id          Int @id @default(autoincrement())
+    name        String //e.g. "Extension E", "Extension e"
+    symbol      String // "E", "e"
+    dominance   String
+    probability Float  // default
+    locusId     Int
+    locus       Locus @relation(fields: [locusId], references: [id])
+}
