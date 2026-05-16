@@ -42,3 +42,10 @@ model Gene {
     speciesId Int
     species   Species @relation(fields: [speciesId], references: [id])
 }
+
+model Locus {
+    id     Int @id @default(autoincrement())
+    name   String // e.g. "Extension Locus"
+    geneId Int
+    gene   Gene @relation(fields: [geneId], references: [id])
+}
