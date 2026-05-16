@@ -6,9 +6,7 @@ import cors from "cors";
 // Import the routes
 import speciesRoutes from "./routes/species";
 import breedRoutes from "./routes/breeds";
-import animalRoutes from "./routes/animals"
-
-
+import animalRoutes from "./routes/animals";
 
 // Creates the Express app
 const app = express();
@@ -34,4 +32,4 @@ app.use("/animals", animalRoutes);
 // Starts the server and listens for incoming requests.
 app.listen(port, () => {
   logger.info({ port }, "Creature feature app listening on");
-})
+});
