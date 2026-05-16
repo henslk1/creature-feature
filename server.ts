@@ -2,7 +2,6 @@
 import prisma from "./lib/prisma";
 import logger from "./lib/prisma";
 import express from "express";
-import pino from "pino";
 import PinoHttp from "pino-http";
 import cors from "cors";
 // Import the routes
