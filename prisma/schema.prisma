@@ -94,3 +94,15 @@ model Modifier {
     breedId Int
     breed   Breed @relation(fields: [breedId], references: [id])
 }
+
+// Generated individual belonging to a breed
+model Animal {
+    id              Int @id @default(autoincrement())
+    name            String @default(0)
+    age             Float
+    breedId         Int
+    breed           Breed @relation(fields: [breedId], references: [id])
+    expressedTraits Json
+    stats           Json
+    modifier        Json?
+}
