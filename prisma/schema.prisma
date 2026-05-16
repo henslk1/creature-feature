@@ -12,3 +12,16 @@ model Species {
     name        String @unique
     description String?
 }
+
+model AttributeDefinition {
+    id          Int    @id @default(autoincrement())
+    name        String
+    type        String                  // number, string, ...
+    min         Float?                  // When type has a range
+    max         Float?                  // When type has a range
+    options     String[]                // For type enum
+    optional    Boolean @default(false)
+    mutable     Boolean @default(false) // True if attribute can change, e.g. castration
+    speciesId   Int
+    species     Species @relation(fields: [speciesId], references: [id])
+}
