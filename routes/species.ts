@@ -5,7 +5,7 @@ import logger from "../lib/logger";
 const router = Router();
 
 // GET all species
-router.get("/species", async (req, res) => {
+router.get("/", async (req, res) => {
 
   try {
     const getSpecies = await prisma.species.findMany({
@@ -24,7 +24,7 @@ router.get("/species", async (req, res) => {
 })
 
 // GET individual species
-router.get("species/:speciesId", async (req, res) => {
+router.get("/:speciesId", async (req, res) => {
 
   try {
     const found = await prisma.species.findUnique({
@@ -40,6 +40,11 @@ router.get("species/:speciesId", async (req, res) => {
 
     logger.info({ species: found }, "Species found");
     res.json(found);
+  }
+
+  catch (error) {
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
   }
 })
 
