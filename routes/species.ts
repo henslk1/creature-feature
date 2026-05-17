@@ -20,7 +20,27 @@ router.get("/species", async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-  
+
+})
+
+// GET individual species
+router.get("species/:speciesId", async (req, res) => {
+
+  try {
+    const found = await prisma.species.findUnique({
+      where: { id: Number(req.params.speciesId) }
+    });
+
+    if (!found) {
+      logger.warn({ speciesId: req.params.speciesId },
+        `Species [${req.params.speciesId}] not found`);
+      res.status(404).json({ message: "Species not found" });
+      return;
+    }
+
+    logger.info({ species: found }, "Species found");
+    res.json(found);
+  }
 })
 
 export default router;
