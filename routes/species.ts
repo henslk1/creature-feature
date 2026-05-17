@@ -12,7 +12,7 @@ router.get("/", async (req, res) => {
       orderBy: { id: "asc"}
     });
 
-    logger.info({ species: getSpecies }, "species found");
+    logger.info({ species: getSpecies }, "Species found");
     res.json(getSpecies);
   }
   
@@ -53,7 +53,7 @@ router.post("/", async (req, res) => {
   
   try {
     const newSpecies = await prisma.species.create({
-      data: { name: req.body.name, description?: req.body.description }
+      data: { name: req.body.name, description: req.body.description }
     });
 
     logger.info({ species: newSpecies }, "New species created");
@@ -65,4 +65,24 @@ router.post("/", async (req, res) => {
     res.status(500).json({ message: "Failed to create a new species" });
   }
 })
+
+// DELETE a specific species
+router.delete("/:speciesId", async (req, res) => {
+
+  try {
+    const deletedSpecies = await prisma.species.delete({
+      where: { id: Number(req.params.speciesId) },
+    });
+
+    logger.info({ species: deletedSpecies }, "Species deleted");
+    res.json(deletedSpecies);
+  }
+
+  catch(error) {
+    logger.error({ error }, "Species could not be found");
+    res.status(404).json({ message: "Species could not be found" })
+  }
+})
+
+
 export default router;
