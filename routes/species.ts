@@ -48,4 +48,21 @@ router.get("/:speciesId", async (req, res) => {
   }
 })
 
+// POST a new species
+router.post("/", async (req, res) => {
+  
+  try {
+    const newSpecies = await prisma.species.create({
+      data: { name: req.body.name, description?: req.body.description }
+    });
+
+    logger.info({ species: newSpecies }, "New species created");
+    res.json(newSpecies);
+  }
+
+  catch(error) {
+    logger.error({ error }, "Failed to create a new species");
+    res.status(500).json({ message: "Failed to create a new species" });
+  }
+})
 export default router;
