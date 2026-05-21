@@ -15,5 +15,9 @@ describe("Species routes", () => {
   createdId = response.body.id;
   });
 
-  
+  // Clean up after testing
+  afterAll(async () => {
+    await prisma.species.delete({ where: { id: createdId } });
+  })
+
 });
