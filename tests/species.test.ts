@@ -12,27 +12,20 @@ describe("Species routes", () => {
     const response = await request(app)
     .post("/species")
     .send({ name: "Gremlin", description: "Mythical creature" });
-  createdId = response.body.id;
+    createdId = response.body.id;
   });
 
-  // Clean up after testing
-  afterAll(async () => {
-    await prisma.species.delete({ where: { id: createdId } });
-  })
-
-  // GET species
   it("should return a list of species", async () => {
     const response = await request(app).get("/species");
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
   });
 
-  // GET individual species
   it("should return an individual species", async () => {
     const response = await request(app).get(`/species/${createdId}`);
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("Gremlin");
   });
 
-  
+
 });
