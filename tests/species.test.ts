@@ -27,5 +27,12 @@ describe("Species routes", () => {
     expect(Array.isArray(response.body)).toBe(true);
   });
 
+  // GET individual species
+  it("should return an individual species", async () => {
+    const response = await request(app).get(`/species/${createdId}`);
+    expect(response.status).toBe(200);
+    expect(response.body.name).toBe("Gremlin");
+  });
+
   
 });
