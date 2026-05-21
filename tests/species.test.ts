@@ -20,4 +20,12 @@ describe("Species routes", () => {
     await prisma.species.delete({ where: { id: createdId } });
   })
 
+  // GET species
+  it("should return a list of species", async () => {
+    const response = await request(app).get("/species");
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+  });
+
+  
 });
