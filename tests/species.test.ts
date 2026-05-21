@@ -1,6 +1,5 @@
 import request from "supertest";
 import app from "../app";
-import prisma from "../lib/prisma";
 
 describe("Species routes", () => {
 
@@ -37,5 +36,5 @@ describe("Species routes", () => {
     expect(response.status).toBe(200);
     expect(response.body.id).toBe(createdId);
   })
-  
+
 });
