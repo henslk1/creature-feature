@@ -15,6 +15,11 @@ describe("Species routes", () => {
     createdId = response.body.id;
   });
 
+  it("should create a new species", async () => {
+    expect(createdId).toBeDefined();
+    expect(typeof createdId).toBe("number");
+  });
+  
   it("should return a list of species", async () => {
     const response = await request(app).get("/species");
     expect(response.status).toBe(200);
@@ -26,6 +31,5 @@ describe("Species routes", () => {
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("Gremlin");
   });
-
 
 });
