@@ -19,7 +19,7 @@ describe("Species routes", () => {
     expect(createdId).toBeDefined();
     expect(typeof createdId).toBe("number");
   });
-  
+
   it("should return a list of species", async () => {
     const response = await request(app).get("/species");
     expect(response.status).toBe(200);
@@ -32,4 +32,10 @@ describe("Species routes", () => {
     expect(response.body.name).toBe("Gremlin");
   });
 
+  it("should delete an individual species", async () => {
+    const response = await request(app).delete(`/species/${createdId}`);
+    expect(response.status).toBe(200);
+    expect(response.body.id).toBe(createdId);
+  })
+  
 });
