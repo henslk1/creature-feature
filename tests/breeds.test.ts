@@ -22,5 +22,11 @@ describe ("Breed routes", () => {
     expect(typeof breedId).toBe("number");
   });
 
+  it("should return a list of breeds", async () => {
+    const response = await request(app).get("/breeds");
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+  });
+
   
 })
