@@ -28,5 +28,11 @@ describe ("Breed routes", () => {
     expect(Array.isArray(response.body)).toBe(true);
   });
 
+  it("should return an individual breed", async () => {
+    const response = await request(app).get(`/breeds/${breedId}`);
+    expect(response.status).toBe(200);
+    expect(response.body.name).toBe("Test Breed");
+  });
+
   
 })
