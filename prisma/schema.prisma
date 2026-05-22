@@ -45,6 +45,7 @@ model Gene {
     category        String // Groups genes by type/scope
     loci            Locus[]
     expressionRules ExpressionRule[]
+    active          Boolean @default(true)
     speciesId       Int
     species         Species @relation(fields: [speciesId], references: [id], onDelete: Cascade)
 }
@@ -78,8 +79,9 @@ model ExpressionRule {
 }
 
 model Breed {
-    id        Int @id @default(autoincrement())
+    id        Int     @id @default(autoincrement())
     name      String
+    active    Boolean @default(true)
     overrides AlleleOverride[]
     modifiers Modifier[]
     animals   Animal[]
