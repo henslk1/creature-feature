@@ -16,4 +16,11 @@ describe ("Breed routes", () => {
     const breed = await createTestBreed(speciesId);
     breedId = breed.id;
   })
+
+  it("should create a new breed", async () => {
+    expect(breedId).toBeDefined();
+    expect(typeof breedId).toBe("number");
+  });
+
+  
 })
