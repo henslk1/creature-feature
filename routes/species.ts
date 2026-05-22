@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
     res.json(getSpecies);
   }
   
-  catch(error) {
+  catch (error) {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
@@ -78,7 +78,7 @@ router.delete("/:speciesId", async (req, res) => {
     res.json(deletedSpecies);
   }
 
-  catch(error) {
+  catch (error) {
     logger.error({ error }, "Species could not be found");
     res.status(404).json({ message: "Species could not be found" })
   }
