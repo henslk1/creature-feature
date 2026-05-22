@@ -8,6 +8,13 @@ export async function createTestSpecies() {
   return response.body;
 }
 
+export async function createTestBreed(speciesId: number) {
+  const response = await request(app)
+    .post("/breeds")
+    .send({ name: "Test Breed", speciesId });
+  return response.body;
+  }
+
 // Test clean up
 export async function deleteTestSpecies(id: number) {
   await request(app).delete(`/species/${id}`);
