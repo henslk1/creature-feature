@@ -1,6 +1,6 @@
 import request from "supertest";
 import app from "../app";
-import { createTestSpecies } from "./helpers";
+import { createTestSpecies, deleteTestSpecies } from "./helpers";
 import { createTestBreed } from "./helpers";
 
 describe ("Breed routes", () => {
@@ -40,5 +40,8 @@ describe ("Breed routes", () => {
     expect(response.body.id).toBe(breedId);
   })
 
+  afterAll(async () => {
+    deleteTestSpecies(speciesId);
+  })
   
 })
