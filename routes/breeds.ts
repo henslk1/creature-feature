@@ -47,10 +47,10 @@ router.get("/:breedId", async (req, res) => {
   }
 })
 
-// POST a new species
+// POST a new breed
 router.post("/", async (req, res) => {
 
-  try{
+  try {
     const newBreed = await prisma.breed.create({
       data: { name: req.body.name, speciesId: req.body.speciesId }
     });
