@@ -41,7 +41,7 @@ describe ("Breed routes", () => {
   })
 
   afterAll(async () => {
-    deleteTestSpecies(speciesId);
+    await deleteTestSpecies(speciesId);
   })
-  
+
 })
