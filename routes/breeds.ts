@@ -63,8 +63,24 @@ router.post("/", async (req, res) => {
     logger.error({ error }, "Failed to create a new breed");
     res.status(500).json({ message: "Failed to create a new breed"});
   }
-
 })
 
+// DELETE a specific breed
+router.delete("/:breedId", async (req, res) => {
+
+  try {
+    const deletedBreed = await prisma.breed.delete({
+      where: { id: Number(req.params.breedId) },
+    });
+
+    logger.info({ breed: deletedBreed }, "Breed deleted");
+    res.json(deletedBreed);
+  }
+
+  catch (error) {
+    logger.error({ error }, "Breed could not be found");
+    res.status(404).json({ message: "Breed could not be found" });
+  }
+})
 
 export default router;
