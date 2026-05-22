@@ -1,7 +1,6 @@
 import request from "supertest";
 import app from "../app";
-import { createTestSpecies, deleteTestSpecies } from "./helpers";
-import { createTestBreed } from "./helpers";
+import { createTestSpecies, deleteTestSpecies, createTestBreed } from "./helpers";
 
 describe ("Breed routes", () => {
 
