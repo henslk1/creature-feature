@@ -47,5 +47,24 @@ router.get("/:breedId", async (req, res) => {
   }
 })
 
+// POST a new species
+router.post("/", async (req, res) => {
+
+  try{
+    const newBreed = await prisma.breed.create({
+      data: { name: req.body.name, speciesId: req.body.speciesId }
+    });
+
+    logger.info({ breed: newBreed }, "New breed created");
+    res.json(newBreed);
+  }
+
+  catch (error) {
+    logger.error({ error }, "Failed to create a new breed");
+    res.status(500).json({ message: "Failed to create a new breed"});
+  }
+
+})
+
 
 export default router;
