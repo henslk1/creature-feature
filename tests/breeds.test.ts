@@ -34,5 +34,11 @@ describe ("Breed routes", () => {
     expect(response.body.name).toBe("Test Breed");
   });
 
+  it("should delete an individual breed", async () => {
+    const response = await request(app).delete(`/breeds/${breedId}`);
+    expect(response.status).toBe(200);
+    expect(response.body.id).toBe(breedId);
+  })
+
   
 })
