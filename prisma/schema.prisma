@@ -27,7 +27,7 @@ model AttributeDefinition {
     optional  Boolean @default(false)
     mutable   Boolean @default(false) // True if attribute can change, e.g. castration
     speciesId Int
-    species   Species @relation(fields: [speciesId], references: [id])
+    species   Species @relation(fields: [speciesId], references: [id], onDelete: Cascade)
 }
 
 model StatDefinition {
@@ -36,7 +36,7 @@ model StatDefinition {
     min       Float
     max       Float
     speciesId Int
-    species   Species @relation(fields: [speciesId], references: [id])
+    species   Species @relation(fields: [speciesId], references: [id], onDelete: Cascade)
 }
 
 model Gene {
@@ -46,7 +46,7 @@ model Gene {
     loci            Locus[]
     expressionRules ExpressionRule[]
     speciesId       Int
-    species         Species @relation(fields: [speciesId], references: [id])
+    species         Species @relation(fields: [speciesId], references: [id], onDelete: Cascade)
 }
 
 model Locus {
@@ -54,7 +54,7 @@ model Locus {
     name    String // e.g. "Extension Locus"
     alleles Allele[]
     geneId  Int
-    gene    Gene @relation(fields: [geneId], references: [id])
+    gene    Gene @relation(fields: [geneId], references: [id], onDelete: Cascade)
 }
 
 model Allele {
@@ -65,7 +65,7 @@ model Allele {
     probability Float  // default
     overrides   AlleleOverride[]
     locusId     Int
-    locus       Locus @relation(fields: [locusId], references: [id])
+    locus       Locus @relation(fields: [locusId], references: [id], onDelete: Cascade)
 }
 
 // Expression rule defines what behavior a gene has based on the number of dominant alleles
@@ -74,7 +74,7 @@ model ExpressionRule {
     minDominantAlleles Int // What determines expression
     expression         String // Trait displayed, e.g. "Blue eyes"
     geneId             Int
-    gene               Gene @relation(fields: [geneId], references: [id])
+    gene               Gene @relation(fields: [geneId], references: [id], onDelete: Cascade)
 }
 
 model Breed {
@@ -84,7 +84,7 @@ model Breed {
     modifiers Modifier[]
     animals   Animal[]
     speciesId Int
-    species   Species @relation(fields: [speciesId], references: [id])
+    species   Species @relation(fields: [speciesId], references: [id], onDelete: Cascade)
 }
 
 // enables individual breeds to alter probabilities
@@ -92,9 +92,9 @@ model AlleleOverride {
     id          Int    @id @default(autoincrement())
     probability Float // Replaces probability in Allele
     alleleId    Int
-    allele      Allele @relation(fields: [alleleId], references: [id])
+    allele      Allele @relation(fields: [alleleId], references: [id], onDelete: Cascade)
     breedId     Int
-    breed       Breed  @relation(fields: [breedId], references: [id])
+    breed       Breed  @relation(fields: [breedId], references: [id], onDelete: Cascade)
 }
 
 model Modifier {
@@ -103,7 +103,7 @@ model Modifier {
     stat    String // Must match a Stat in StatDefinition
     value   Float
     breedId Int
-    breed   Breed @relation(fields: [breedId], references: [id])
+    breed   Breed @relation(fields: [breedId], references: [id], onDelete: Cascade)
 }
 
 // Generated individual belonging to a breed
@@ -112,7 +112,7 @@ model Animal {
     name            String 
     age             Float @default(0)
     breedId         Int
-    breed           Breed @relation(fields: [breedId], references: [id])
+    breed           Breed @relation(fields: [breedId], references: [id], onDelete: Cascade)
     expressedTraits Json
     stats           Json
     modifier        Json?
