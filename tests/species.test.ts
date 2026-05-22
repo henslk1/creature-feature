@@ -1,22 +1,21 @@
 import request from "supertest";
 import app from "../app";
+import { createTestSpecies } from "./helpers";
 
 describe("Species routes", () => {
 
   // ID for object created during testing.
-  let createdId: number;
+  let speciesId: number;
 
   // Object to be used in testing
   beforeAll(async () => {
-    const response = await request(app)
-    .post("/species")
-    .send({ name: "Gremlin", description: "Mythical creature" });
-    createdId = response.body.id;
+    const species = await createTestSpecies();
+    speciesId = species.id;
   });
 
   it("should create a new species", async () => {
-    expect(createdId).toBeDefined();
-    expect(typeof createdId).toBe("number");
+    expect(speciesId).toBeDefined();
+    expect(typeof speciesId).toBe("number");
   });
 
   it("should return a list of species", async () => {
@@ -26,15 +25,15 @@ describe("Species routes", () => {
   });
 
   it("should return an individual species", async () => {
-    const response = await request(app).get(`/species/${createdId}`);
+    const response = await request(app).get(`/species/${speciesId}`);
     expect(response.status).toBe(200);
-    expect(response.body.name).toBe("Gremlin");
+    expect(response.body.name).toBe("Test Species");
   });
 
   it("should delete an individual species", async () => {
-    const response = await request(app).delete(`/species/${createdId}`);
+    const response = await request(app).delete(`/species/${speciesId}`);
     expect(response.status).toBe(200);
-    expect(response.body.id).toBe(createdId);
+    expect(response.body.id).toBe(speciesId);
   })
 
 });
