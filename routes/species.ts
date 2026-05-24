@@ -1,6 +1,8 @@
 import { Router } from "express";
 import prisma from "../lib/prisma";
 import logger from "../lib/logger";
+import { validate } from "../lib/validate";
+import { speciesSchema } from "../lib/schemas";
 
 const router = Router();
 
@@ -49,7 +51,7 @@ router.get("/:speciesId", async (req, res) => {
 })
 
 // POST a new species
-router.post("/", async (req, res) => {
+router.post("/", validate(speciesSchema), async (req, res) => {
   
   try {
     const newSpecies = await prisma.species.create({
@@ -57,12 +59,18 @@ router.post("/", async (req, res) => {
     });
 
     logger.info({ species: newSpecies }, "New species created");
-    res.json(newSpecies);
+    res.status(201).json(newSpecies);
   }
 
-  catch(error) {
-    logger.error({ error }, "Failed to create a new species");
-    res.status(500).json({ message: "Failed to create a new species" });
+  catch(error: any) {
+
+    if (error.code == "P2002") {
+      res.status(409).json({ message: "Species name already exists" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
   }
 })
 
@@ -78,9 +86,15 @@ router.delete("/:speciesId", async (req, res) => {
     res.json(deletedSpecies);
   }
 
-  catch (error) {
-    logger.error({ error }, "Species could not be found");
-    res.status(404).json({ message: "Species could not be found" })
+  catch (error: any) {
+
+    if (error.code === "P2025") {
+      res.status(404).json({ message: "Species could not be found" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" })
   }
 })
 
