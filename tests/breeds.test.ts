@@ -7,16 +7,20 @@ describe ("Breed routes", () => {
   // ID's for objects created during testing.
   let speciesId: number;
   let breedId: number;
+  let breedCreateStatus: number;
 
   // Objects to be used in testing
   beforeAll( async () => {
-    const species = await createTestSpecies();
-    speciesId = species.id;
-    const breed = await createTestBreed(speciesId);
-    breedId = breed.id;
+    const speciesResponse = await createTestSpecies();
+    speciesId = speciesResponse.body.id;
+
+    const breedResponse = await createTestBreed(speciesId);
+    breedId = breedResponse.body.id;
+    breedCreateStatus = breedResponse.status;
   })
 
   it("should create a new breed", async () => {
+    expect(breedCreateStatus).toBe(201);
     expect(breedId).toBeDefined();
     expect(typeof breedId).toBe("number");
   });

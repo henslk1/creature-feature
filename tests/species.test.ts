@@ -6,14 +6,17 @@ describe("Species routes", () => {
 
   // ID for object created during testing.
   let speciesId: number;
+  let createStatus: number;
 
   // Object to be used in testing
   beforeAll(async () => {
-    const species = await createTestSpecies();
-    speciesId = species.id;
+    const response = await createTestSpecies();
+    speciesId = response.body.id;
+    createStatus = response.status;
   });
 
   it("should create a new species", async () => {
+    expect(createStatus).toBe(201);
     expect(speciesId).toBeDefined();
     expect(typeof speciesId).toBe("number");
   });
