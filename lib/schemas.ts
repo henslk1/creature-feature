@@ -15,6 +15,14 @@ export const alleleSchema = z.object({
   symbol: z.string().min(1),
   dominance: z.string().min(1),
   probability: z.number().max(1),
-})
+});
 
+export const locusSchema = z.object({
+  name: z.string().min(1),
+  alleles: z.array(alleleSchema).min(1),
+});
 
+export const expressionRuleSchema = z.object({
+  minDominantAlleles: z.number().int().min(0),
+  expression: z.string().min(1),
+});
