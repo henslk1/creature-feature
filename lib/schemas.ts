@@ -26,3 +26,10 @@ export const expressionRuleSchema = z.object({
   minDominantAlleles: z.number().int().min(0),
   expression: z.string().min(1),
 });
+
+export const geneSchema = z.object({
+  name: z.string().min(1),
+  category: z.string().min(1),
+  loci: z.array(locusSchema).min(1),
+  expressionRules: z.array(expressionRuleSchema).min(1),
+});
