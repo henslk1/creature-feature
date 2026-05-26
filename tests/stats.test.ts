@@ -34,7 +34,13 @@ describe("Stat routes", () => {
     expect(response.body.name).toBe("Test Stat");
   });
 
-  // PATCH stat - edit fields
+  it("should update stat-level fields", async () => {
+    const response = await request(app)
+      .patch(`${basePath}/${statId}`)
+      .send({ name: "Updated Stat" });
+    expect(response.status).toBe(200);
+    expect(response.body.name).toBe("Updated Stat");
+  });
 
   // DELETE stat
 
