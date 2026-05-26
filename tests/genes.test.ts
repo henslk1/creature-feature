@@ -70,7 +70,7 @@ describe("Gene routes", () => {
     const response = await request(app).delete(`${basePath}/${geneId}`);
     expect(response.status).toBe(200);
     expect(response.body.id).toBe(geneId);
-  })
+  });
 
   afterAll(async () => {
     await deleteTestSpecies(speciesId);
