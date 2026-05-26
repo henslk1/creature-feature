@@ -28,7 +28,11 @@ describe("Stat routes", () => {
     expect(typeof statId).toBe("number");
   });
 
-  // GET stat
+  it("should return a specific stat", async () => {
+    const response = await request(app).get(`${basePath}/${statId}`);
+    expect(response.status).toBe(200);
+    expect(response.body.name).toBe("Test Stat");
+  });
 
   // PATCH stat - edit fields
 
