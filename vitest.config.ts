@@ -1,11 +1,9 @@
 import { defineConfig } from "vitest/config";
-import { config } from "dotenv";
-
-config({ path: ".env.test", override: true });
 
 export default defineConfig({
   test: {
     globals: true,
     fileParallelism: false,
+    setupFiles: ["./tests/setup.ts"]
   },
 });
