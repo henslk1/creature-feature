@@ -22,6 +22,7 @@ router.get("/:geneId", async (req, res) => {
       logger.warn({ geneId: req.params.geneId },
         `Gene [${req.params.geneId}] not found`);
       res.status(404).json({ message: "Gene not found" });
+      return;
     }
 
     logger.info({ gene: found }, "Gene found");
@@ -31,6 +32,49 @@ router.get("/:geneId", async (req, res) => {
   catch (error) {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error"});
+  }
+})
+
+// POST a new gene
+router.post("/", validate(geneSchema), async (req, res) => {
+
+  try {
+    const newGene = await prisma.gene.create({
+      data: {
+        name: req.body.name,
+        category: req.body.category,
+        speciesId: Number(req.params.speciesId as string),
+        loci: {
+          create: req.body.loci.map((locus: any) => ({
+            name: locus.name,
+            alleles: {
+              create: locus.alleles
+            }
+          }))
+        },
+        expressionRules: {
+          create: req.body.expressionRules
+        }
+      },
+      include: {
+        loci: { include: { alleles: true } },
+        expressionRules: true
+      }
+    });
+
+    logger.info({ gene: newGene }, "New gene created");
+    res.status(201).json(newGene);
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2002") {
+      res.status(409).json({ message: "Gene name already exists" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
   }
 })
 
