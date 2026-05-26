@@ -152,4 +152,28 @@ router.put("/:geneId", validate(geneSchema), async (req, res) => {
   }
 })
 
+// DELETE gene
+router.delete("/:geneId", async (req, res) => {
+
+  try { 
+    const deletedGene = await prisma.gene.delete({
+      where: { id: Number(req.params.geneId) }
+    });
+
+    logger.info({ gene: deletedGene }, "Gene deleted");
+    res.json(deletedGene);
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2025") {
+      res.status(404).json({ message: "Gene could not be found" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error"});
+  }
+})
+
 export default router;
