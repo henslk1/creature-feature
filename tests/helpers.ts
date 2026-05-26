@@ -19,6 +19,33 @@ export async function createTestAnimal(breedId: number) {
     .send({ name: "Test animal", breedId });
 }
 
+export async function createTestGene(speciesId: number) {
+  return await request(app)
+    .post(`/species/${speciesId}/genes`)
+    .send({
+      name: "Test Gene",
+      category: "Color",
+      loci: [
+        {
+          name: "Test Locus",
+          alleles: [
+            { name: "Allele A", symbol: "A", dominance: "dominant", probability: 0.5 },
+            { name: "Allele a", symbol: "a", dominance: "recessive", probability: 0.5}
+          ]
+        }
+      ],
+      expressionRules: [
+        { minDominantAlleles: 1, expression: "Test Expression" }
+      ]
+    });
+}
+
+export async function createTestStat(speciesId: number) {
+  return await request(app)
+    .post(`/species/${speciesId}/stats`)
+    .send({ name: "Test Stat", min: 0.0, max: 100.0 });
+}
+
 // Test clean up
 export async function deleteTestSpecies(id: number) {
   await request(app).delete(`/species/${id}`);
