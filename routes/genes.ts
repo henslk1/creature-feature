@@ -78,4 +78,33 @@ router.post("/", validate(geneSchema), async (req, res) => {
   }
 })
 
+// Update gene-level fields
+router.patch("/:geneId", async (req, res) => {
+  
+  try {
+    const updated = await prisma.gene.update({
+      where: {id: Number(req.params.geneId) },
+      data: {
+        name: req.body.name,
+        category: req.body.category,
+        active: req.body.active
+      }
+    });
+
+    logger.info({ gene: updated }, "Gene updated");
+    res.json(updated);
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2025") {
+      res.status(404).json({ message: "Gene not found" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }
+})
+
 export default router;
