@@ -30,3 +30,29 @@ router.get("/:statDefintionId", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 })
+
+// POST a new stat
+router.post("/", validate(statDefinitionSchema), async (req, res) => {
+
+  try {
+    const newStat = await prisma.statDefinition.create({
+      data: {
+        name: req.body.name,
+        min: req.body.min,
+        max: req.body.max,
+        speciesId: Number(req.params.speciesId as string),
+      }
+    })
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2002") {
+      res.status(409).json({ message: "Stat already exists" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }
+})
