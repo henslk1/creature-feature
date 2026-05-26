@@ -12,7 +12,14 @@ describe("Stat routes", () => {
 
   // Object to be used in testing
   beforeAll(async () => {
+    const speciesResponse = await createTestSpecies();
+    speciesId = speciesResponse.body.id;
 
+    const statResponse = await createTestStat(speciesId);
+    statId = statResponse.body.id;
+    statCreateStatus = statResponse.status;
+
+    basePath = `/species/${speciesId}/stats`;
   })
 
   // POST stat
