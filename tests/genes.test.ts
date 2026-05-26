@@ -4,7 +4,7 @@ import { createTestGene, createTestSpecies, deleteTestSpecies } from "./helpers"
 
 describe("Gene routes", () => {
 
-  // ID for object created during testing
+  // ID for object created during testing and base path definition
   let speciesId: number;
   let geneId: number;
   let geneCreateStatus: number;
