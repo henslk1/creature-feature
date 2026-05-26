@@ -6,6 +6,7 @@ import cors from "cors";
 import speciesRoutes from "./routes/species";
 import breedRoutes from "./routes/breeds";
 import animalRoutes from "./routes/animals";
+import geneRoutes from "./routes/genes";
 
 // Creates the Express app
 const app = express();
@@ -24,5 +25,6 @@ app.use(PinoHttp({
 app.use("/species", speciesRoutes);
 app.use("/breeds", breedRoutes);
 app.use("/animals", animalRoutes);
+app.use("/species/:speciesId/genes", geneRoutes);
 
 export default app;
