@@ -114,3 +114,4 @@ router.delete("/:statDefinitionId", async (req, res) => {
   }
 })
 
+export default router;
