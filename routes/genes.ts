@@ -92,7 +92,7 @@ router.patch("/:geneId", async (req, res) => {
     });
 
     logger.info({ gene: updated }, "Gene updated");
-    res.json(updated);
+    res.status(200).json(updated);
   }
 
   catch (error: any) {
@@ -104,6 +104,51 @@ router.patch("/:geneId", async (req, res) => {
 
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
+  }
+})
+
+// Update any gene field
+router.put("/:geneId", validate(geneSchema), async (req, res) => {
+  
+  try {
+    const updated = await prisma.gene.update({
+      where: { id: Number(req.params.geneId) },
+      data: {
+        name: req.body.name,
+        category: req.body.category,
+        loci: {
+          deleteMany: {},
+          create: req.body.loci.map((locus: any) => ({
+            name: locus.name,
+            alleles: {
+              create: locus.alleles
+            }
+          }))
+        },
+        expressionRules: {
+          deleteMany: {},
+          create: req.body.expressionRules
+        }
+      },
+      include: {
+        loci: { include: { alleles: true } },
+        expressionRules: true
+      }
+    });
+
+    logger.info({ gene: updated }, "Gene updated");
+    res.status(200).json(updated);
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2025") {
+      res.status(404).json({ message: "Gene not found" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error"});
   }
 })
 
