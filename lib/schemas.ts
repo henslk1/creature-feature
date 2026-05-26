@@ -39,3 +39,13 @@ export const statDefinitionSchema = z.object({
   min: z.number(),
   max: z.number()
 });
+
+export const attributeDefinitionSchema = z.object({
+  name: z.string().min(1),
+  type: z.string().min(1),
+  min: z.number().optional(),
+  max: z.number().optional(),
+  options: z.array(z.string()).optional(),
+  optional: z.boolean().optional(),
+  mutable: z.boolean().optional(),
+});
