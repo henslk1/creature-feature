@@ -7,16 +7,16 @@ import { statDefinitionSchema } from "../lib/schemas";
 const router = Router({ mergeParams: true });
 
 // GET stat
-router.get("/:statDefintionId", async (req, res) => {
+router.get("/:statDefinitionId", async (req, res) => {
   
   try {
     const found = await prisma.statDefinition.findUnique({
-      where: { id: Number(req.params.statDefintionId) }
+      where: { id: Number(req.params.statDefinitionId) }
     })
 
     if (!found) {
-      logger.warn({ statDefinitionId: req.params.statDefintionId },
-        `Stat [${req.params.statDefintionId}] not found`);
+      logger.warn({ statDefinitionId: req.params.statDefinitionId },
+        `Stat [${req.params.statDefinitionId}] not found`);
       res.status(404).json({ message: "Stat not found" });
       return;
     }
@@ -43,6 +43,9 @@ router.post("/", validate(statDefinitionSchema), async (req, res) => {
         speciesId: Number(req.params.speciesId as string),
       }
     })
+
+    logger.info({ stat: newStat }, "New stat created");
+    res.status(201).json(newStat);
   }
 
   catch (error: any) {
@@ -79,9 +82,35 @@ router.patch("/:statDefinitionId", async (req, res) => {
 
     if (error.code === "P2025") {
       res.status(404).json({ message: "Stat not found" });
+      return;
     }
 
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
 })
+
+// DELETE stat
+router.delete("/:statDefinitionId", async (req, res) => {
+
+  try {
+    const deletedStat = await prisma.statDefinition.delete({
+      where: { id: Number(req.params.statDefinitionId) }
+    });
+
+    logger.info({ stat: deletedStat }, "Stat deleted");
+    res.json(deletedStat);
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2025") {
+      res.status(404).json({ message: "Stat could not be found" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }
+})
+
