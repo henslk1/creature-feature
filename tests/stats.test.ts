@@ -22,7 +22,11 @@ describe("Stat routes", () => {
     basePath = `/species/${speciesId}/stats`;
   })
 
-  // POST stat
+  it("should create a new stat", async () => {
+    expect(statCreateStatus).toBe(201);
+    expect(statId).toBeDefined();
+    expect(typeof statId).toBe("number");
+  });
 
   // GET stat
 
