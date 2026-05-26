@@ -79,14 +79,14 @@ model ExpressionRule {
 }
 
 model Breed {
-    id        Int     @id @default(autoincrement())
-    name      String
-    active    Boolean @default(true)
-    overrides AlleleOverride[]
-    modifiers Modifier[]
-    animals   Animal[]
-    speciesId Int
-    species   Species @relation(fields: [speciesId], references: [id], onDelete: Cascade)
+    id         Int     @id @default(autoincrement())
+    name       String
+    active     Boolean @default(true)
+    overrides  AlleleOverride[]
+    statRanges StatRange[]
+    animals    Animal[]
+    speciesId  Int
+    species    Species @relation(fields: [speciesId], references: [id], onDelete: Cascade)
 }
 
 // enables individual breeds to alter probabilities
@@ -99,11 +99,12 @@ model AlleleOverride {
     breed       Breed  @relation(fields: [breedId], references: [id], onDelete: Cascade)
 }
 
-model Modifier {
+// Breed level stat ranges
+model StatRange {
     id      Int @id @default(autoincrement())
-    name    String
+    min     Float
+    max     Float
     stat    String // Must match a Stat in StatDefinition
-    value   Float
     breedId Int
     breed   Breed @relation(fields: [breedId], references: [id], onDelete: Cascade)
 }
