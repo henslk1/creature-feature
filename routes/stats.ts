@@ -56,3 +56,32 @@ router.post("/", validate(statDefinitionSchema), async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 })
+
+// Update stat-level fields
+router.patch("/:statDefinitionId", async (req, res) => {
+
+  try {
+    const updated = await prisma.statDefinition.update({
+      where: { id: Number(req.params.statDefinitionId) },
+      data: {
+        name: req.body.name,
+        min: req.body.min,
+        max: req.body.max,
+        active: req.body.active
+      }
+    });
+
+    logger.info({ stat: updated }, "Stat updated");
+    res.status(200).json(updated);
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2025") {
+      res.status(404).json({ message: "Stat not found" });
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }
+})
