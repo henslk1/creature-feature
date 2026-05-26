@@ -1,7 +1,6 @@
 import request from "supertest";
 import app from "../app";
-import { createTestGene, createTestSpecies } from "./helpers";
-import { expressionRuleSchema } from "../lib/schemas";
+import { createTestGene, createTestSpecies, deleteTestSpecies } from "./helpers";
 
 describe("Gene routes", () => {
 
@@ -9,6 +8,7 @@ describe("Gene routes", () => {
   let speciesId: number;
   let geneId: number;
   let geneCreateStatus: number;
+  let basePath: string;
 
   // Object to be used in testing
   beforeAll(async () => {
@@ -18,6 +18,8 @@ describe("Gene routes", () => {
     const geneResponse = await createTestGene(speciesId);
     geneId = geneResponse.body.id;
     geneCreateStatus = geneResponse.status;
+
+    basePath = `/species/${speciesId}/genes`;
   })
 
   it("should create a new gene", async () => {
@@ -27,14 +29,14 @@ describe("Gene routes", () => {
   });
 
   it("should return a specific gene", async () => {
-    const response = await request(app).get(`/species/${speciesId}/genes/${geneId}`);
+    const response = await request(app).get(`${basePath}/${geneId}`);
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("Test Gene");
   });
 
   it("should update gene-level fields", async () => {
     const response = await request(app)
-      .patch(`/species/${speciesId}/genes/${geneId}`)
+      .patch(`${basePath}/${geneId}`)
       .send({ name: "Updated Gene" });
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("Updated Gene");
@@ -42,7 +44,7 @@ describe("Gene routes", () => {
 
   it("should replace all gene data", async () => {
     const response = await request(app)
-      .put(`/species/${speciesId}/genes/${geneId}`)
+      .put(`${basePath}/${geneId}`)
       .send({
         name: "New Gene",
         category: "Conformation",
@@ -63,5 +65,15 @@ describe("Gene routes", () => {
     expect(response.body.name).toBe("New Gene");
     expect(response.body.loci[0].name).toBe("New Locus");  
   });
-  
-})
+
+  it("should delete a gene", async () => {
+    const response = await request(app).delete(`${basePath}/${geneId}`);
+    expect(response.status).toBe(200);
+    expect(response.body.id).toBe(geneId);
+  })
+
+  afterAll(async () => {
+    await deleteTestSpecies(speciesId);
+  })
+
+});
