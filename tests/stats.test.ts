@@ -42,7 +42,11 @@ describe("Stat routes", () => {
     expect(response.body.name).toBe("Updated Stat");
   });
 
-  // DELETE stat
+  it("should delete a stat", async () => {
+    const response = await request(app).delete(`${basePath}/${statId}`);
+    expect(response.status).toBe(200);
+    expect(response.body.id).toBe(statId);
+  });
 
   afterAll(async () => {
     await deleteTestSpecies(speciesId);
