@@ -33,3 +33,9 @@ export const geneSchema = z.object({
   loci: z.array(locusSchema).min(1),
   expressionRules: z.array(expressionRuleSchema).min(1),
 });
+
+export const statDefinitionSchema = z.object({
+  name: z.string().min(1),
+  min: z.number(),
+  max: z.number()
+});
