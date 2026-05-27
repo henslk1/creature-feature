@@ -43,8 +43,10 @@ describe("Attribute routes", () => {
   });
 
   it("should delete an attribute", async () => {
-
-  })
+    const response = await request(app).delete(`${basePath}/${attributeId}`);
+    expect(response.status).toBe(200);
+    expect(response.body.id).toBe(attributeId);
+  });
 
   afterAll(async () => {
     await deleteTestSpecies(speciesId);
