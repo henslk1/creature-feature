@@ -8,6 +8,7 @@ import breedRoutes from "./routes/breeds";
 import animalRoutes from "./routes/animals";
 import geneRoutes from "./routes/genes";
 import statRoutes from "./routes/stats";
+import attributeRoutes from "./routes/attributes";
 
 // Creates the Express app
 const app = express();
@@ -28,5 +29,6 @@ app.use("/breeds", breedRoutes);
 app.use("/animals", animalRoutes);
 app.use("/species/:speciesId/genes", geneRoutes);
 app.use("/species/:speciesId/stats", statRoutes);
+app.use("/species/:speciesId/attributes", attributeRoutes);
 
 export default app;
