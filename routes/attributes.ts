@@ -99,5 +99,27 @@ router.patch("/:attributeDefinitionId", async (req, res) => {
 })
 
 // DELETE attribute
+router.delete("/:attributeDefinitionId", async (req, res) => {
+
+  try {
+    const deletedAttribute = await prisma.attributeDefinition.delete({
+      where: { id: Number(req.params.attributeDefinitionId) }
+    });
+
+    logger.info({ attribute: deletedAttribute }, "Attribute deleted");
+    res.json(deletedAttribute);
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2025") {
+      res.status(404).json({ message: "Attribute could not be found" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }
+})
 
 export default router;
