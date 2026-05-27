@@ -32,6 +32,37 @@ router.get("/:attributeDefinitionId", async (req, res) => {
 })
 
 // POST attribute
+router.post("/", validate(attributeDefinitionSchema), async (req, res) => {
+
+  try {
+    const newAttribute = await prisma.attributeDefinition.create({
+      data: {
+        name: req.body.name,
+        type: req.body.type,
+        min: req.body.min,
+        max: req.body.max,
+        options: req.body.options,
+        optional: req.body.optional,
+        mutable: req.body.mutable,
+        speciesId: Number(req.params.speciesId as string),
+      }
+    })
+
+    logger.info({ attribute: newAttribute }, "New attribute created");
+    res.status(201).json(newAttribute);
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2002") {
+      res.status(409).json({ message: "Attribute already exists" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }
+})
 
 // PATCH attribute
 
