@@ -5,10 +5,21 @@ import { createTestAttribute, createTestSpecies, deleteTestSpecies } from "./hel
 describe("Attribute routes", () => {
 
   // ID for object created during testing and path definition
+  let speciesId: number;
+  let attributeId: number;
+  let attributeCreateStatus: number;
+  let basePath: string;
 
   // Object to be used in testing
   beforeAll(async () => {
+    const speciesResponse = await createTestSpecies();
+    speciesId = speciesResponse.body.id;
 
+    const attributeResponse = await createTestAttribute(speciesId);
+    attributeId = attributeResponse.body.id;
+    attributeCreateStatus = attributeResponse.status;
+
+    basePath = `/species/${speciesId}/attributes`;
   })
 
   it("should create a new attribute", async () => {
