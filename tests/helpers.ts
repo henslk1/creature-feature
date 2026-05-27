@@ -40,6 +40,12 @@ export async function createTestGene(speciesId: number) {
     });
 }
 
+export async function createTestAttribute(speciesId: number) {
+  return await request(app)
+    .post(`/species/${speciesId}/attributes`)
+    .send({ name: "Test Attribute", type: "string" });
+}
+
 export async function createTestStat(speciesId: number) {
   return await request(app)
     .post(`/species/${speciesId}/stats`)
