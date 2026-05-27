@@ -29,7 +29,9 @@ describe("Attribute routes", () => {
   });
 
   it("should return a specific attribute", async () => {
-
+    const response = await request(app).get(`${basePath}/${attributeId}`);
+    expect(response.status).toBe(200);
+    expect(response.body.name).toBe("Test Attribute");
   });
 
   it("should update attribute-level fields", async () => {
