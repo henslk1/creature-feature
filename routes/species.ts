@@ -30,7 +30,18 @@ router.get("/:speciesId", async (req, res) => {
 
   try {
     const found = await prisma.species.findUnique({
-      where: { id: Number(req.params.speciesId) }
+      where: { id: Number(req.params.speciesId) },
+      include: {
+        genes: {
+          include: {
+            loci: { include: { alleles: true } },
+            expressionRules: true
+          }
+        },
+        stats: true,
+        attributes: true,
+        breeds: true
+      }
     });
 
     if (!found) {
@@ -64,7 +75,7 @@ router.post("/", validate(speciesSchema), async (req, res) => {
 
   catch(error: any) {
 
-    if (error.code == "P2002") {
+    if (error.code === "P2002") {
       res.status(409).json({ message: "Species name already exists" });
       return;
     }
