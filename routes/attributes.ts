@@ -65,6 +65,38 @@ router.post("/", validate(attributeDefinitionSchema), async (req, res) => {
 })
 
 // PATCH attribute
+router.patch("/:attributeDefinitionId", async (req, res) => {
+
+  try {
+    const updated = await prisma.attributeDefinition.update({
+      where: { id: Number(req.params.attributeDefinitionId) },
+      data: {
+        name: req.body.name,
+        type: req.body.type,
+        min: req.body.min,
+        max: req.body.max,
+        options: req.body.options,
+        optional: req.body.optional,
+        mutable: req.body.mutable,
+        active: req.body.active  
+      }
+    });
+
+    logger.info({ attribute: updated }, "Attribute updated");
+    res.status(200).json(updated);
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2025") {
+      res.status(404).json({ message: "Attribute not found" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }
+})
 
 // DELETE attribute
 
