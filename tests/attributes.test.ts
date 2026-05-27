@@ -35,7 +35,11 @@ describe("Attribute routes", () => {
   });
 
   it("should update attribute-level fields", async () => {
-
+    const response = await request(app)
+      .patch(`${basePath}/${attributeId}`)
+      .send({ name: "Updated Attribute" });
+    expect(response.status).toBe(200);
+    expect(response.body.name).toBe("Updated Attribute");
   });
 
   it("should delete an attribute", async () => {
