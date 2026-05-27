@@ -10,7 +10,7 @@ const router = Router({ mergeParams: true });
 router.get("/:attributeDefinitionId", async (req, res) => {
 
   try {
-    const found = await prisma.gene.findUnique({
+    const found = await prisma.attributeDefinition.findUnique({
       where: { id: Number(req.params.attributeDefinitionId) },
     })
 
