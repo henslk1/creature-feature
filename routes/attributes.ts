@@ -78,7 +78,6 @@ router.patch("/:attributeDefinitionId", async (req, res) => {
         options: req.body.options,
         optional: req.body.optional,
         mutable: req.body.mutable,
-        active: req.body.active  
       }
     });
 
