@@ -31,6 +31,10 @@ describe("Species routes", () => {
     const response = await request(app).get(`/species/${speciesId}`);
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("Test Species");
+    expect(Array.isArray(response.body.genes)).toBe(true);
+    expect(Array.isArray(response.body.stats)).toBe(true);
+    expect(Array.isArray(response.body.attributes)).toBe(true);
+    expect(Array.isArray(response.body.breeds)).toBe(true);
   });
 
   it("should delete an individual species", async () => {
