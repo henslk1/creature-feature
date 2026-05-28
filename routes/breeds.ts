@@ -73,6 +73,34 @@ router.post("/", validate(breedSchema), async (req, res) => {
   }
 })
 
+// PATCH a specific breed
+router.patch("/:breedId", async (req, res) => {
+
+  try {
+    const updated = await prisma.breed.update({
+      where: { id: Number(req.params.breedId) },
+      data: {
+        name: req.body.name,
+        active: req.body.active
+      }
+    });
+
+    logger.info({ breed: updated }, "Breed updated");
+    res.status(200).json(updated);
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2025") {
+      res.status(404).json({ message: "Breed not found" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }
+})
+
 // DELETE a specific breed
 router.delete("/:breedId", async (req, res) => {
 
