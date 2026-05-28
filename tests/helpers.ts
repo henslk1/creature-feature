@@ -35,7 +35,9 @@ export async function createTestGene(speciesId: number) {
         }
       ],
       expressionRules: [
-        { minDominantAlleles: 1, expression: "Test Expression" }
+        { minDominantAlleles: 0, expression: "No Expression" },
+        { minDominantAlleles: 1, expression: "Test Expression" },
+        { minDominantAlleles: 2, expression: "Full Expression"}
       ]
     });
 }
