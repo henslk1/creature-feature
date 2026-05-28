@@ -35,7 +35,11 @@ import {
     animalCreateStatus = animalResponse.status;
   })
 
-  // Create a new animal
+  it("should create a new animal", async () => {
+    expect(animalCreateStatus).toBe(201);
+    expect(animalId).toBeDefined();
+    expect(typeof animalId).toBe("number");
+  })  
 
   // Return all animals
   
