@@ -119,5 +119,6 @@ model Animal {
     breed           Breed @relation(fields: [breedId], references: [id], onDelete: Cascade)
     expressedTraits Json
     stats           Json
+    attributes      Json
     modifier        Json?
 }
