@@ -109,4 +109,28 @@ router.patch("/:animalId", async (req, res) => {
   }
 })
 
+// DELETE animal
+router.delete("/:animalId", async (req, res) => {
+
+  try {
+    const deletedAnimal = await prisma.animal.delete({
+      where: { id: Number(req.params.animalId) }
+    });
+
+    logger.info({ animal: deletedAnimal }, "Animal deleted");
+    res.json(deletedAnimal);
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2025") {
+      res.status(404).json({ message: "Animal not found" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }  
+})
+
 export default router;
