@@ -9,6 +9,7 @@ import {
   createTestStat,
   deleteTestSpecies
  } from "./helpers";
+import prisma from "../lib/prisma";
 
  describe("Animal routes", () => {
 
@@ -64,7 +65,11 @@ import {
     expect(response.body.name).toBe("Updated Animal");
   });
 
-  // DELETE specific animal
+  it("should delete an animal", async () => {
+    const response = await request(app).delete(`/animals/${animalId}`);
+    expect(response.status).toBe(200);
+    expect(response.body.id).toBe(animalId);
+  });
 
   // Clean up
   afterAll(async () => {
