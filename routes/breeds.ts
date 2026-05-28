@@ -105,6 +105,37 @@ router.patch("/:breedId", async (req, res) => {
   }
 })
 
+// PUT for overrides
+router.put("/:breedId/overrides", async (req, res) => {
+
+  try {
+    const override = await prisma.alleleOverride.upsert({
+      where: {
+        alleleId_breedId: {
+          alleleId: req.body.alleleId,
+          breedId: Number(req.params.breedId)
+        }
+      },
+      create: {
+        alleleId: req.body.alleleId,
+        breedId: Number(req.params.breedId),
+        probability: req.body.probability
+      },
+      update: {
+        probability: req.body.probability
+      }
+    });
+
+    logger.info({ override }, "Override upserted");
+    res.status(200).json(override);
+  }
+
+  catch (error) {
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }
+})
+
 // DELETE a specific breed
 router.delete("/:breedId", async (req, res) => {
 
