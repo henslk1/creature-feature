@@ -2,7 +2,7 @@ import { Router } from "express";
 import prisma from "../lib/prisma";
 import logger from "../lib/logger";
 import { validate } from "../lib/validate";
-//import { animalSchema } from "../lib/validate";
+import { animalSchema } from "../lib/schemas";
 import { generateAnimal } from "../services/generator";
 
 const router = Router();
@@ -51,7 +51,7 @@ router.get("/:animalId", async (req, res) => {
 })
 
 // POST animal - generated
-router.post("/", /**validate(animalSchema), */ async (req, res) => {
+router.post("/", validate(animalSchema), async (req, res) => {
 
   try {
     const generated = await generateAnimal(req.body.breedId);
