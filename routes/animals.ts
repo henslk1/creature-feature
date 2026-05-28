@@ -37,6 +37,7 @@ router.get("/:animalId", async (req, res) => {
       logger.warn({ animal: req.params.animalId },
         `Animal [${req.params.animalId }] not found`);
       res.status(404).json({ message: "Animal not found" });
+      return;
     }
 
     logger.info({ animal: found }, "Animal found");
@@ -88,7 +89,7 @@ router.patch("/:animalId", async (req, res) => {
     const updated = await prisma.animal.update({
       where: { id: Number(req.params.animalId) },
       data: {
-        name: req.body,
+        name: req.body.name,
         breedId: req.body.breedId
       }
     });
