@@ -56,7 +56,13 @@ import {
     expect(response.status).toBe(200);
   });  
 
-  // PATCH specific animal
+  it("should update animal-level fields", async () => {
+    const response = await request(app)
+      .patch(`/animals/${animalId}`)
+      .send({ name: "Updated Animal" });
+    expect(response.status).toBe(200);
+    expect(response.body.name).toBe("Updated Animal");
+  });
 
   // DELETE specific animal
 
