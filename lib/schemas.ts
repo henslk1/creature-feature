@@ -49,3 +49,8 @@ export const attributeDefinitionSchema = z.object({
   optional: z.boolean().optional(),
   mutable: z.boolean().optional(),
 });
+
+export const animalSchema = z.object({
+  name: z.string().min(1),
+  breedId: z.number().int().positive(),
+});
