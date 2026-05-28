@@ -24,12 +24,16 @@ router.get("/", async (req, res) => {
   }
 })
 
-// GET individual breeds
+// GET individual breed
 router.get("/:breedId", async (req, res) => {
 
   try {
     const found = await prisma.breed.findUnique({
-      where: { id: Number(req.params.breedId) }
+      where: { id: Number(req.params.breedId) },
+      include: {
+        statRanges: true,
+        overrides: true
+      }
     });
 
     if (!found) {
