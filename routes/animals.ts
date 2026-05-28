@@ -50,7 +50,7 @@ router.get("/:animalId", async (req, res) => {
 })
 
 // POST animal - generated
-router.post("/", validate(animalSchema), async (req, res) => {
+router.post("/", /**validate(animalSchema), */ async (req, res) => {
 
   try {
     const generated = await generateAnimal(req.body.breedId);
@@ -81,6 +81,32 @@ router.post("/", validate(animalSchema), async (req, res) => {
   }
 })
 
+// PATCH animal
+router.patch("/:animalId", async (req, res) => {
 
+  try {
+    const updated = await prisma.animal.update({
+      where: { id: Number(req.params.animalId) },
+      data: {
+        name: req.body,
+        breedId: req.body.breedId
+      }
+    });
+
+    logger.info({ animal: updated }, "Animal updated");
+    res.status(200).json(updated);
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2025") {
+      res.status(404).json({ message: "Animal not found" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }
+})
 
 export default router;
