@@ -33,6 +33,8 @@ describe ("Breed routes", () => {
 
   it("should return an individual breed", async () => {
     const response = await request(app).get(`/breeds/${breedId}`);
+    expect(Array.isArray(response.body.overrides)).toBe(true);
+    expect(Array.isArray(response.body.statRanges)).toBe(true);
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("Test Breed");
   });
