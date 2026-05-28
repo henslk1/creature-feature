@@ -17,6 +17,14 @@ export function rollInRange(min: number, max: number) {
   return result;
 }
 
+export function rollEnum(options: string[]): string {
+  return options[Math.floor(Math.random() * options.length)] ?? "";
+}
+
+export function rollString(): string {
+  return "";
+}
+
 export function applyOverrides(alleles: any[], overrides: any[]) {
   return alleles.map(allele => {
     const override = overrides.find(o => o.alleleId === allele.id);
