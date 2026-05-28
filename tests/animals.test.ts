@@ -39,12 +39,23 @@ import {
     expect(animalCreateStatus).toBe(201);
     expect(animalId).toBeDefined();
     expect(typeof animalId).toBe("number");
-  })  
+  });
 
-  // Return all animals
+  it("should return a list of animals", async () => {
+    const response = await request(app).get("/animals");
+    expect(response.status).toBe(200);
+    expect(Array.isArray(response.body)).toBe(true);
+  });
   
-  // Return specific animal
-  
+  it("should return am individual animal", async () => {
+    const response = await request(app).get(`/animals/${animalId}`);
+    expect(response.body.name).toBe("Test Animal");
+    expect(response.body.stats).toBeDefined();
+    expect(response.body.expressedTraits).toBeDefined();
+    expect(response.body.attributes).toBeDefined();
+    expect(response.status).toBe(200);
+  });  
+
   // PATCH specific animal
 
   // DELETE specific animal
