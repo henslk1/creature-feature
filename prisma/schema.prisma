@@ -97,6 +97,7 @@ model AlleleOverride {
     allele      Allele @relation(fields: [alleleId], references: [id], onDelete: Cascade)
     breedId     Int
     breed       Breed  @relation(fields: [breedId], references: [id], onDelete: Cascade)
+    @@unique([alleleId, breedId])
 }
 
 // Breed level stat ranges
