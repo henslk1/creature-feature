@@ -16,7 +16,7 @@ export async function createTestBreed(speciesId: number) {
 export async function createTestAnimal(breedId: number) {
   return await request(app)
     .post("/animals")
-    .send({ name: "Test animal", breedId });
+    .send({ name: "Test Animal", breedId });
 }
 
 export async function createTestGene(speciesId: number) {
