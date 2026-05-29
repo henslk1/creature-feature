@@ -37,6 +37,14 @@ describe("Species routes", () => {
     expect(Array.isArray(response.body.breeds)).toBe(true);
   });
 
+  it("should update species-level fields", async () => {
+    const response = await request(app)
+      .patch(`/species/${speciesId}`)
+      .send({ name: "Updated Species"});
+    expect(response.status).toBe(200);
+    expect(response.body.name).toBe("Updated Species");
+  })
+
   it("should delete an individual species", async () => {
     const response = await request(app).delete(`/species/${speciesId}`);
     expect(response.status).toBe(200);
