@@ -51,6 +51,14 @@ describe ("Breed routes", () => {
     expect(response.body.name).toBe("Updated Breed");
   });
 
+  it("should upsert an allele override", async () => {
+    const response = await request(app)
+      .put(`/breeds/${breedId}/overrides`)
+      .send({ alleleId, probability: 0.8 });
+    expect(response.status).toBe(200);
+    expect(response.body.probability).toBe(0.8);
+  });
+
   it("should delete an individual breed", async () => {
     const response = await request(app).delete(`/breeds/${breedId}`);
     expect(response.status).toBe(200);
