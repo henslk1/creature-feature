@@ -10,4 +10,11 @@ describe("rollInRange", () => {
     expect(typeof result).toBe("number");
   });
 
+  it("should return a result between statC min and max", () => {
+    const result = rollInRange(testStats.statC.min, testStats.statC.max);
+    expect(result).toBeGreaterThanOrEqual(testStats.statC.min);
+    expect(result).toBeLessThanOrEqual(testStats.statC.max);
+    expect(typeof result).toBe("number");
+  })
+
 })
