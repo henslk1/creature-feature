@@ -5,3 +5,9 @@ export const testAlleles = [
 ];
 
 export const singleItem = [{ id: 1, name: "A", probability: 1 }];
+
+export const testOverrides = {
+  matchFirst: [{ alleleId: 1, probability: 0.8 }],
+  matchSecond: [{ alleleId: 2, probability: 0.8 }],
+  noMatch: [{ alleleId: 99, probability: 0.8 }]
+};
