@@ -12,7 +12,7 @@ describe("rollAttributes", () => {
 
   it("should roll and pick one option in a given enum", () => {
     const result = rollAttributes([testAttributes.enumAttr]);
-    expect(testAttributes.enumAttr).toContain(result["enumAttr"]);
+    expect(testAttributes.enumAttr.options).toContain(result["enumAttr"]);
     expect(typeof result["enumAttr"]).toBe("string");
   });
 
@@ -21,5 +21,5 @@ describe("rollAttributes", () => {
     expect(result["stringAttr"]).toBe("");
     expect(typeof result["stringAttr"]).toBe("string");
   });
-  
+
 })
