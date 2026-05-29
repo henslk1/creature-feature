@@ -1,4 +1,4 @@
-import { rollEnum, rollInRange, rollString } from "../lib/rollUtils";
+import { rollEnum, rollInRange } from "../lib/rollUtils";
 
 export function rollAttributes(attributes: any[]): Record<string, any> {
   const result: Record<string, any> = {};
