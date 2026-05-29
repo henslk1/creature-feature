@@ -28,6 +28,6 @@ export function rollString(): string {
 export function applyOverrides(alleles: any[], overrides: any[]) {
   return alleles.map(allele => {
     const override = overrides.find(o => o.alleleId === allele.id);
-    return override ? { ...alleles, probability: override.probability } : allele;
+    return override ? { ...allele, probability: override.probability } : allele;
   })
 }
