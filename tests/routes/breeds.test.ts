@@ -1,18 +1,22 @@
 import request from "supertest";
 import app from "../../app";
-import { createTestSpecies, deleteTestSpecies, createTestBreed } from "./helpers";
+import { createTestSpecies, deleteTestSpecies, createTestBreed, createTestGene } from "./helpers";
 
 describe ("Breed routes", () => {
 
   // ID's for objects created during testing.
   let speciesId: number;
   let breedId: number;
+  let alleleId: number;
   let breedCreateStatus: number;
 
   // Objects to be used in testing
   beforeAll( async () => {
     const speciesResponse = await createTestSpecies();
     speciesId = speciesResponse.body.id;
+
+    const geneResponse = await createTestGene(speciesId);
+    alleleId = geneResponse.body.loci[0].alleles[0].id;
 
     const breedResponse = await createTestBreed(speciesId);
     breedId = breedResponse.body.id;
