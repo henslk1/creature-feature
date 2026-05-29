@@ -15,6 +15,6 @@ describe("rollInRange", () => {
     expect(result).toBeGreaterThanOrEqual(testStats.statC.min);
     expect(result).toBeLessThanOrEqual(testStats.statC.max);
     expect(typeof result).toBe("number");
-  })
+  });
 
 })
