@@ -26,3 +26,8 @@ export const testStatRanges = {
     { stat: "Stat B", min: 25, max: 100 }
   ]
 };
+
+export const testEnumOptions = {
+ colors: ["Red", "Blue", "Green"],
+ empty: []
+};
