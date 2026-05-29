@@ -10,7 +10,7 @@ export function rollAttributes(attributes: any[]): Record<string, any> {
         result[attribute.name] = rollInRange(attribute.min, attribute.max);
         break;
       case "string": 
-        result[attribute.name] = rollString();
+        result[attribute.name] = "";
         break;
       case "enum":
         result[attribute.name] = rollEnum(attribute.options);
