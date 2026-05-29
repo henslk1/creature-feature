@@ -85,6 +85,34 @@ router.post("/", validate(speciesSchema), async (req, res) => {
   }
 })
 
+// PATCH species
+router.patch("/:speciesId", async (req, res) => {
+
+  try {
+    const updated = await prisma.species.update({
+      where: { id: Number(req.params.speciesId) },
+      data: {
+        name: req.body.name,
+        description: req.body.description
+      }
+    });
+
+    logger.info({ species: updated }, "Species updated");
+    res.status(200).json(updated);
+  }
+
+  catch (error: any) {
+
+    if (error.code === "P2025") {
+      res.status(404).json({ message: "Species not found" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }
+})
+
 // DELETE a specific species
 router.delete("/:speciesId", async (req, res) => {
 
