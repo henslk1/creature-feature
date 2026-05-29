@@ -12,16 +12,16 @@ export const testOverrides = {
   noMatch: [{ alleleId: 99, probability: 0.8 }]
 };
 
-export const testStats = [
-  { name: "Stat A", min: 0, max: 100 },
-  { name: "Stat B", min: 0, max: 100}
-];
+export const testStats = {
+  statA: { name: "Stat A", min: 0, max: 100 },
+  statB: { name: "Stat B", min: 0, max: 100}
+};
 
 export const testStatRanges = {
   withMatch: [{ name: "Stat A", min: 50, max: 100 }],
   noMatch: [{ name: "Stat Z", min: 50, max: 100}],
   doubleMatch: [
     { name: "Stat A", min: 50, max: 100 },
-    { name: "Stat B", min: 50, max: 100}
+    { name: "Stat B", min: 25, max: 100}
   ]
 };
