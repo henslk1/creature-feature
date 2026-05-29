@@ -15,21 +15,27 @@ export const testAttributes = {
   stringAttr: { name: "stringAttr", type: "string" }
 };
 
-export const testGene = {
-  name: "Test Gene",
-  category: "Color",
-  loci: [
-    {
-      name: "Test Locus",
-      alleles: [
-        { id: 1, name: "Allele A", symbol: "A", dominance: "dominant", probability: 0.5 },
-        { id: 2, name: "Allele a", symbol: "a", dominance: "recessive", probability: 0.5}
-      ]
-    }
-  ],
+export const testGeneA = {
+  name: "Test Gene A",
+  loci: [{ name: "Test Locus A", alleles: [
+        { id: 1, symbol: "A", dominance: "dominant", probability: 0.5 },
+        { id: 2, symbol: "a", dominance: "recessive", probability: 0.5}
+      ]}],
   expressionRules: [
     { minDominantAlleles: 0, expression: "No Expression" },
     { minDominantAlleles: 1, expression: "Test Expression" },
     { minDominantAlleles: 2, expression: "Full Expression"}
   ]
-}
+};
+
+export const testGeneB = {
+  name: "Test Gene B",
+  loci: [{ name: "Test Locus B", alleles: [
+    { id: 3, dominance: "dominant", probability: 1 },
+    { id: 4, dominance: "recessive", probability: 0}
+  ]}],
+  expressionRules: [
+    { minDominantAlleles: 0, expression: "No Expression" },
+    { minDominantAlleles: 1, expression: "Test Expression"}
+  ]
+};
