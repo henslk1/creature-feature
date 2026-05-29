@@ -12,7 +12,9 @@ export function rollGenes(genes: any[], overrides: any[]): Record<string, string
       const allele2 = weightedRandom(alleles);
 
       const dominantCount = [allele1, allele2].filter(a => a.dominance === "dominant").length;
-      const rule = gene.expressionRules.find((r: any) => r.minDominantAlleles === dominantCount);
+      const rule = gene.expressionRules
+        .filter((r: any) => r.minDominantAlleles <= dominantCount)
+        .sort((a: any, b: any) => b.minDominantAlleles - a.minDominantAlleles)[0];
 
       if (rule) expressedTraits[gene.name] = rule.expression;
 
