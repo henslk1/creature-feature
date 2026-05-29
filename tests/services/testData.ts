@@ -8,3 +8,9 @@ export const testStatRanges = [
 ];
 
 export const emptyStatRanges = [];
+
+export const testAttributes = [
+  { name: "numberAttr", type: "number", min: 14, max: 18 },
+  { name: "enumAttr", type: "enum", options: ["1", "2", "3"] },
+  { nsmr: "stringAttr", type: "string" }
+];
