@@ -18,10 +18,10 @@ export const testStats = {
 };
 
 export const testStatRanges = {
-  withMatch: [{ name: "Stat A", min: 50, max: 100 }],
-  noMatch: [{ name: "Stat Z", min: 50, max: 100}],
+  withMatch: [{ stat: "Stat A", min: 50, max: 100 }],
+  noMatch: [{ stat: "Stat Z", min: 50, max: 100 }],
   doubleRange: [
-    { name: "Stat A", min: 50, max: 100 },
-    { name: "Stat B", min: 25, max: 100}
+    { stat: "Stat A", min: 50, max: 100 },
+    { stat: "Stat B", min: 25, max: 100 }
   ]
 };
