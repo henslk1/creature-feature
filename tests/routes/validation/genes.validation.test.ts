@@ -4,7 +4,6 @@ import { createTestGene, createTestSpecies, deleteTestSpecies } from "../helpers
 
 describe("Gene validation", () => {
 
-  let duplicateId: number;
   let speciesId: number;
   let basePath: string;
 
@@ -20,7 +19,6 @@ describe("Gene validation", () => {
     basePath = `/species/${speciesId}/genes`
 
     const duplicateGene = await createTestGene(speciesId, duplicateGeneName);
-    duplicateId = duplicateGene.body.id;
   });
 
   it("should return 404 for gene that does not exist", async () => {
