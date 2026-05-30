@@ -57,14 +57,14 @@ describe("Species routes", () => {
     const response = await request(app)
       .post("/species")
       .send({ name: duplicateSpeciesName });
-    expect(response.status).toBe(422);
+    expect(response.status).toBe(409);
   });
 
-  it("should return 422 when creating a species with invalid data", async () => {
+  it("should return 400 when creating a species with invalid data", async () => {
     const response = await request(app)
       .post("/species")
       .send({ name: emptyName });
-    expect(response.status).toBe(422);
+    expect(response.status).toBe(400);
   });
 
   it("should delete an individual species", async () => {
