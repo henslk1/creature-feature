@@ -7,6 +7,9 @@ describe("Species routes", () => {
   // ID for object created during testing.
   let speciesId: number;
   let createStatus: number;
+  const invalidSpeciesId = 99999;
+  const duplicateSpeciesName = "Updated Species";
+  const emptyName = "";
 
   // Object to be used in testing
   beforeAll(async () => {
@@ -43,12 +46,31 @@ describe("Species routes", () => {
       .send({ name: "Updated Species"});
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("Updated Species");
-  })
+  });
+
+  it("should return 404 for a species that does not exist", async () => {
+    const response = await request(app).get(`/species/${invalidSpeciesId}`);
+    expect(response.status).toBe(404);
+  });
+
+  it("should return 409 when creating a species with a duplicate name", async () => {
+    const response = await request(app)
+      .post("/species")
+      .send({ name: duplicateSpeciesName });
+    expect(response.status).toBe(422);
+  });
+
+  it("should return 422 when creating a species with invalid data", async () => {
+    const response = await request(app)
+      .post("/species")
+      .send({ name: emptyName });
+    expect(response.status).toBe(422);
+  });
 
   it("should delete an individual species", async () => {
     const response = await request(app).delete(`/species/${speciesId}`);
     expect(response.status).toBe(200);
     expect(response.body.id).toBe(speciesId);
-  })
+  });
 
 });
