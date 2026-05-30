@@ -39,3 +39,9 @@ export const testGeneB = {
     { minDominantAlleles: 1, expression: "Test Expression"}
   ]
 };
+
+export const testGeneOverrides = {
+  allDominant: [{ alleleId: 1, probability: 1 }],
+  allRecessive: [{ alleleId: 1, probability: 1 }],
+  noOverride: []
+};
