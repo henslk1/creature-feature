@@ -2,7 +2,7 @@ import { Router } from "express";
 import prisma from "../lib/prisma";
 import logger from "../lib/logger";
 import { validate } from "../lib/validate";
-import { breedSchema } from "../lib/schemas";
+import { breedSchema, overrideSchema } from "../lib/schemas";
 
 const router = Router();
 
@@ -106,7 +106,7 @@ router.patch("/:breedId", async (req, res) => {
 })
 
 // PUT for overrides
-router.put("/:breedId/overrides", async (req, res) => {
+router.put("/:breedId/overrides", validate(overrideSchema), async (req, res) => {
 
   try {
     const override = await prisma.alleleOverride.upsert({
@@ -130,7 +130,13 @@ router.put("/:breedId/overrides", async (req, res) => {
     res.status(200).json(override);
   }
 
-  catch (error) {
+  catch (error: any) {
+
+    if( error.code === "P2003") {
+      res.status(404).json({ message: "Allele not found" });
+      return;
+    }
+
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
