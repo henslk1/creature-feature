@@ -1,16 +1,16 @@
 import request from "supertest";
 import app from "../../app";
 
-export async function createTestSpecies() {
+export async function createTestSpecies(name: "Test Species") {
   return await request(app)
     .post("/species")
-    .send({ name: "Test Species" });
+    .send({ name });
 }
 
-export async function createTestBreed(speciesId: number) {
+export async function createTestBreed(speciesId: number, name: "Test Breed") {
   return await request(app)
     .post("/breeds")
-    .send({ name: "Test Breed", speciesId });
+    .send({ name, speciesId });
 }
 
 export async function createTestAnimal(breedId: number) {
