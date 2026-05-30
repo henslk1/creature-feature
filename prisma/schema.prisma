@@ -8,8 +8,9 @@ datasource db {
 }
 
 model Species {
-    id          Int    @id @default(autoincrement())
-    name        String @unique
+    id          Int      @id @default(autoincrement())
+    createdAt   DateTime @default(now())
+    name        String   @unique
     description String?
     attributes  AttributeDefinition[]
     stats       StatDefinition[]
@@ -18,7 +19,7 @@ model Species {
 }
 
 model AttributeDefinition {
-    id        Int    @id @default(autoincrement())
+    id        Int     @id @default(autoincrement())
     name      String
     type      String                  // number, string, ...
     min       Float?                  // When type has a range
@@ -28,6 +29,7 @@ model AttributeDefinition {
     mutable   Boolean @default(false) // True if attribute can change, e.g. castration
     speciesId Int
     species   Species @relation(fields: [speciesId], references: [id], onDelete: Cascade)
+    @@unique([name, speciesId])
 }
 
 model StatDefinition {
@@ -37,21 +39,24 @@ model StatDefinition {
     max       Float
     speciesId Int
     species   Species @relation(fields: [speciesId], references: [id], onDelete: Cascade)
+    @@unique([name, speciesId])
 }
 
 model Gene {
-    id              Int     @id @default(autoincrement())
+    id              Int      @id @default(autoincrement())
+    createdAt       DateTime @default(now())
     name            String
     category        String // Groups genes by type/scope
     loci            Locus[]
     expressionRules ExpressionRule[]
-    active          Boolean @default(true)
+    active          Boolean  @default(true)
     speciesId       Int
-    species         Species @relation(fields: [speciesId], references: [id], onDelete: Cascade)
+    species         Species  @relation(fields: [speciesId], references: [id], onDelete: Cascade)
+    @@unique([name, speciesId])
 }
 
 model Locus {
-    id      Int @id @default(autoincrement())
+    id      Int  @id @default(autoincrement())
     name    String // e.g. "Extension Locus"
     alleles Allele[]
     geneId  Int
@@ -59,7 +64,7 @@ model Locus {
 }
 
 model Allele {
-    id          Int @id @default(autoincrement())
+    id          Int   @id @default(autoincrement())
     name        String //e.g. "Extension E", "Extension e"
     symbol      String // "E", "e"
     dominance   String
@@ -71,7 +76,7 @@ model Allele {
 
 // Expression rule defines what behavior a gene has based on the number of dominant alleles
 model ExpressionRule {
-    id                 Int @id @default(autoincrement())
+    id                 Int  @id @default(autoincrement())
     minDominantAlleles Int // What determines expression
     expression         String // Trait displayed, e.g. "Blue eyes"
     geneId             Int
@@ -79,14 +84,16 @@ model ExpressionRule {
 }
 
 model Breed {
-    id         Int     @id @default(autoincrement())
+    id         Int      @id @default(autoincrement())
+    createdAt  DateTime @default(now())
     name       String
-    active     Boolean @default(true)
+    active     Boolean  @default(true)
     overrides  AlleleOverride[]
     statRanges StatRange[]
     animals    Animal[]
     speciesId  Int
-    species    Species @relation(fields: [speciesId], references: [id], onDelete: Cascade)
+    species    Species  @relation(fields: [speciesId], references: [id], onDelete: Cascade)
+    @@unique([name, speciesId])
 }
 
 // enables individual breeds to alter probabilities
@@ -102,7 +109,7 @@ model AlleleOverride {
 
 // Breed level stat ranges
 model StatRange {
-    id      Int @id @default(autoincrement())
+    id      Int   @id @default(autoincrement())
     min     Float
     max     Float
     stat    String // Must match a Stat in StatDefinition
@@ -112,11 +119,12 @@ model StatRange {
 
 // Generated individual belonging to a breed
 model Animal {
-    id              Int @id @default(autoincrement())
+    id              Int      @id @default(autoincrement())
+    createdAt       DateTime @default(now())
     name            String 
-    age             Float @default(0)
+    age             Float    @default(0)
     breedId         Int
-    breed           Breed @relation(fields: [breedId], references: [id], onDelete: Cascade)
+    breed           Breed    @relation(fields: [breedId], references: [id], onDelete: Cascade)
     expressedTraits Json
     stats           Json
     attributes      Json
