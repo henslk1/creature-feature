@@ -19,11 +19,11 @@ export async function createTestAnimal(breedId: number) {
     .send({ name: "Test Animal", breedId });
 }
 
-export async function createTestGene(speciesId: number) {
+export async function createTestGene(speciesId: number, name = "Test Gene") {
   return await request(app)
     .post(`/species/${speciesId}/genes`)
     .send({
-      name: "Test Gene",
+      name,
       category: "Color",
       loci: [
         {
@@ -42,16 +42,16 @@ export async function createTestGene(speciesId: number) {
     });
 }
 
-export async function createTestAttribute(speciesId: number) {
+export async function createTestAttribute(speciesId: number, name = "Test Attribute") {
   return await request(app)
     .post(`/species/${speciesId}/attributes`)
-    .send({ name: "Test Attribute", type: "string" });
+    .send({ name, type: "string" });
 }
 
-export async function createTestStat(speciesId: number) {
+export async function createTestStat(speciesId: number, name = "Test Stat") {
   return await request(app)
     .post(`/species/${speciesId}/stats`)
-    .send({ name: "Test Stat", min: 0.0, max: 100.0 });
+    .send({ name, min: 0.0, max: 100.0 });
 }
 
 // Test clean up
