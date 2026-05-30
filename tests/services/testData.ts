@@ -45,3 +45,14 @@ export const testGeneOverrides = {
   allRecessive: [{ alleleId: 1, probability: 0 }],
   noOverride: []
 };
+
+export const mockBreedData = {
+  id: 1,
+  statRanges: testStatRanges,
+  overrides: [],
+  species: {
+    stats: testStatsArray,
+    attributes: Object.values(testAttributes),
+    genes: [testGeneA, testGeneB]
+  }
+};
