@@ -15,6 +15,8 @@ export function rollAttributes(attributes: any[]): Record<string, any> {
       case "enum":
         result[attribute.name] = rollEnum(attribute.options);
         break;
+      default:
+        break;
 
     }
   }
