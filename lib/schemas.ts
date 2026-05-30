@@ -14,7 +14,7 @@ export const alleleSchema = z.object({
   name: z.string().min(1),
   symbol: z.string().min(1),
   dominance: z.string().min(1),
-  probability: z.number().max(1),
+  probability: z.number().max(1).min(0),
 });
 
 export const locusSchema = z.object({
@@ -38,6 +38,8 @@ export const statDefinitionSchema = z.object({
   name: z.string().min(1),
   min: z.number(),
   max: z.number()
+}).refine(data => data.min < data.max, {
+  message: "min must be less than max"
 });
 
 export const attributeDefinitionSchema = z.object({
@@ -48,7 +50,12 @@ export const attributeDefinitionSchema = z.object({
   options: z.array(z.string()).optional(),
   optional: z.boolean().optional(),
   mutable: z.boolean().optional(),
-});
+}).refine( data => {
+  if (data.min !== undefined && data.max !== undefined) {
+    return data.min < data.max;
+  }
+  return true;
+}, { message: "min must be less than max" });
 
 export const animalSchema = z.object({
   name: z.string().min(1),
