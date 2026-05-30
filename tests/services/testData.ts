@@ -42,6 +42,6 @@ export const testGeneB = {
 
 export const testGeneOverrides = {
   allDominant: [{ alleleId: 1, probability: 1 }],
-  allRecessive: [{ alleleId: 1, probability: 1 }],
+  allRecessive: [{ alleleId: 1, probability: 0 }],
   noOverride: []
 };
