@@ -151,7 +151,7 @@ router.delete("/:breedId", async (req, res) => {
     });
 
     logger.info({ breed: deletedBreed }, "Breed deleted");
-    res.json(deletedBreed);
+    res.status(200).json(deletedBreed);
   }
 
   catch (error: any) {

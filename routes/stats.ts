@@ -99,7 +99,7 @@ router.delete("/:statDefinitionId", async (req, res) => {
     });
 
     logger.info({ stat: deletedStat }, "Stat deleted");
-    res.json(deletedStat);
+    res.status(200).json(deletedStat);
   }
 
   catch (error: any) {

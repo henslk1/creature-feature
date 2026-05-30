@@ -122,7 +122,7 @@ router.delete("/:speciesId", async (req, res) => {
     });
 
     logger.info({ species: deletedSpecies }, "Species deleted");
-    res.json(deletedSpecies);
+    res.status(200).json(deletedSpecies);
   }
 
   catch (error: any) {

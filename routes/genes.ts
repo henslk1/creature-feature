@@ -161,7 +161,7 @@ router.delete("/:geneId", async (req, res) => {
     });
 
     logger.info({ gene: deletedGene }, "Gene deleted");
-    res.json(deletedGene);
+    res.status(200).json(deletedGene);
   }
 
   catch (error: any) {

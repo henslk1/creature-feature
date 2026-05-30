@@ -106,7 +106,7 @@ router.delete("/:attributeDefinitionId", async (req, res) => {
     });
 
     logger.info({ attribute: deletedAttribute }, "Attribute deleted");
-    res.json(deletedAttribute);
+    res.status(200).json(deletedAttribute);
   }
 
   catch (error: any) {

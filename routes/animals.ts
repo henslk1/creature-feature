@@ -119,7 +119,7 @@ router.delete("/:animalId", async (req, res) => {
     });
 
     logger.info({ animal: deletedAnimal }, "Animal deleted");
-    res.json(deletedAnimal);
+    res.status(200).json(deletedAnimal);
   }
 
   catch (error: any) {
