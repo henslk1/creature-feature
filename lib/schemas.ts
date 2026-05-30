@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { number, z } from "zod";
 
 export const speciesSchema = z.object({
   name: z.string().min(1),
@@ -56,6 +56,11 @@ export const attributeDefinitionSchema = z.object({
   }
   return true;
 }, { message: "min must be less than max" });
+
+export const overrideSchema = z.object({
+  alleleId: number().int().positive(),
+  probability: z.number().max(1).min(0)
+});
 
 export const animalSchema = z.object({
   name: z.string().min(1),
