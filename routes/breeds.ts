@@ -2,7 +2,7 @@ import { Router } from "express";
 import prisma from "../lib/prisma";
 import logger from "../lib/logger";
 import { validate } from "../lib/validate";
-import { breedSchema, overrideSchema } from "../lib/schemas";
+import { breedSchema, overrideSchema, statRangeSchema } from "../lib/schemas";
 import { breedPatchSchema } from "../lib/patchSchemas";
 import { fetchBreedProfile } from "../services/queries";
 import { buildProfile } from "../services/buildBreedProfile";
@@ -132,7 +132,46 @@ router.put("/:breedId/overrides", validate(overrideSchema), async (req, res) => 
   catch (error: any) {
 
     if (error.code === "P2003") {
-      res.status(404).json({ message: "Allele not found" });
+      res.status(404).json({ message: "Breed not found" });
+      return;
+    }
+
+    logger.error({ error }, "Internal server error");
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+// PUT for stat ranges
+router.put("/:breedId/statRanges", validate(statRangeSchema), async (req, res) => {
+  
+  try {
+    const statRange = await prisma.statRange.upsert({
+      where: {
+        stat_breedId: {
+          stat: req.body.stat,
+          breedId: Number(req.params.breedId)
+        }
+      },
+      create: {
+        stat: req.body.stat,
+        breedId: Number(req.params.breedId),
+        min: req.body.min,
+        max: req.body.max
+      },
+      update: {
+        min: req.body.min,
+        max: req.body.max
+      }
+    });
+
+    logger.info({ statRange }, "Stat range upserted");
+    res.status(200).json(statRange);
+  }
+
+  catch (error: any) {
+
+    if(error.code === "P2003") {
+      res.status(404).json({ message: "Breed not found" });
       return;
     }
 
