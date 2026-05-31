@@ -27,3 +27,10 @@ export function applyOverrides(alleles: any[], overrides: any[]) {
     return override ? { ...allele, probability: override.probability } : allele;
   });
 }
+
+export function applyStatRanges(stats: any[], statRanges: any[]) {
+  return stats.map(stat => {
+    const statRange = statRanges.find(r => r.stat === stat.name);
+    return statRange ? { ...stat, min: statRange.min, max: statRange.max } : stat;
+  });
+}
