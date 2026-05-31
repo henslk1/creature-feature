@@ -14,7 +14,7 @@ import attributeRoutes from "./routes/attributes";
 const app = express();
 
 // Requests from this URL is allowed - for React
-app.use(cors({ origin: "http://localhost:5173"}));
+app.use(cors({ origin: process.env.CORS_ORIGIN || "http://localhost:5173" }));
 // Parses incoming requests
 app.use(express.json());
 
