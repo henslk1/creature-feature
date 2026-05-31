@@ -1,3 +1,5 @@
+import { symbol } from "zod";
+
 export const testStatsArray = [
   { name: "StatA", min: 0, max: 100 },
   { name: "StatB", min: 10, max: 80}
@@ -18,8 +20,8 @@ export const testAttributes = {
 export const testGeneA = {
   name: "Test Gene A",
   loci: [{ name: "Test Locus A", alleles: [
-        { id: 1, symbol: "A", dominance: "dominant", probability: 0.5 },
-        { id: 2, symbol: "a", dominance: "recessive", probability: 0.5}
+        { id: 1, dominance: "dominant", probability: 0.5 },
+        { id: 2, dominance: "recessive", probability: 0.5}
       ]}],
   expressionRules: [
     { minDominantAlleles: 0, expression: "No Expression" },
