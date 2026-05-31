@@ -4,6 +4,8 @@ import logger from "../lib/logger";
 import { validate } from "../lib/validate";
 import { breedSchema, overrideSchema } from "../lib/schemas";
 import { breedPatchSchema } from "../lib/patchSchemas";
+import { fetchBreedProfile } from "../services/queries";
+import { buildProfile } from "../services/buildBreedProfile";
 
 const router = Router();
 
@@ -29,13 +31,7 @@ router.get("/", async (req, res) => {
 router.get("/:breedId", async (req, res) => {
 
   try {
-    const found = await prisma.breed.findUnique({
-      where: { id: Number(req.params.breedId) },
-      include: {
-        statRanges: true,
-        overrides: true
-      }
-    });
+    const found = await fetchBreedProfile(Number(req.params.breedId));
 
     if (!found) {
       logger.warn({ breedId: req.params.breedId },
@@ -44,8 +40,10 @@ router.get("/:breedId", async (req, res) => {
       return;
     }
 
+    const breedProfile = buildProfile(found);
+
     logger.info({ breed: found }, "Breed found");
-    res.json(found);
+    res.json(breedProfile);
   }
 
   catch (error) {
