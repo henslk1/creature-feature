@@ -1,6 +1,6 @@
 import request from "supertest";
 import app from "../../app";
-import { createTestSpecies, deleteTestSpecies, createTestBreed, createTestGene } from "./helpers";
+import { createTestSpecies, deleteTestSpecies, createTestBreed, createTestGene, createTestStat } from "./helpers";
 
 describe("Breed routes", () => {
 
@@ -21,6 +21,8 @@ describe("Breed routes", () => {
     const breedResponse = await createTestBreed(speciesId);
     breedId = breedResponse.body.id;
     breedCreateStatus = breedResponse.status;
+
+    const statResponse = await createTestStat(speciesId);
   });
 
   it("should create a new breed", async () => {
@@ -37,8 +39,9 @@ describe("Breed routes", () => {
 
   it("should return an individual breed", async () => {
     const response = await request(app).get(`/breeds/${breedId}`);
-    expect(Array.isArray(response.body.overrides)).toBe(true);
-    expect(Array.isArray(response.body.statRanges)).toBe(true);
+    expect(Array.isArray(response.body.genes)).toBe(true);
+    expect(Array.isArray(response.body.stats)).toBe(true);
+    expect(Array.isArray(response.body.attributes)).toBe(true);
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("Test Breed");
   });
@@ -57,6 +60,15 @@ describe("Breed routes", () => {
       .send({ alleleId, probability: 0.8 });
     expect(response.status).toBe(200);
     expect(response.body.probability).toBe(0.8);
+  });
+
+  it("should upsert a stat range", async () => {
+    const response = await request(app)
+      .put(`/breeds/${breedId}/statRanges`)
+      .send({ stat: "Test Stat", min: 50, max: 75 });
+    expect(response.status).toBe(200);
+    expect(response.body.min).toBe(50);
+    expect(response.body.max).toBe(75);
   });
 
   it("should delete an individual breed", async () => {
