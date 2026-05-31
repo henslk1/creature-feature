@@ -14,7 +14,7 @@ export function getRange(stat: any, statRanges: any[]): { min: number, max: numb
 
 export function rollInRange(min: number, max: number) {
   let result = Math.random() * (max - min) + min;
-  return result;
+  return Math.round(result);
 }
 
 export function rollEnum(options: string[]): string {
