@@ -115,6 +115,7 @@ model StatRange {
     stat    String // Must match a Stat in StatDefinition
     breedId Int
     breed   Breed @relation(fields: [breedId], references: [id], onDelete: Cascade)
+    @@unique([stat, breedId])
 }
 
 // Generated individual belonging to a breed
