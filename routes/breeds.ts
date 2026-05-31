@@ -170,7 +170,7 @@ router.put("/:breedId/statRanges", validate(statRangeSchema), async (req, res) =
 
   catch (error: any) {
 
-    if(error.code === "P2003") {
+    if (error.code === "P2003") {
       res.status(404).json({ message: "Breed not found" });
       return;
     }
