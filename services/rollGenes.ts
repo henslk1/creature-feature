@@ -1,4 +1,4 @@
-import { weightedRandom, applyOverrides } from "../lib/rollUtils";
+import { weightedRandom, applyOverrides } from "../lib/serviceUtils";
 
 export function rollGenes(genes: any[], overrides: any[]): Record<string, string> {
   const expressedTraits: Record<string, string> = {};

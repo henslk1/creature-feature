@@ -1,4 +1,4 @@
-import { rollEnum } from "../../lib/rollUtils";
+import { rollEnum } from "../../lib/serviceUtils";
 import { testEnumOptions } from "./testData";
 
 describe("rollEnum", () => {

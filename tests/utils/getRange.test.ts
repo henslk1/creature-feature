@@ -1,4 +1,4 @@
-import { getRange } from "../../lib/rollUtils";
+import { getRange } from "../../lib/serviceUtils";
 import { testStats, testStatRanges } from "./testData";
 
 describe("getRange", () => {

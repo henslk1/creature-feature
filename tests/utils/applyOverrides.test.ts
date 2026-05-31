@@ -1,4 +1,4 @@
-import { applyOverrides } from "../../lib/rollUtils";
+import { applyOverrides } from "../../lib/serviceUtils";
 import { testAlleles, singleItem, testOverrides } from "./testData";
 
 describe("applyOverrides", () => {

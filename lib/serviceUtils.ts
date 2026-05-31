@@ -36,7 +36,7 @@ export function applyStatRanges(stats: any[], statRanges: any[]) {
 }
 
 export function mapLoci(gene: any, overrides: any[]) {
-  return { ...gene, loci: gene.loci.map((locus: any) => 
+  return { ...gene, loci: gene.loci.map((locus: any) =>
     ({ ...locus, alleles: applyOverrides(locus.alleles, overrides) })
   ) }
 }

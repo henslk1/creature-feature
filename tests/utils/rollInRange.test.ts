@@ -1,4 +1,4 @@
-import { rollInRange } from "../../lib/rollUtils";
+import { rollInRange } from "../../lib/serviceUtils";
 import { testStats } from "./testData";
 
 describe("rollInRange", () => {

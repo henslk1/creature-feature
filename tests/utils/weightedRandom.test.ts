@@ -1,4 +1,4 @@
-import { weightedRandom } from "../../lib/rollUtils";
+import { weightedRandom } from "../../lib/serviceUtils";
 import { testAlleles, singleItem } from "./testData";
 
 describe("weightedRandom", () => {

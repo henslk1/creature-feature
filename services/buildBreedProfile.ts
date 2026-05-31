@@ -1,4 +1,4 @@
-import { applyStatRanges, mapLoci  } from "../lib/rollUtils";
+import { applyStatRanges, mapLoci } from "../lib/serviceUtils";
 
 export function buildProfile(breedData: any) {
   const genes = breedData.species.genes.map((gene: any) => mapLoci(gene, breedData.overrides));

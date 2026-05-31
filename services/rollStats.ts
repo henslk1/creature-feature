@@ -1,4 +1,4 @@
-import { getRange, rollInRange } from "../lib/rollUtils";
+import { getRange, rollInRange } from "../lib/serviceUtils";
 
 export function rollStats(stats: any[], statRanges: any[]): Record<string, number> {
   const finalStats: Record<string, number> = {};
