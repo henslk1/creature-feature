@@ -3,6 +3,7 @@ import prisma from "../lib/prisma";
 import logger from "../lib/logger";
 import { validate } from "../lib/validate";
 import { statDefinitionSchema } from "../lib/schemas";
+import { statPatchSchema } from "../lib/patchSchemas";
 
 const router = Router({ mergeParams: true });
 
@@ -61,7 +62,7 @@ router.post("/", validate(statDefinitionSchema), async (req, res) => {
 })
 
 // Update stat-level fields
-router.patch("/:statDefinitionId", async (req, res) => {
+router.patch("/:statDefinitionId", validate(statPatchSchema), async (req, res) => {
 
   try {
     const updated = await prisma.statDefinition.update({

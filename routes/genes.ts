@@ -3,6 +3,7 @@ import prisma from "../lib/prisma";
 import logger from "../lib/logger";
 import { validate } from "../lib/validate";
 import { geneSchema } from "../lib/schemas";
+import { genePatchSchema } from "../lib/patchSchemas";
 
 const router = Router({ mergeParams: true });
 
@@ -79,7 +80,7 @@ router.post("/", validate(geneSchema), async (req, res) => {
 })
 
 // Update gene-level fields
-router.patch("/:geneId", async (req, res) => {
+router.patch("/:geneId", validate(genePatchSchema), async (req, res) => {
   
   try {
     const updated = await prisma.gene.update({

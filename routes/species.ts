@@ -3,6 +3,7 @@ import prisma from "../lib/prisma";
 import logger from "../lib/logger";
 import { validate } from "../lib/validate";
 import { speciesSchema } from "../lib/schemas";
+import { speciesPatchSchema } from "../lib/patchSchemas";
 
 const router = Router();
 
@@ -86,7 +87,7 @@ router.post("/", validate(speciesSchema), async (req, res) => {
 })
 
 // PATCH species
-router.patch("/:speciesId", async (req, res) => {
+router.patch("/:speciesId", validate(speciesPatchSchema), async (req, res) => {
 
   try {
     const updated = await prisma.species.update({

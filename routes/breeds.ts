@@ -3,6 +3,7 @@ import prisma from "../lib/prisma";
 import logger from "../lib/logger";
 import { validate } from "../lib/validate";
 import { breedSchema, overrideSchema } from "../lib/schemas";
+import { breedPatchSchema } from "../lib/patchSchemas";
 
 const router = Router();
 
@@ -78,7 +79,7 @@ router.post("/", validate(breedSchema), async (req, res) => {
 })
 
 // PATCH a specific breed
-router.patch("/:breedId", async (req, res) => {
+router.patch("/:breedId", validate(breedPatchSchema), async (req, res) => {
 
   try {
     const updated = await prisma.breed.update({

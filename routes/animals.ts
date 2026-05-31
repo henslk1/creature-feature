@@ -4,6 +4,7 @@ import logger from "../lib/logger";
 import { validate } from "../lib/validate";
 import { animalSchema } from "../lib/schemas";
 import { generateAnimal } from "../services/generator";
+import { animalPatchSchema } from "../lib/patchSchemas";
 
 const router = Router();
 
@@ -71,19 +72,13 @@ router.post("/", validate(animalSchema), async (req, res) => {
   }
 
   catch (error: any) {
-
-    if (error.code === "P2002") {
-      res.status(409).json({ message: "Animal already exists" });
-      return
-    }
-
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
 })
 
 // PATCH animal
-router.patch("/:animalId", async (req, res) => {
+router.patch("/:animalId", validate(animalPatchSchema), async (req, res) => {
 
   try {
     const updated = await prisma.animal.update({

@@ -3,6 +3,7 @@ import prisma from "../lib/prisma";
 import logger from "../lib/logger";
 import { validate } from "../lib/validate";
 import { attributeDefinitionSchema } from "../lib/schemas";
+import { attributePatchSchema } from "../lib/patchSchemas";
 
 const router = Router({ mergeParams: true });
 
@@ -65,7 +66,7 @@ router.post("/", validate(attributeDefinitionSchema), async (req, res) => {
 })
 
 // PATCH attribute
-router.patch("/:attributeDefinitionId", async (req, res) => {
+router.patch("/:attributeDefinitionId", validate(attributePatchSchema), async (req, res) => {
 
   try {
     const updated = await prisma.attributeDefinition.update({
