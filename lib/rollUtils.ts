@@ -34,3 +34,9 @@ export function applyStatRanges(stats: any[], statRanges: any[]) {
     return statRange ? { ...stat, min: statRange.min, max: statRange.max } : stat;
   });
 }
+
+export function mapLoci(gene: any, overrides: any[]) {
+  return { ...gene, loci: gene.loci.map((locus: any) => 
+    ({ ...locus, alleles: applyOverrides(locus.alleles, overrides) })
+  ) }
+}
