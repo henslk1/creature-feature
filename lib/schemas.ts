@@ -57,6 +57,14 @@ export const attributeDefinitionSchema = z.object({
   return true;
 }, { message: "min must be less than max" });
 
+export const statRangeSchema = z.object({
+  stat: z.string().min(1),
+  min: z.number(),
+  max: z.number(),
+}).refine(data => data.min < data.max, {
+  message: "min must be less than max" 
+});
+
 export const overrideSchema = z.object({
   alleleId: z.number().int().positive(),
   probability: z.number().max(1).min(0),
