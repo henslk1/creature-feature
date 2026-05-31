@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // GET individual animal
 router.get("/:animalId", async (req, res) => {
@@ -35,8 +35,8 @@ router.get("/:animalId", async (req, res) => {
     });
 
     if (!found) {
-      logger.warn({ animal: req.params.animalId },
-        `Animal [${req.params.animalId }] not found`);
+      logger.warn({ animalId: req.params.animalId },
+        `Animal [${req.params.animalId}] not found`);
       res.status(404).json({ message: "Animal not found" });
       return;
     }
@@ -49,7 +49,7 @@ router.get("/:animalId", async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // POST animal - generated
 router.post("/", validate(animalSchema), async (req, res) => {
@@ -65,7 +65,7 @@ router.post("/", validate(animalSchema), async (req, res) => {
         expressedTraits: generated.expressedTraits,
         attributes: generated.attributes
       }
-    })
+    });
 
     logger.info({ animal: newAnimal }, "New animal generated");
     res.status(201).json(newAnimal);
@@ -75,7 +75,7 @@ router.post("/", validate(animalSchema), async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // PATCH animal
 router.patch("/:animalId", validate(animalPatchSchema), async (req, res) => {
@@ -103,7 +103,7 @@ router.patch("/:animalId", validate(animalPatchSchema), async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // DELETE animal
 router.delete("/:animalId", async (req, res) => {
@@ -126,7 +126,7 @@ router.delete("/:animalId", async (req, res) => {
 
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
-  }  
-})
+  }
+});
 
 export default router;

@@ -10,7 +10,7 @@ describe("getRange", () => {
   });
 
   it("should return 0 - 100 for Stat B", () => {
-    const result =getRange(testStats.statB, testStatRanges.noMatch);
+    const result = getRange(testStats.statB, testStatRanges.noMatch);
     expect(result.min).toBe(0);
     expect(result.max).toBe(100);
   });
@@ -21,4 +21,4 @@ describe("getRange", () => {
     expect(result.max).toBe(100);
   });
 
-})
+});

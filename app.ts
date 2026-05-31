@@ -1,7 +1,7 @@
-import logger from "./lib/logger";
 import express from "express";
 import PinoHttp from "pino-http";
 import cors from "cors";
+import logger from "./lib/logger";
 // Import the routes
 import speciesRoutes from "./routes/species";
 import breedRoutes from "./routes/breeds";
@@ -19,7 +19,7 @@ app.use(cors({ origin: process.env.CORS_ORIGIN || "http://localhost:5173" }));
 app.use(express.json());
 
 // Logs request information
-app.use(PinoHttp({ 
+app.use(PinoHttp({
   logger,
   autoLogging: process.env.NODE_ENV === "production"
 }));

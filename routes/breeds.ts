@@ -9,7 +9,7 @@ const router = Router();
 
 // GET all breeds
 router.get("/", async (req, res) => {
-  
+
   try {
     const getBreeds = await prisma.breed.findMany({
       orderBy: { id: "asc" }
@@ -23,7 +23,7 @@ router.get("/", async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // GET individual breed
 router.get("/:breedId", async (req, res) => {
@@ -43,7 +43,7 @@ router.get("/:breedId", async (req, res) => {
       res.status(404).json({ message: "Breed not found" });
       return;
     }
-    
+
     logger.info({ breed: found }, "Breed found");
     res.json(found);
   }
@@ -52,7 +52,7 @@ router.get("/:breedId", async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // POST a new breed
 router.post("/", validate(breedSchema), async (req, res) => {
@@ -69,14 +69,14 @@ router.post("/", validate(breedSchema), async (req, res) => {
   catch (error: any) {
 
     if (error.code === "P2002") {
-      res.status(409).json({ message: "Breed name already exists"});
+      res.status(409).json({ message: "Breed name already exists" });
       return;
     }
 
     logger.error({ error }, "Internal server error");
-    res.status(500).json({ message: "Internal server error"});
+    res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // PATCH a specific breed
 router.patch("/:breedId", validate(breedPatchSchema), async (req, res) => {
@@ -104,7 +104,7 @@ router.patch("/:breedId", validate(breedPatchSchema), async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // PUT for overrides
 router.put("/:breedId/overrides", validate(overrideSchema), async (req, res) => {
@@ -133,7 +133,7 @@ router.put("/:breedId/overrides", validate(overrideSchema), async (req, res) => 
 
   catch (error: any) {
 
-    if( error.code === "P2003") {
+    if (error.code === "P2003") {
       res.status(404).json({ message: "Allele not found" });
       return;
     }
@@ -141,7 +141,7 @@ router.put("/:breedId/overrides", validate(overrideSchema), async (req, res) => 
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // DELETE a specific breed
 router.delete("/:breedId", async (req, res) => {
@@ -158,13 +158,13 @@ router.delete("/:breedId", async (req, res) => {
   catch (error: any) {
 
     if (error.code === "P2025") {
-      res.status(404).json({ message: "Breed could not be found"});
+      res.status(404).json({ message: "Breed not found" });
       return;
     }
 
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 export default router;

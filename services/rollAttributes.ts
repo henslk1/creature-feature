@@ -4,9 +4,8 @@ export function rollAttributes(attributes: any[]): Record<string, any> {
   const result: Record<string, any> = {};
 
   for (const attribute of attributes) {
-
     switch (attribute.type) {
-      case "number": 
+      case "number":
         result[attribute.name] = rollInRange(attribute.min, attribute.max);
         break;
       case "string":
@@ -17,7 +16,6 @@ export function rollAttributes(attributes: any[]): Record<string, any> {
         break;
       default:
         break;
-
     }
   }
 

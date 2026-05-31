@@ -12,16 +12,16 @@ describe("Stats validation", () => {
   const emptyName = "";
   const testSpeciesName = "Validate Species";
 
-  beforeAll( async () => {
+  beforeAll(async () => {
     const speciesResponse = await createTestSpecies(testSpeciesName);
     speciesId = speciesResponse.body.id;
 
     basePath = `/species/${speciesId}/stats`;
 
-    const duplicateStat = await createTestStat(speciesId, duplicateStatName);
-  })
+    await createTestStat(speciesId, duplicateStatName);
+  });
 
-  it("should return 404 for stat that does not exist", async () => {
+  it("should return 404 for a stat that does not exist", async () => {
     const response = await request(app).get(`${basePath}/${invalidStatId}`);
     expect(response.status).toBe(404);
   });
@@ -36,8 +36,8 @@ describe("Stats validation", () => {
     expect(response.status).toBe(400);
   });
 
-  afterAll( async () => {
+  afterAll(async () => {
     await deleteTestSpecies(speciesId);
-  })
+  });
 
 });

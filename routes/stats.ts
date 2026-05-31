@@ -9,11 +9,11 @@ const router = Router({ mergeParams: true });
 
 // GET stat
 router.get("/:statDefinitionId", async (req, res) => {
-  
+
   try {
     const found = await prisma.statDefinition.findUnique({
       where: { id: Number(req.params.statDefinitionId) }
-    })
+    });
 
     if (!found) {
       logger.warn({ statDefinitionId: req.params.statDefinitionId },
@@ -30,7 +30,7 @@ router.get("/:statDefinitionId", async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // POST a new stat
 router.post("/", validate(statDefinitionSchema), async (req, res) => {
@@ -43,7 +43,7 @@ router.post("/", validate(statDefinitionSchema), async (req, res) => {
         max: req.body.max,
         speciesId: Number(req.params.speciesId as string),
       }
-    })
+    });
 
     logger.info({ stat: newStat }, "New stat created");
     res.status(201).json(newStat);
@@ -52,14 +52,14 @@ router.post("/", validate(statDefinitionSchema), async (req, res) => {
   catch (error: any) {
 
     if (error.code === "P2002") {
-      res.status(409).json({ message: "Stat already exists" });
+      res.status(409).json({ message: "Stat name already exists" });
       return;
     }
 
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // Update stat-level fields
 router.patch("/:statDefinitionId", validate(statPatchSchema), async (req, res) => {
@@ -88,7 +88,7 @@ router.patch("/:statDefinitionId", validate(statPatchSchema), async (req, res) =
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // DELETE stat
 router.delete("/:statDefinitionId", async (req, res) => {
@@ -105,13 +105,13 @@ router.delete("/:statDefinitionId", async (req, res) => {
   catch (error: any) {
 
     if (error.code === "P2025") {
-      res.status(404).json({ message: "Stat could not be found" });
+      res.status(404).json({ message: "Stat not found" });
       return;
     }
 
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 export default router;

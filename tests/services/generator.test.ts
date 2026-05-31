@@ -30,4 +30,4 @@ describe("generateAnimal", () => {
     await expect(generateAnimal(999)).rejects.toThrow();
   });
 
-})
+});

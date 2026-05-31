@@ -40,7 +40,7 @@ describe("Species routes", () => {
   it("should update species-level fields", async () => {
     const response = await request(app)
       .patch(`/species/${speciesId}`)
-      .send({ name: "Updated Species"});
+      .send({ name: "Updated Species" });
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("Updated Species");
   });

@@ -9,10 +9,10 @@ describe("Species validation", () => {
   const duplicateSpeciesName = "Validate Species";
   const emptyName = "";
 
-  beforeAll( async () => {
+  beforeAll(async () => {
     const response = await request(app).post("/species").send({ name: duplicateSpeciesName });
-    duplicateId = response.body.id
-  })
+    duplicateId = response.body.id;
+  });
 
   it("should return 404 for a species that does not exist", async () => {
     const response = await request(app).get(`/species/${invalidSpeciesId}`);
@@ -33,8 +33,8 @@ describe("Species validation", () => {
     expect(response.status).toBe(400);
   });
 
-  afterAll( async () => {
+  afterAll(async () => {
     await request(app).delete(`/species/${duplicateId}`);
-  })
+  });
 
 });

@@ -6,13 +6,13 @@ describe("Animal validation", () => {
 
   let speciesId: number;
   let breedId: number;
+
   const testSpeciesName = "Validate Species";
   const testBreedName = "Validate Breed";
-
   const invalidAnimalId = 999999;
   const emptyName = "";
 
-  beforeAll( async () => {
+  beforeAll(async () => {
     const speciesResponse = await createTestSpecies(testSpeciesName);
     speciesId = speciesResponse.body.id;
 
@@ -32,8 +32,8 @@ describe("Animal validation", () => {
     expect(response.status).toBe(400);
   });
 
-  afterAll( async () => {
+  afterAll(async () => {
     await deleteTestSpecies(speciesId);
-  }) 
+  });
 
 });

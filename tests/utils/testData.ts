@@ -14,7 +14,7 @@ export const testOverrides = {
 
 export const testStats = {
   statA: { name: "Stat A", min: 0, max: 100 },
-  statB: { name: "Stat B", min: 0, max: 100},
+  statB: { name: "Stat B", min: 0, max: 100 },
   statC: { name: "Stat C", min: 25, max: 75 }
 };
 
@@ -28,6 +28,6 @@ export const testStatRanges = {
 };
 
 export const testEnumOptions = {
- colors: ["Red", "Blue", "Green"],
- empty: []
+  colors: ["Red", "Blue", "Green"],
+  empty: []
 };

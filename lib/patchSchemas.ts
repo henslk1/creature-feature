@@ -19,7 +19,7 @@ export const statPatchSchema = z.object({
   name: z.string().min(1).optional(),
   min: z.number().optional(),
   max: z.number().optional(),
-}).refine( data => {
+}).refine(data => {
   if (data.min !== undefined && data.max !== undefined) {
     return data.min < data.max;
   }
@@ -34,7 +34,7 @@ export const attributePatchSchema = z.object({
   options: z.array(z.string()).optional(),
   optional: z.boolean().optional(),
   mutable: z.boolean().optional(),
-}).refine( data => {
+}).refine(data => {
   if (data.min !== undefined && data.max !== undefined) {
     return data.min < data.max;
   }

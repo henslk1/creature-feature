@@ -20,7 +20,7 @@ describe("Gene routes", () => {
     geneCreateStatus = geneResponse.status;
 
     basePath = `/species/${speciesId}/genes`;
-  })
+  });
 
   it("should create a new gene", async () => {
     expect(geneCreateStatus).toBe(201);
@@ -60,10 +60,10 @@ describe("Gene routes", () => {
         expressionRules: [
           { minDominantAlleles: 0, expression: "New Expression" }
         ]
-    });
+      });
     expect(response.status).toBe(200);
     expect(response.body.name).toBe("New Gene");
-    expect(response.body.loci[0].name).toBe("New Locus");  
+    expect(response.body.loci[0].name).toBe("New Locus");
   });
 
   it("should delete a gene", async () => {
@@ -74,6 +74,6 @@ describe("Gene routes", () => {
 
   afterAll(async () => {
     await deleteTestSpecies(speciesId);
-  })
+  });
 
 });

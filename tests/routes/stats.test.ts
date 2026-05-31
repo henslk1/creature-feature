@@ -20,7 +20,7 @@ describe("Stat routes", () => {
     statCreateStatus = statResponse.status;
 
     basePath = `/species/${speciesId}/stats`;
-  })
+  });
 
   it("should create a new stat", async () => {
     expect(statCreateStatus).toBe(201);
@@ -50,6 +50,6 @@ describe("Stat routes", () => {
 
   afterAll(async () => {
     await deleteTestSpecies(speciesId);
-  })
+  });
 
 });

@@ -1,6 +1,6 @@
 import request from "supertest";
 import app from "../../app";
-import { 
+import {
   createTestAnimal,
   createTestBreed,
   createTestAttribute,
@@ -8,9 +8,9 @@ import {
   createTestSpecies,
   createTestStat,
   deleteTestSpecies
- } from "./helpers";
+} from "./helpers";
 
- describe("Animal routes", () => {
+describe("Animal routes", () => {
 
   // ID for object created during testing and base path definition
   let speciesId: number;
@@ -19,12 +19,12 @@ import {
   let animalCreateStatus: number;
 
   // Object to be used in testing
-  beforeAll( async () => {
+  beforeAll(async () => {
     const speciesResponse = await createTestSpecies();
     speciesId = speciesResponse.body.id;
 
     const breedResponse = await createTestBreed(speciesId);
-    breedId = breedResponse.body.id
+    breedId = breedResponse.body.id;
 
     await createTestGene(speciesId);
     await createTestStat(speciesId);
@@ -33,7 +33,7 @@ import {
     const animalResponse = await createTestAnimal(breedId);
     animalId = animalResponse.body.id;
     animalCreateStatus = animalResponse.status;
-  })
+  });
 
   it("should create a new animal", async () => {
     expect(animalCreateStatus).toBe(201);
@@ -46,15 +46,15 @@ import {
     expect(response.status).toBe(200);
     expect(Array.isArray(response.body)).toBe(true);
   });
-  
-  it("should return am individual animal", async () => {
+
+  it("should return an individual animal", async () => {
     const response = await request(app).get(`/animals/${animalId}`);
     expect(response.body.name).toBe("Test Animal");
     expect(response.body.stats).toBeDefined();
     expect(response.body.expressedTraits).toBeDefined();
     expect(response.body.attributes).toBeDefined();
     expect(response.status).toBe(200);
-  });  
+  });
 
   it("should update animal-level fields", async () => {
     const response = await request(app)
@@ -70,9 +70,8 @@ import {
     expect(response.body.id).toBe(animalId);
   });
 
-  // Clean up
   afterAll(async () => {
     await deleteTestSpecies(speciesId);
-  })
+  });
 
- });
+});

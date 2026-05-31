@@ -13,7 +13,7 @@ router.get("/:attributeDefinitionId", async (req, res) => {
   try {
     const found = await prisma.attributeDefinition.findUnique({
       where: { id: Number(req.params.attributeDefinitionId) },
-    })
+    });
 
     if (!found) {
       logger.warn({ attributeDefinitionId: req.params.attributeDefinitionId },
@@ -30,7 +30,7 @@ router.get("/:attributeDefinitionId", async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // POST attribute
 router.post("/", validate(attributeDefinitionSchema), async (req, res) => {
@@ -47,7 +47,7 @@ router.post("/", validate(attributeDefinitionSchema), async (req, res) => {
         mutable: req.body.mutable,
         speciesId: Number(req.params.speciesId as string),
       }
-    })
+    });
 
     logger.info({ attribute: newAttribute }, "New attribute created");
     res.status(201).json(newAttribute);
@@ -56,14 +56,14 @@ router.post("/", validate(attributeDefinitionSchema), async (req, res) => {
   catch (error: any) {
 
     if (error.code === "P2002") {
-      res.status(409).json({ message: "Attribute already exists" });
+      res.status(409).json({ message: "Attribute name already exists" });
       return;
     }
 
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // PATCH attribute
 router.patch("/:attributeDefinitionId", validate(attributePatchSchema), async (req, res) => {
@@ -96,7 +96,7 @@ router.patch("/:attributeDefinitionId", validate(attributePatchSchema), async (r
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // DELETE attribute
 router.delete("/:attributeDefinitionId", async (req, res) => {
@@ -113,13 +113,13 @@ router.delete("/:attributeDefinitionId", async (req, res) => {
   catch (error: any) {
 
     if (error.code === "P2025") {
-      res.status(404).json({ message: "Attribute could not be found" });
+      res.status(404).json({ message: "Attribute not found" });
       return;
     }
 
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 export default router;

@@ -5,7 +5,6 @@ export function rollGenes(genes: any[], overrides: any[]): Record<string, string
 
   for (const gene of genes) {
     for (const locus of gene.loci) {
-
       const alleles = applyOverrides(locus.alleles, overrides);
 
       const allele1 = weightedRandom(alleles);
@@ -17,7 +16,6 @@ export function rollGenes(genes: any[], overrides: any[]): Record<string, string
         .sort((a: any, b: any) => b.minDominantAlleles - a.minDominantAlleles)[0];
 
       if (rule) expressedTraits[gene.name] = rule.expression;
-
     }
 
   }

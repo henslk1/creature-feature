@@ -11,7 +11,7 @@ describe("applyOverrides", () => {
   it("should apply an override to allele 2", () => {
     const result = applyOverrides(testAlleles, testOverrides.matchSecond);
     expect(result[1].probability).toBe(0.8);
-  })
+  });
 
   it("should not apply an override to any allele", () => {
     const result = applyOverrides(testAlleles, testOverrides.noMatch);
@@ -19,5 +19,5 @@ describe("applyOverrides", () => {
       expect(allele.probability).not.toBe(0.8);
     });
   });
-  
-})
+
+});

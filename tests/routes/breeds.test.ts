@@ -2,7 +2,7 @@ import request from "supertest";
 import app from "../../app";
 import { createTestSpecies, deleteTestSpecies, createTestBreed, createTestGene } from "./helpers";
 
-describe ("Breed routes", () => {
+describe("Breed routes", () => {
 
   // ID's for objects created during testing.
   let speciesId: number;
@@ -11,7 +11,7 @@ describe ("Breed routes", () => {
   let breedCreateStatus: number;
 
   // Objects to be used in testing
-  beforeAll( async () => {
+  beforeAll(async () => {
     const speciesResponse = await createTestSpecies();
     speciesId = speciesResponse.body.id;
 
@@ -21,7 +21,7 @@ describe ("Breed routes", () => {
     const breedResponse = await createTestBreed(speciesId);
     breedId = breedResponse.body.id;
     breedCreateStatus = breedResponse.status;
-  })
+  });
 
   it("should create a new breed", async () => {
     expect(breedCreateStatus).toBe(201);
@@ -67,6 +67,6 @@ describe ("Breed routes", () => {
 
   afterAll(async () => {
     await deleteTestSpecies(speciesId);
-  })
+  });
 
 });

@@ -32,9 +32,9 @@ router.get("/:geneId", async (req, res) => {
 
   catch (error) {
     logger.error({ error }, "Internal server error");
-    res.status(500).json({ message: "Internal server error"});
+    res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // POST a new gene
 router.post("/", validate(geneSchema), async (req, res) => {
@@ -77,14 +77,14 @@ router.post("/", validate(geneSchema), async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // Update gene-level fields
 router.patch("/:geneId", validate(genePatchSchema), async (req, res) => {
-  
+
   try {
     const updated = await prisma.gene.update({
-      where: {id: Number(req.params.geneId) },
+      where: { id: Number(req.params.geneId) },
       data: {
         name: req.body.name,
         category: req.body.category,
@@ -106,11 +106,11 @@ router.patch("/:geneId", validate(genePatchSchema), async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // Update any gene field
 router.put("/:geneId", validate(geneSchema), async (req, res) => {
-  
+
   try {
     const updated = await prisma.gene.update({
       where: { id: Number(req.params.geneId) },
@@ -149,14 +149,14 @@ router.put("/:geneId", validate(geneSchema), async (req, res) => {
     }
 
     logger.error({ error }, "Internal server error");
-    res.status(500).json({ message: "Internal server error"});
+    res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // DELETE gene
 router.delete("/:geneId", async (req, res) => {
 
-  try { 
+  try {
     const deletedGene = await prisma.gene.delete({
       where: { id: Number(req.params.geneId) }
     });
@@ -168,13 +168,13 @@ router.delete("/:geneId", async (req, res) => {
   catch (error: any) {
 
     if (error.code === "P2025") {
-      res.status(404).json({ message: "Gene could not be found" });
+      res.status(404).json({ message: "Gene not found" });
       return;
     }
 
     logger.error({ error }, "Internal server error");
-    res.status(500).json({ message: "Internal server error"});
+    res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 export default router;

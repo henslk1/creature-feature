@@ -12,16 +12,16 @@ describe("Attribute validation", () => {
   const emptyName = "";
   const testSpeciesName = "Validate Species";
 
-  beforeAll( async () => {
+  beforeAll(async () => {
     const speciesResponse = await createTestSpecies(testSpeciesName);
     speciesId = speciesResponse.body.id;
 
     basePath = `/species/${speciesId}/attributes`;
 
-    const duplicateAttribute = await createTestAttribute(speciesId, duplicateAttributeName);
-  })
+    await createTestAttribute(speciesId, duplicateAttributeName);
+  });
 
-  it("should return 404 for attribute that does not exist", async () => {
+  it("should return 404 for an attribute that does not exist", async () => {
     const response = await request(app).get(`${basePath}/${invalidAttributeId}`);
     expect(response.status).toBe(404);
   });
@@ -36,8 +36,8 @@ describe("Attribute validation", () => {
     expect(response.status).toBe(400);
   });
 
-  afterAll( async () => {
+  afterAll(async () => {
     await deleteTestSpecies(speciesId);
-  })
+  });
 
 });

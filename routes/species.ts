@@ -12,19 +12,18 @@ router.get("/", async (req, res) => {
 
   try {
     const getSpecies = await prisma.species.findMany({
-      orderBy: { id: "asc"}
+      orderBy: { id: "asc" }
     });
 
     logger.info({ species: getSpecies }, "Species found");
     res.json(getSpecies);
   }
-  
+
   catch (error) {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-
-})
+});
 
 // GET individual species
 router.get("/:speciesId", async (req, res) => {
@@ -60,11 +59,11 @@ router.get("/:speciesId", async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // POST a new species
 router.post("/", validate(speciesSchema), async (req, res) => {
-  
+
   try {
     const newSpecies = await prisma.species.create({
       data: { name: req.body.name, description: req.body.description }
@@ -74,7 +73,7 @@ router.post("/", validate(speciesSchema), async (req, res) => {
     res.status(201).json(newSpecies);
   }
 
-  catch(error: any) {
+  catch (error: any) {
 
     if (error.code === "P2002") {
       res.status(409).json({ message: "Species name already exists" });
@@ -84,7 +83,7 @@ router.post("/", validate(speciesSchema), async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // PATCH species
 router.patch("/:speciesId", validate(speciesPatchSchema), async (req, res) => {
@@ -112,7 +111,7 @@ router.patch("/:speciesId", validate(speciesPatchSchema), async (req, res) => {
     logger.error({ error }, "Internal server error");
     res.status(500).json({ message: "Internal server error" });
   }
-})
+});
 
 // DELETE a specific species
 router.delete("/:speciesId", async (req, res) => {
@@ -129,14 +128,13 @@ router.delete("/:speciesId", async (req, res) => {
   catch (error: any) {
 
     if (error.code === "P2025") {
-      res.status(404).json({ message: "Species could not be found" });
+      res.status(404).json({ message: "Species not found" });
       return;
     }
 
     logger.error({ error }, "Internal server error");
-    res.status(500).json({ message: "Internal server error" })
+    res.status(500).json({ message: "Internal server error" });
   }
-})
-
+});
 
 export default router;

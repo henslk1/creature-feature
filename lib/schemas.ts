@@ -37,7 +37,7 @@ export const geneSchema = z.object({
 export const statDefinitionSchema = z.object({
   name: z.string().min(1),
   min: z.number(),
-  max: z.number()
+  max: z.number(),
 }).refine(data => data.min < data.max, {
   message: "min must be less than max"
 });
@@ -50,7 +50,7 @@ export const attributeDefinitionSchema = z.object({
   options: z.array(z.string()).optional(),
   optional: z.boolean().optional(),
   mutable: z.boolean().optional(),
-}).refine( data => {
+}).refine(data => {
   if (data.min !== undefined && data.max !== undefined) {
     return data.min < data.max;
   }
@@ -59,7 +59,7 @@ export const attributeDefinitionSchema = z.object({
 
 export const overrideSchema = z.object({
   alleleId: z.number().int().positive(),
-  probability: z.number().max(1).min(0)
+  probability: z.number().max(1).min(0),
 });
 
 export const animalSchema = z.object({

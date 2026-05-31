@@ -20,7 +20,7 @@ describe("Attribute routes", () => {
     attributeCreateStatus = attributeResponse.status;
 
     basePath = `/species/${speciesId}/attributes`;
-  })
+  });
 
   it("should create a new attribute", async () => {
     expect(attributeCreateStatus).toBe(201);
@@ -50,6 +50,6 @@ describe("Attribute routes", () => {
 
   afterAll(async () => {
     await deleteTestSpecies(speciesId);
-  })
+  });
 
 });

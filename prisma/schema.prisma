@@ -65,7 +65,7 @@ model Locus {
 
 model Allele {
     id          Int   @id @default(autoincrement())
-    name        String //e.g. "Extension E", "Extension e"
+    name        String // e.g. "Extension E", "Extension e"
     symbol      String // "E", "e"
     dominance   String
     probability Float  // default
@@ -121,7 +121,7 @@ model StatRange {
 model Animal {
     id              Int      @id @default(autoincrement())
     createdAt       DateTime @default(now())
-    name            String 
+    name            String
     age             Float    @default(0)
     breedId         Int
     breed           Breed    @relation(fields: [breedId], references: [id], onDelete: Cascade)

@@ -8,12 +8,12 @@ export function weightedRandom<T extends { probability: number }>(items: T[]) {
 }
 
 export function getRange(stat: any, statRanges: any[]): { min: number, max: number } {
-  const range = statRanges.find(r =>r.stat === stat.name);
+  const range = statRanges.find(r => r.stat === stat.name);
   return range ?? { min: stat.min, max: stat.max };
 }
 
 export function rollInRange(min: number, max: number) {
-  let result = Math.random() * (max - min) + min;
+  const result = Math.random() * (max - min) + min;
   return Math.round(result);
 }
 
@@ -25,5 +25,5 @@ export function applyOverrides(alleles: any[], overrides: any[]) {
   return alleles.map(allele => {
     const override = overrides.find(o => o.alleleId === allele.id);
     return override ? { ...allele, probability: override.probability } : allele;
-  })
+  });
 }

@@ -8,11 +8,11 @@ describe("Breeds validation", () => {
   let speciesId: number;
 
   const invalidBreedId = 999999;
+  const invalidAlleleId = 999999;
   const duplicateBreedName = "Validate Breed";
   const emptyName = "";
-  const invalidAlleleId = 999999;
 
-  beforeAll( async () => {
+  beforeAll(async () => {
     const speciesResponse = await createTestSpecies("Validate Species");
     speciesId = speciesResponse.body.id;
 
@@ -46,8 +46,8 @@ describe("Breeds validation", () => {
     expect(response.status).toBe(400);
   });
 
-  afterAll( async () => {
+  afterAll(async () => {
     await deleteTestSpecies(speciesId);
-  })
+  });
 
 });
