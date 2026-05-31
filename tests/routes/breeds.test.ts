@@ -22,7 +22,7 @@ describe("Breed routes", () => {
     breedId = breedResponse.body.id;
     breedCreateStatus = breedResponse.status;
 
-    const statResponse = await createTestStat(speciesId);
+    await createTestStat(speciesId);
   });
 
   it("should create a new breed", async () => {
