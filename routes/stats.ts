@@ -70,7 +70,6 @@ router.patch("/:statDefinitionId", async (req, res) => {
         name: req.body.name,
         min: req.body.min,
         max: req.body.max,
-        active: req.body.active
       }
     });
 
