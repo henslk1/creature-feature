@@ -1,13 +1,14 @@
-import { API_URL } from "../config";
+import { API_URL, JSON_HEADERS } from "../config";
 import type { Gene } from "../types";
 import { useState } from "react";
 
 interface GeneSectionProps {
   speciesId: number,
-  genes: Gene[]
+  genes: Gene[],
+  onGeneAdded: (gene: Gene) => void
 }
 
-export function GeneSection({ speciesId, genes }: GeneSectionProps) {
+export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps) {
 
   // Dynamic display
   const [expandedGenes, setExpandedGenes] = useState<Set<number>>(new Set());
@@ -26,7 +27,26 @@ export function GeneSection({ speciesId, genes }: GeneSectionProps) {
   function addGene() {
     fetch(`${API_URL}/species/${speciesId}/genes`, {
       method: "POST",
-      headers: { }
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        name: newGeneName,
+        category: newGeneCategory,
+        loci: newGeneLoci,
+        expressionRules: newGeneExpressionRules
+      })
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(newGene => {
+      if(!newGene) return;
+      onGeneAdded(newGene);
+      setShowAddForm(false);
+      setNewGeneName("");
+      setNewGeneCategory("");
+      setNewGeneLoci([{ name: "", alleles: [{ name: "", symbol: "", dominance: "", probability: 0 }] }]);
+      setNewGeneExpressionRules([{ minDominantAlleles: 0, expression: "" }]);
     })
   }
 
