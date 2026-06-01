@@ -184,7 +184,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
         <div key={g.id}>
 
           <h3 onClick={() => toggleGene(g.id)}>
-            {g.name} {expandedGenes.has(g.id) ? "View" : "Hide"}</h3>
+            {g.name} {expandedGenes.has(g.id) ? "Hide" : "View"}</h3>
 
           {expandedGenes.has(g.id) && (
 
@@ -195,10 +195,10 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
                   <span>{locus.name}</span>
                   {locus.alleles.map(allele =>
                     <div key={allele.id}>
-                      <span>{allele.name}</span>
-                      <span>{allele.symbol}</span>
-                      <span>{allele.dominance}</span>
-                      <span>{allele.probability}</span>
+                      <span>Name: {allele.name} |</span>
+                      <span> Symbol: [{allele.symbol}] |</span>
+                      <span> Dominance: {allele.dominance} |</span>
+                      <span> Probability: {allele.probability}</span>
                     </div>
                   )}
                 </div>
@@ -206,8 +206,8 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
 
               {g.expressionRules.map(rule => (
                 <div key={rule.id}>
-                  <span>{rule.minDominantAlleles}</span>
-                  <span>{rule.expression}</span>
+                  <span>Minimum number of dominant alleles: {rule.minDominantAlleles} | </span>
+                  <span>Expression: {rule.expression}</span>
                 </div>
               ))}
 
