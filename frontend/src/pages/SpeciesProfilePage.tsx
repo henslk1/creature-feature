@@ -20,4 +20,21 @@ export function SpeciesProfilePage() {
       .then(data => setSpecies(data))
   }, []);
 
+  if(!species) return <div>Loading...</div>
+
+  return (
+    <div>
+      <h1>{species.name}</h1>
+      <p>{species.description}</p>
+
+      <h2>Attributes</h2>
+
+      <h2>Genes</h2>
+      
+      <h2>Stats</h2>
+
+      <h2>Breeds</h2>
+      
+    </div>
+  )
 }
