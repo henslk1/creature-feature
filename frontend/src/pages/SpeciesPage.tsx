@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Species } from "../types";
-import { API_URL } from "../config";
+import { API_URL, JSON_HEADERS } from "../config";
 
 export function SpeciesPage() {
 
@@ -20,7 +20,10 @@ export function SpeciesPage() {
   // Landing page
   useEffect(() => {
     fetch(`${API_URL}/species`)
-      .then(res => res.json())
+      .then(res => {
+        if(!res.ok) return;
+        return res.json();
+       })
       .then(data => setSpecies(data))
   }, []);
 
@@ -28,7 +31,7 @@ export function SpeciesPage() {
   function addSpecies() {
     fetch(`${API_URL}/species`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: JSON_HEADERS,
       body: JSON.stringify({ name: newSpeciesName, description: newSpeciesDescription })
     })
     .then(res => { 
