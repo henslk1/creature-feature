@@ -27,6 +27,17 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
   // Add form handler                                            
   const [showAddForm, setShowAddForm] = useState(false);
 
+  // Toggle to display a genes contents
+  function toggleGene(id: number) {
+    const updated = new Set(expandedGenes);
+    if(updated.has(id)) {
+      updated.delete(id);
+    } else {
+      updated.add(id);
+    }
+    setExpandedGenes(updated);
+  }
+
   // POST
   function addGene() {
     fetch(`${API_URL}/species/${speciesId}/genes`, {
