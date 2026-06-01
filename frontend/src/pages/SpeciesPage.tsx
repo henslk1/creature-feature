@@ -45,6 +45,18 @@ export function SpeciesPage() {
     })
   }
 
+  // DELETE
+  function deleteSpecies(id: number) {
+    fetch(`${API_URL}/species/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(res => res.json())
+    .then(() => {
+      setSpecies(species.filter(s => s.id !==id));
+    })
+  }
+
   return (
     <div>
       <table>
@@ -62,7 +74,10 @@ export function SpeciesPage() {
               <td>{s.id}</td>
               <td>{s.name}</td>
              <td>{s.description}</td>
-             <td><button onClick={() => navigate(`/species/${s.id}`)}>View</button></td>
+             <td>
+              <button onClick={() => navigate(`/species/${s.id}`)}>View</button>
+              <button onClick={() => deleteSpecies(s.id)}>Delete</button>
+              </td>
            </tr>
          ))}
        </tbody>
