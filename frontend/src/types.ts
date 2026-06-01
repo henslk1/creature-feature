@@ -32,9 +32,27 @@ export interface Gene {
   speciesId: number
 }
 
+export interface AlleleOverride {
+  id: number,
+  probability: number,
+  alleleId: number,
+  breedId: number
+}
+
 export interface Stat {
   id: number,
   name: string,
+  min: number,
+  max: number,
+  speciesId: number
+}
+
+export interface StatRange {
+  id: number,
+  min: number,
+  max: number,
+  stat: string,
+  breedId: number
 }
 
 export interface Attribute {
