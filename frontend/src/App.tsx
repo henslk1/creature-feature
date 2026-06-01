@@ -5,10 +5,12 @@ import { GeneratePage } from "./pages/GeneratePage";
 import { SpeciesPage } from "./pages/SpeciesPage";
 import { SpeciesProfilePage } from "./pages/SpeciesProfilePage";
 import { BreedPage } from "./pages/BreedPage";
+import { Navbar } from "./components/Navbar";
 
 function App() {
   return (
     <BrowserRouter>
+    <Navbar />
       <Routes>
         <Route path="/" element={<AnimalsPage />} />
         <Route path="/breeds" element={<BreedPage />} />
