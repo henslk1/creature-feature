@@ -163,6 +163,44 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
           </form>
         </div>
       )}
+
+      {genes.map(g => (
+        <div key={g.id}>
+
+          <h3 onClick={() => toggleGene(g.id)}>
+            {g.name} {expandedGenes.has(g.id) ? "View" : "Hide"}</h3>
+
+          {expandedGenes.has(g.id) && (
+
+            <div>
+
+              {g.loci.map(locus => (
+                <div key={locus.id}>
+                  <span>{locus.name}</span>
+                  {locus.alleles.map(allele =>
+                    <div key={allele.id}>
+                      <span>{allele.name}</span>
+                      <span>{allele.symbol}</span>
+                      <span>{allele.dominance}</span>
+                      <span>{allele.probability}</span>
+                    </div>
+                  )}
+                </div>
+              ))}
+
+              {g.expressionRules.map(rule => (
+                <div key={rule.id}>
+                  <span>{rule.minDominantAlleles}</span>
+                  <span>{rule.expression}</span>
+                </div>
+              ))}
+
+            </div>
+
+          )}
+
+        </div>
+      ))}
     </div>
   )
 
