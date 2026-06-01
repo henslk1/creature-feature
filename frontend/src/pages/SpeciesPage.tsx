@@ -15,14 +15,30 @@ export function SpeciesPage() {
   // GET
   const [species, setSpecies] = useState<Species[]>([]);
 
+  // POST
+  const [newSpeciesName, setNewSpeciesName] = useState("");
+  const [newSpeciesDescription, setNewSpeciesDescription] = useState("");
+
   // Add species handler
   const [showAddForm, setShowAddForm] = useState(false);
 
+  // Landing page
   useEffect(() => {
     fetch(`${API_URL}/species`)
-        .then(res => res.json())
-        .then(data => setSpecies(data))
-  }, [])
+      .then(res => res.json())
+      .then(data => setSpecies(data))
+  }, []);
+
+  // POST
+  function addSpecies() {
+    fetch(`${API_URL}/species`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: newSpeciesName, description: newSpeciesDescription })
+    })
+    .then(res => res.json())
+    .then(newSpecies => setSpecies([...species, newSpecies]))
+  }
 
   return (
     <div>
