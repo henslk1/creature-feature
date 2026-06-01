@@ -1,11 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-interface Species {
-  id: number,
-  name: string,
-  description: string
-}
+import type { Species } from "../types";
 
 export function SpeciesPage() {
 
