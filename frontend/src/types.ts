@@ -69,15 +69,36 @@ export interface Attribute {
 
 export interface Animal {
   id: number,
+  createdAt: string,
   name: string,
+  age: number,
+  breedId: number,
+  expressedTraits: any,
+  stats: any,
+  attributes: any,
+  modifier?: any
 }
 
 export interface Breed {
   id: number,
+  createdAt: string,
   name: string,
+  active: boolean,
+  overrides: AlleleOverride[],
+  statRanges: StatRange[],
+  genes: Gene[],
+  stats: Stat[],
+  attributes: Attribute[],
+  speciesId: number
 }
 
 export interface Species {
   id: number,
+  createdAt: string,
   name: string,
+  description?: string,
+  attributes: Attribute[],
+  stats: Stat[],
+  genes: Gene[],
+  breeds: Breed[]
 }
