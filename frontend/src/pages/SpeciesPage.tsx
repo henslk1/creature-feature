@@ -53,7 +53,6 @@ export function SpeciesPage() {
   function deleteSpecies(id: number) {
     fetch(`${API_URL}/species/${id}`, {
       method: "DELETE",
-      headers: { "Content-Type": "application/json" }
     })
     .then(res => {
       if(!res.ok) return;
