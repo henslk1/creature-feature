@@ -19,6 +19,10 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
   const [newGeneLoci, setNewGeneLoci] = useState([{ 
                                           name: "", alleles: [{ 
                                             name: "", symbol: "", dominance: "", probability: 0 }] }]);
+  const [newGeneExpressionRules, setNewGeneExpressionRules] = useState([{
+                                                              minDominantAlleles: 0,
+                                                              expression: ""
+                                                            }]);
 
   // Add form handler                                            
   const [showAddForm, setShowAddForm] = useState(false);
@@ -113,6 +117,33 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
               setNewGeneLoci(updated);
             }}>
               Add Locus
+            </button>
+
+            {newGeneExpressionRules.map((rule, index) => (
+
+              <div key={index}>
+
+                <input value={rule.minDominantAlleles} onChange={(e) => {
+                  const updated = [...newGeneExpressionRules];
+                  updated[index].minDominantAlleles = Number(e.target.value);
+                  setNewGeneExpressionRules(updated);
+                }} />
+                <input value={rule.expression} onChange={(e) => {
+                  const updated = [...newGeneExpressionRules];
+                  updated[index].expression = e.target.value;
+                  setNewGeneExpressionRules(updated);
+                }} />
+
+              </div>
+
+            ))}
+
+            <button onClick={() => {
+              const updated = [...newGeneExpressionRules];
+              updated.push({ minDominantAlleles: 0, expression: "" });
+              setNewGeneExpressionRules(updated)
+            }}>
+              Add Expression Rule
             </button>
 
             <button onClick={addGene}> Save </button>
