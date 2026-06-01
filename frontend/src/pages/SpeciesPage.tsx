@@ -68,7 +68,7 @@ export function SpeciesPage() {
        </tbody>
       </table>
 
-      <button onClick={() => setShowAddForm(true)}>Add Species</button>
+      {!showAddForm && <button onClick={() => setShowAddForm(true)}>Add Species</button>}
       {showAddForm && (
         <div>
           <form>
