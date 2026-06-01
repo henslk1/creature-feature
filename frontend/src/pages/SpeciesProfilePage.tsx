@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { API_URL } from "../config";
-import type { Species } from "../types";
+import type { Species, Gene } from "../types";
+import { GeneSection } from "../components/GeneSection";
 
 export function SpeciesProfilePage() {
 
@@ -20,6 +21,11 @@ export function SpeciesProfilePage() {
       .then(data => setSpecies(data))
   }, []);
 
+  // POST
+  function onGeneAdded(gene: Gene) {
+    setSpecies({ ...species!, genes: [...species!.genes, gene ]});
+  }
+
   if(!species) return <div>Loading...</div>
 
   return (
@@ -30,11 +36,15 @@ export function SpeciesProfilePage() {
       <h2>Attributes</h2>
 
       <h2>Genes</h2>
-      
+        <GeneSection
+        speciesId={species.id}
+        genes={species.genes}
+        onGeneAdded={onGeneAdded}
+        />
       <h2>Stats</h2>
 
       <h2>Breeds</h2>
-      
+
     </div>
   )
 }
