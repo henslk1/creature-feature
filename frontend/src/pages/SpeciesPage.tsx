@@ -37,7 +37,12 @@ export function SpeciesPage() {
       body: JSON.stringify({ name: newSpeciesName, description: newSpeciesDescription })
     })
     .then(res => res.json())
-    .then(newSpecies => setSpecies([...species, newSpecies]))
+    .then(newSpecies => {
+      setSpecies([...species, newSpecies]); 
+      setShowAddForm(false); 
+      setNewSpeciesName(""); 
+      setNewSpeciesDescription("");
+    })
   }
 
   return (
