@@ -18,9 +18,9 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
   const [newGeneCategory, setNewGeneCategory] = useState("");
   const [newGeneLoci, setNewGeneLoci] = useState([{ 
                                           name: "", alleles: [{ 
-                                            name: "", symbol: "", dominance: "", probability: 0 }] }]);
+                                            name: "", symbol: "", dominance: "", probability: "" }] }]);
   const [newGeneExpressionRules, setNewGeneExpressionRules] = useState([{
-                                                              minDominantAlleles: 0,
+                                                              minDominantAlleles: "",
                                                               expression: ""
                                                             }]);
 
@@ -46,8 +46,18 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
       body: JSON.stringify({
         name: newGeneName,
         category: newGeneCategory,
-        loci: newGeneLoci,
-        expressionRules: newGeneExpressionRules
+        loci: newGeneLoci.map(locus => ({
+          ...locus,
+          alleles: locus.alleles.map(allele => ({
+            ...allele,
+            probability: Number(allele.probability)
+          }))
+        })),
+        expressionRules: newGeneExpressionRules.map(rule => ({
+          ...rule,
+          minDominantAlleles: Number(rule.minDominantAlleles)
+}))
+
       })
     })
     .then(res => {
@@ -60,8 +70,8 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
       setShowAddForm(false);
       setNewGeneName("");
       setNewGeneCategory("");
-      setNewGeneLoci([{ name: "", alleles: [{ name: "", symbol: "", dominance: "", probability: 0 }] }]);
-      setNewGeneExpressionRules([{ minDominantAlleles: 0, expression: "" }]);
+      setNewGeneLoci([{ name: "", alleles: [{ name: "", symbol: "", dominance: "", probability: "" }] }]);
+      setNewGeneExpressionRules([{ minDominantAlleles: "", expression: "" }]);
     })
   }
 
@@ -71,13 +81,13 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
       {showAddForm && (
         <div>
           <form>
-            <input value={newGeneName} onChange={(e) => setNewGeneName(e.target.value)} />
-            <input value={newGeneCategory} onChange={(e) => setNewGeneCategory(e.target.value)} />
+            <input placeholder="Gene Name" value={newGeneName} onChange={(e) => setNewGeneName(e.target.value)} />
+            <input placeholder="Category" value={newGeneCategory} onChange={(e) => setNewGeneCategory(e.target.value)} />
             {newGeneLoci.map((locus, index) => (
 
               <div key={index}>
 
-                <input value={locus.name} onChange={(e) => {
+                <input placeholder="Locus Name" value={locus.name} onChange={(e) => {
                   const updated = [...newGeneLoci];
                   updated[index].name = e.target.value;
                   setNewGeneLoci(updated);
@@ -86,33 +96,33 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
                 {locus.alleles.map((allele, alleleIndex) => (
                   <div key={alleleIndex}>
 
-                    <input value={allele.name} onChange={(e) => {
+                    <input placeholder="Allele Name" value={allele.name} onChange={(e) => {
                       const updated = [...newGeneLoci];
                       updated[index].alleles[alleleIndex].name = e.target.value;
                       setNewGeneLoci(updated);
                     }} />
-                    <input value={allele.symbol} onChange={(e) => {
+                    <input placeholder="Allele Symbol" value={allele.symbol} onChange={(e) => {
                       const updated = [...newGeneLoci];
                       updated[index].alleles[alleleIndex].symbol = e.target.value;
                       setNewGeneLoci(updated);
                     }} />
-                    <input value={allele.dominance} onChange={(e) => {
+                    <input placeholder="Allele Dominance" value={allele.dominance} onChange={(e) => {
                       const updated = [...newGeneLoci];
                       updated[index].alleles[alleleIndex].dominance = e.target.value;
                       setNewGeneLoci(updated);
                     }} />
-                    <input value={allele.probability} onChange={(e) => {
+                    <input placeholder="Allele Probability" value={allele.probability} type="number" min="0" max="1" onChange={(e) => {
                       const updated = [...newGeneLoci];
-                      updated[index].alleles[alleleIndex].probability = Number(e.target.value);
+                      updated[index].alleles[alleleIndex].probability = e.target.value;
                       setNewGeneLoci(updated);
                     }} />
 
                   </div>
                 ))}
 
-                  <button onClick={() => {
+                  <button type="button" onClick={() => {
                       const updated = [...newGeneLoci];
-                      updated[index].alleles.push({ name: "", symbol: "", dominance: "", probability: 0 });
+                      updated[index].alleles.push({ name: "", symbol: "", dominance: "", probability: "" });
                       setNewGeneLoci(updated);
                     }}>
                       Add Allele
@@ -122,9 +132,9 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
             
             ))}
 
-            <button onClick={() => {
+            <button type="button" onClick={() => {
               const updated = [...newGeneLoci];
-              updated.push({ name: "", alleles: [{ name: "", symbol: "", dominance: "", probability: 0 }] });
+              updated.push({ name: "", alleles: [{ name: "", symbol: "", dominance: "", probability: "" }] });
               setNewGeneLoci(updated);
             }}>
               Add Locus
@@ -134,12 +144,12 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
 
               <div key={index}>
 
-                <input value={rule.minDominantAlleles} onChange={(e) => {
+                <input placeholder="Dominant alleles" value={rule.minDominantAlleles} type="number" min="0" onChange={(e) => {
                   const updated = [...newGeneExpressionRules];
-                  updated[index].minDominantAlleles = Number(e.target.value);
+                  updated[index].minDominantAlleles = e.target.value;
                   setNewGeneExpressionRules(updated);
                 }} />
-                <input value={rule.expression} onChange={(e) => {
+                <input placeholder="Expression" value={rule.expression} onChange={(e) => {
                   const updated = [...newGeneExpressionRules];
                   updated[index].expression = e.target.value;
                   setNewGeneExpressionRules(updated);
@@ -149,9 +159,9 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
 
             ))}
 
-            <button onClick={() => {
+            <button type="button" onClick={() => {
               const updated = [...newGeneExpressionRules];
-              updated.push({ minDominantAlleles: 0, expression: "" });
+              updated.push({ minDominantAlleles: "", expression: "" });
               setNewGeneExpressionRules(updated)
             }}>
               Add Expression Rule
