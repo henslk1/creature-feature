@@ -111,7 +111,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
                       updated[index].alleles[alleleIndex].dominance = e.target.value;
                       setNewGeneLoci(updated);
                     }} />
-                    <input placeholder="Allele Probability" value={allele.probability} type="number" min="0" max="1" onChange={(e) => {
+                    <input placeholder="Allele Probability" value={allele.probability} type="number" min="0" max="1" step="0.01" onChange={(e) => {
                       const updated = [...newGeneLoci];
                       updated[index].alleles[alleleIndex].probability = e.target.value;
                       setNewGeneLoci(updated);
@@ -168,7 +168,13 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
             </button>
 
             <button onClick={addGene}> Save </button>
-            <button onClick={() => setShowAddForm(false)}>Cancel</button>
+            <button type="button" onClick={() =>{ 
+              setShowAddForm(false);
+              setNewGeneName("");
+              setNewGeneCategory("");
+              setNewGeneLoci([{ name: "", alleles: [{ name: "", symbol: "", dominance: "", probability: "" }] }]);
+              setNewGeneExpressionRules([{ minDominantAlleles: "", expression: "" }]);
+              }}>Cancel</button>
             
           </form>
         </div>
