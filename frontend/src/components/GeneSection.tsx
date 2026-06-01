@@ -1,6 +1,6 @@
 import { API_URL } from "../config";
 import type { Gene } from "../types";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface GeneSectionProps {
   speciesId: number,
