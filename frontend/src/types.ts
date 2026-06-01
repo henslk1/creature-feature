@@ -58,6 +58,13 @@ export interface StatRange {
 export interface Attribute {
   id: number,
   name: string,
+  type: string,
+  min?: number,
+  max?: number,
+  options: string[],
+  optional: boolean,
+  mutable: boolean,
+  speciesId: number
 }
 
 export interface Animal {
