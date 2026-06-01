@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "start": "tsx server.ts",
+    "start:test": "dotenv -e .env.test -- tsx server.ts" 
   },
   "keywords": [],
   "author": "",
