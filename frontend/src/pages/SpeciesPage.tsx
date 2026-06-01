@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Species } from "../types";
+import { API_URL } from "../config";
 
 export function SpeciesPage() {
 
-  const API_URL = "http://localhost:3001";
   const navigate = useNavigate();
 
   // GET
