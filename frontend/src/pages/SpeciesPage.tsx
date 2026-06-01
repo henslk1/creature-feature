@@ -36,8 +36,12 @@ export function SpeciesPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name: newSpeciesName, description: newSpeciesDescription })
     })
-    .then(res => res.json())
+    .then(res => { 
+      if(!res.ok) return;
+      return res.json();
+    })
     .then(newSpecies => {
+      if (!newSpecies) return;
       setSpecies([...species, newSpecies]); 
       setShowAddForm(false); 
       setNewSpeciesName(""); 
@@ -51,8 +55,8 @@ export function SpeciesPage() {
       method: "DELETE",
       headers: { "Content-Type": "application/json" }
     })
-    .then(res => res.json())
-    .then(() => {
+    .then(res => {
+      if(!res.ok) return;
       setSpecies(species.filter(s => s.id !==id));
     })
   }
