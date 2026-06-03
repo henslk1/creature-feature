@@ -111,7 +111,26 @@ export function useGeneSection(
   }
 
   function addAllele(locusId: number, geneId: number) {
-
+    const gene = genes.find(g => g.id === geneId)!;
+    const updatedLoci = gene.loci.map(l => l.id === locusId
+      ? { ...l, alleles: [...l.alleles, newAllele] }
+      : l
+    );
+    fetch(`${GENE_URL}/${geneId}`, {
+      method: "PATCH",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({ loci: updatedLoci })
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(updatedGene => {
+      if(!updatedGene) return;
+      onGeneUpdated(updatedGene);
+      setAddingAlleleToLocus(null);
+      setNewAllele(DEFAULT_ALLELE);
+    })
   }
 
   function addRule(geneId: number) {
