@@ -15,16 +15,15 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
   // Dynamic display
   const [expandedGenes, setExpandedGenes] = useState<Set<number>>(new Set());
 
+  // Defaults
+  const DEFAULT_ALLELE = { name: "", symbol: "", dominance: "", probability: "" };
+  const DEFAULT_LOCUS = { name: "", alleles: [DEFAULT_ALLELE] };
+  const DEFAULT_RULE = { minDominantAlleles: "", expression: ""};
   // Setters
   const [newGeneName, setNewGeneName] = useState("");
   const [newGeneCategory, setNewGeneCategory] = useState("");
-  const [newGeneLoci, setNewGeneLoci] = useState([{ 
-                                          name: "", alleles: [{ 
-                                            name: "", symbol: "", dominance: "", probability: "" }] }]);
-  const [newGeneExpressionRules, setNewGeneExpressionRules] = useState([{
-                                                              minDominantAlleles: "",
-                                                              expression: ""
-                                                            }]);
+  const [newGeneLoci, setNewGeneLoci] = useState([DEFAULT_LOCUS])
+  const [newGeneExpressionRules, setNewGeneExpressionRules] = useState([DEFAULT_RULE])
 
   // Add form handler                                            
   const [showAddForm, setShowAddForm] = useState(false);
@@ -72,8 +71,8 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
       setShowAddForm(false);
       setNewGeneName("");
       setNewGeneCategory("");
-      setNewGeneLoci([{ name: "", alleles: [{ name: "", symbol: "", dominance: "", probability: "" }] }]);
-      setNewGeneExpressionRules([{ minDominantAlleles: "", expression: "" }]);
+      setNewGeneLoci([DEFAULT_LOCUS]);
+      setNewGeneExpressionRules([DEFAULT_RULE]);
     })
   }
 
@@ -147,7 +146,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
                   <button type="button" onClick={() => {
                       const updated = [...newGeneLoci];
-                      updated[index].alleles.push({ name: "", symbol: "", dominance: "", probability: "" });
+                      updated[index].alleles.push(DEFAULT_ALLELE);
                       setNewGeneLoci(updated);
                     }}>
                       Add Allele
@@ -159,7 +158,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
             <button type="button" onClick={() => {
               const updated = [...newGeneLoci];
-              updated.push({ name: "", alleles: [{ name: "", symbol: "", dominance: "", probability: "" }] });
+              updated.push({ name: "", alleles: [DEFAULT_ALLELE] });
               setNewGeneLoci(updated);
             }}>
               Add Locus
@@ -186,7 +185,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
             <button type="button" onClick={() => {
               const updated = [...newGeneExpressionRules];
-              updated.push({ minDominantAlleles: "", expression: "" });
+              updated.push(DEFAULT_RULE);
               setNewGeneExpressionRules(updated)
             }}>
               Add Expression Rule
@@ -197,8 +196,8 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
               setShowAddForm(false);
               setNewGeneName("");
               setNewGeneCategory("");
-              setNewGeneLoci([{ name: "", alleles: [{ name: "", symbol: "", dominance: "", probability: "" }] }]);
-              setNewGeneExpressionRules([{ minDominantAlleles: "", expression: "" }]);
+              setNewGeneLoci([DEFAULT_LOCUS]);
+              setNewGeneExpressionRules([DEFAULT_RULE]);
               }}>Cancel</button>
             
           </form>
