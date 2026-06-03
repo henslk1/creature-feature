@@ -92,7 +92,22 @@ export function useGeneSection(
 
   // ADD
   function addLocus(geneId: number) {
-
+    const updatedLoci = [...genes.find(g => g.id === geneId)!.loci, newLocus];
+    fetch(`${GENE_URL}/${geneId}`, {
+      method: "PATCH",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({ loci: updatedLoci})
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(updatedGene => {
+      if(!updatedGene) return;
+      onGeneUpdated(updatedGene);
+      setAddingLocusToGene(null);
+      setNewLocus(DEFAULT_LOCUS);
+    })
   }
 
   function addAllele(locusId: number, geneId: number) {
@@ -100,7 +115,7 @@ export function useGeneSection(
   }
 
   function addRule(geneId: number) {
-    
+
   }
 
   // PATCH
