@@ -1,5 +1,5 @@
 import { API_URL, JSON_HEADERS } from "../config";
-import { type Locus, type Gene } from "../types";
+import { type Locus, type Gene, type ExpressionRule } from "../types";
 import { useState } from "react";
 
 interface GeneSectionProps {
@@ -16,6 +16,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
   const [expandedGenes, setExpandedGenes] = useState<Set<number>>(new Set());
   const [editingGene, setEditingGene] = useState<Gene | null>(null);
   const [editingLocus, setEditingLocus] = useState<Locus | null>(null);
+  const [editingRule, setEditingRule] = useState<ExpressionRule | null>(null);
 
   // Defaults
   const DEFAULT_ALLELE = { name: "", symbol: "", dominance: "", probability: "" };
@@ -105,11 +106,13 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
   }
 
   function saveLocus() {
+    const gene = genes.find(g => g.loci.some(l => l.id === editingLocus!.id))!;
+    const updatedLoci = gene.loci.map(l => l.id === editingLocus!.id ? editingLocus! : l);
     fetch(`${API_URL}/species/${speciesId}/genes/${editingLocus?.geneId}`, {
       method: "PATCH",
       headers: JSON_HEADERS,
       body: JSON.stringify({
-        loci: [editingLocus]
+        loci: updatedLoci
       })
     })
     .then(res => {
@@ -120,6 +123,27 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
       if(!updatedGene) return;
       onGeneUpdated(updatedGene);
       setEditingLocus(null);
+    })
+  }
+
+  function saveRule() {
+    const gene = genes.find(g => g.expressionRules.some(r => r.id === editingRule!.id))!;
+    const updatedRule = gene.expressionRules.map(r => r.id === editingRule!.id ? editingRule! : r);
+    fetch(`${API_URL}/species/${speciesId}/genes/${editingRule?.geneId}`, {
+      method: "PATCH",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        expressionRules: updatedRule
+      })
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(updatedGene => {
+      if(!updatedGene) return;
+      onGeneUpdated(updatedGene);
+      setEditingRule(null);
     })
   }
 
@@ -140,6 +164,23 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
       method: "PATCH",
       headers: JSON_HEADERS,
       body: JSON.stringify({ loci: updatedLoci })
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(updatedGene => {
+      if(!updatedGene) return;
+      onGeneUpdated(updatedGene);
+    })
+  }
+
+  function deleteRule(ruleId: number, geneId:number) {
+    const updatedRule = genes.find(g => g.id === geneId)!.expressionRules.filter(r => r.id !== ruleId);
+    fetch(`${API_URL}/species/${speciesId}/genes/${geneId}`, {
+      method: "PATCH",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({ expressionRules: updatedRule })
     })
     .then(res => {
       if(!res.ok) return;
@@ -343,12 +384,33 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
               {g.expressionRules.map(rule => (
                 <div key={rule.id}>
-                  {editingRule?.id !== rule.id} (
-                    <span>Minimum number of dominant alleles: {rule.minDominantAlleles} | </span>
-                    <span>Expression: {rule.expression}</span>
-                    <button type="button" onClick={(e) => { e.stopPropagation(); deleteRule(rule.id); }}>DELETE</button>
-                    <button type="button" onClick={(e) => { e.stopPropagation(); setEditingRule(rule); }}>EDIT</button>
-                  )
+                  {editingRule?.id !== rule.id && (
+                    <div>
+                      <span>Minimum number of dominant alleles: {rule.minDominantAlleles} | </span>
+                      <span>Expression: {rule.expression}</span>
+                      <button type="button" onClick={(e) => { e.stopPropagation(); deleteRule(rule.id, rule.geneId ); }}>DELETE</button>
+                      <button type="button" onClick={(e) => { e.stopPropagation(); setEditingRule(rule); }}>EDIT</button>
+                    </div>
+                  )}
+
+                  {editingRule?.id === rule.id && (
+                    <div>
+
+                      <span>Min Dominant Alleles: </span>
+                      <input value={editingRule.minDominantAlleles} onChange={(e) => setEditingRule({ ...editingRule, minDominantAlleles: Number(e.target.value) })} />
+                      
+                      <div></div>
+
+                      <span>Expression:</span>
+                      <input value={editingRule.expression} onChange={(e) => setEditingRule({ ...editingRule, expression: e.target.value })} />
+
+                      <div></div>
+
+                      <button onClick={() => saveRule()}> Save </button>
+                      <button type="button" onClick={() => setEditingRule(null)}> Cancel </button>
+
+                    </div>
+                  )}
                 </div>
               ))}
 
