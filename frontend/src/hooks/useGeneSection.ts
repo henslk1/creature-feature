@@ -134,7 +134,22 @@ export function useGeneSection(
   }
 
   function addRule(geneId: number) {
-
+    const updatedRule = [...genes.find(g => g.id === geneId)!.expressionRules, newExpressionRule];
+    fetch(`${GENE_URL}/${geneId}`, {
+      method: "PATCH",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({ expressionRules: updatedRule})
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(updatedGene => {
+      if(!updatedGene) return;
+      onGeneUpdated(updatedGene);
+      setAddingRuleToGene(null);
+      setNewExpressionRule(DEFAULT_RULE);
+    })
   }
 
   // PATCH
@@ -259,7 +274,8 @@ export function useGeneSection(
     DEFAULT_ALLELE, DEFAULT_LOCUS, DEFAULT_RULE,
     toggleGene, resetForm,
     addGene, saveGene, saveLocus, saveRule,
-    deleteGene, deleteLocus, deleteRule
+    deleteGene, deleteLocus, deleteRule,
+    addAllele, addRule, addLocus
   };
 
 };
