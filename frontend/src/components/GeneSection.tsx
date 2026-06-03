@@ -83,8 +83,8 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
   }
 
   // PATCH
-  function saveGene(gene: Gene) {
-    fetch(`${API_URL}/species/${speciesId}/genes/${gene.id}`, {
+  function saveGene() {
+    fetch(`${API_URL}/species/${speciesId}/genes/${editingGene?.id}`, {
       method: "PATCH",
       headers: JSON_HEADERS,
       body: JSON.stringify({
@@ -97,10 +97,29 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
       if(!res.ok) return;
       return res.json();
     })
-    .then(newGene => {
-      if(!newGene) return;
-      onGeneUpdated(newGene);
+    .then(updatedGene => {
+      if(!updatedGene) return;
+      onGeneUpdated(updatedGene);
       setEditingGene(null);
+    })
+  }
+
+  function saveLocus() {
+    fetch(`${API_URL}/species/${speciesId}/genes/${editingLocus?.geneId}`, {
+      method: "PATCH",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        loci: [editingLocus]
+      })
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(updatedGene => {
+      if(!updatedGene) return;
+      onGeneUpdated(updatedGene);
+      setEditingLocus(null);
     })
   }
 
@@ -112,6 +131,23 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
     .then(res => {
       if(!res.ok) return;
       onGeneDeleted(id);
+    })
+  }
+
+  function deleteLocus(locusId: number, geneId: number) {
+    const updatedLoci = genes.find(g => g.id === geneId)!.loci.filter(l => l.id !== locusId);
+    fetch(`${API_URL}/species/${speciesId}/genes/${geneId}`, {
+      method: "PATCH",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({ loci: updatedLoci })
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(updatedGene => {
+      if(!updatedGene) return;
+      onGeneUpdated(updatedGene);
     })
   }
 
@@ -207,7 +243,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
               Add Expression Rule
             </button>
 
-            <button onClick={addGene}> Save </button>
+            <button type="button" onClick={addGene}> Save </button>
             <button type="button" onClick={resetForm}>Cancel</button>
             
           </form>
@@ -235,7 +271,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
                   {editingLocus?.id !== locus.id && (
                     <div>
                       <span>{locus.name} | </span>
-                      <button type="button" onClick={(e) => { e.stopPropagation(); deleteLocus(locus.id); }}> DELETE </button>
+                      <button type="button" onClick={(e) => { e.stopPropagation(); deleteLocus(locus.id, locus.geneId); }}> DELETE </button>
                       <button type="button" onClick={(e) => { e.stopPropagation(); setEditingLocus(locus);}}> EDIT</button>
                       {locus.alleles.map(allele =>
                         <div key={allele.id}>
@@ -250,18 +286,21 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
                   {editingLocus?.id === locus.id && (
                     <div>
+                      <span>Locus Name:</span>
                       <input placeholder="Locus name" value={editingLocus.name} onChange={(e) => setEditingLocus({ ...editingLocus, name: e.target.value })} />
 
                       {editingLocus.alleles.map((allele, index) => (
 
                         <div key={allele.id}>
 
-                          <span>Name:</span>
+                          <span>Allele Name:</span>
                           <input value={allele.name} onChange={(e) => {
                             const updated = [...editingLocus.alleles];
                             updated[index] = { ...updated[index], name: e.target.value };
                             setEditingLocus({ ... editingLocus, alleles: updated });
                           }} />
+
+                          <div></div>
 
                           <span>Symbol: </span>
                           <input value={allele.symbol} onChange={(e) => {
@@ -270,12 +309,16 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
                             setEditingLocus({ ...editingLocus, alleles: updated });
                           }} />
 
+                          <div></div>
+
                           <span>Dominance:</span>
                           <input value={allele.dominance} onChange={(e) => {
                             const updated = [...editingLocus.alleles];
-                            updated[index] = { ...updated[index], symbol: e.target.value };
+                            updated[index] = { ...updated[index], dominance: e.target.value };
                             setEditingLocus({ ...editingLocus, alleles: updated });
                           }} />
+
+                          <div></div>
 
                           <span>Probability: </span>
                           <input value={allele.probability} type="number" min="0" max="1" step="0.01" onChange={(e) => {
@@ -288,6 +331,9 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
                       ))}
 
+                      <button onClick={() => saveLocus()}> Save </button>
+                      <button type="button" onClick={() => setEditingLocus(null)}> Cancel </button>
+                    
                     </div>
                   )}
                 </div>
@@ -297,8 +343,12 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
               {g.expressionRules.map(rule => (
                 <div key={rule.id}>
-                  <span>Minimum number of dominant alleles: {rule.minDominantAlleles} | </span>
-                  <span>Expression: {rule.expression}</span>
+                  {editingRule?.id !== rule.id} (
+                    <span>Minimum number of dominant alleles: {rule.minDominantAlleles} | </span>
+                    <span>Expression: {rule.expression}</span>
+                    <button type="button" onClick={(e) => { e.stopPropagation(); deleteRule(rule.id); }}>DELETE</button>
+                    <button type="button" onClick={(e) => { e.stopPropagation(); setEditingRule(rule); }}>EDIT</button>
+                  )
                 </div>
               ))}
 
@@ -314,7 +364,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
                 <input type="checkbox" checked={editingGene.active} onChange={(e) => setEditingGene({ ...editingGene, active: e.target.checked })} />
                 Active
               </label>
-              <button onClick={() => saveGene(editingGene!)}> Save </button>
+              <button onClick={() => saveGene()}> Save </button>
               <button type="button" onClick={() => setEditingGene(null)}> Cancel </button>
             </div>
           )}
