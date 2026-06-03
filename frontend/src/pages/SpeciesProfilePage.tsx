@@ -46,6 +46,8 @@ export function SpeciesProfilePage() {
         speciesId={species.id}
         genes={species.genes}
         onGeneAdded={onGeneAdded}
+        onGeneDeleted={onGeneDeleted}
+        onGeneUpdated={onGeneUpdated}
         />
       <h2>Stats</h2>
 
