@@ -227,6 +227,8 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
             <div>
 
+              <strong>Loci:</strong>
+
               {g.loci.map(locus => (
                 <div key={locus.id}>
                   <span>{locus.name} | </span>
@@ -242,6 +244,8 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
                   )}
                 </div>
               ))}
+
+              <strong>Expression Rules:</strong>
 
               {g.expressionRules.map(rule => (
                 <div key={rule.id}>
