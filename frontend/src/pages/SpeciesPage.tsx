@@ -90,8 +90,8 @@ export function SpeciesPage() {
           <form>
             <input value={newSpeciesName} onChange={(e) => setNewSpeciesName(e.target.value)} />
             <input value={newSpeciesDescription} onChange={(e) => setNewSpeciesDescription(e.target.value)} />
-            <button onClick={addSpecies}>Add new species</button>
-            <button onClick={() =>setShowAddForm(false)}>Cancel</button>
+            <button type="button" onClick={addSpecies}>Add new species</button>
+            <button type="button" onClick={() =>setShowAddForm(false)}>Cancel</button>
           </form>
         </div>
       )}
