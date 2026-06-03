@@ -6,7 +6,7 @@ interface GeneSectionProps {
   speciesId: number,
   genes: Gene[],
   onGeneAdded: (gene: Gene) => void,
-  onGeneDeleted: (gene: Gene) => void,
+  onGeneDeleted: (geneId: number) => void,
   onGeneUpdated: (gene: Gene) => void
 }
 
@@ -103,6 +103,10 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
   function deleteGene(id: number) {
     fetch(`${API_URL}/species/${speciesId}/genes/${id}`, {
       method: "DELETE"
+    })
+    .then(res => {
+      if(!res.ok) return;
+      onGeneDeleted(id);
     })
   }
 
