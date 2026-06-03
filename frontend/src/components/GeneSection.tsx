@@ -5,10 +5,12 @@ import { useState } from "react";
 interface GeneSectionProps {
   speciesId: number,
   genes: Gene[],
-  onGeneAdded: (gene: Gene) => void
+  onGeneAdded: (gene: Gene) => void,
+  onGeneDeleted: (gene: Gene) => void,
+  onGeneUpdated: (gene: Gene) => void
 }
 
-export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps) {
+export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGeneUpdated }: GeneSectionProps) {
 
   // Dynamic display
   const [expandedGenes, setExpandedGenes] = useState<Set<number>>(new Set());
@@ -72,6 +74,29 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
       setNewGeneCategory("");
       setNewGeneLoci([{ name: "", alleles: [{ name: "", symbol: "", dominance: "", probability: "" }] }]);
       setNewGeneExpressionRules([{ minDominantAlleles: "", expression: "" }]);
+    })
+  }
+
+  // PATCH
+  function editGene(id: number) {
+    fetch(`${API_URL}/species/${speciesId}/genes/${id}`, {
+      method: "PATCH",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        //tba
+      })
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then()
+  }
+
+  // DELETE
+  function deleteGene(id: number) {
+    fetch(`${API_URL}/species/${speciesId}/genes/${id}`, {
+      method: "DELETE"
     })
   }
 
@@ -184,7 +209,11 @@ export function GeneSection({ speciesId, genes, onGeneAdded }: GeneSectionProps)
         <div key={g.id}>
 
           <h3 onClick={() => toggleGene(g.id)}>
-            {g.name} {expandedGenes.has(g.id) ? "Hide" : "View"}</h3>
+            {g.name} 
+            {expandedGenes.has(g.id) ? "Hide" : "View"}
+            <button onClick={deleteGene}>DELETE</button>
+            <button onClick={editGene}>EDIT</button>
+            </h3>
 
           {expandedGenes.has(g.id) && (
 
