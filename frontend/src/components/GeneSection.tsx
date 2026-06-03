@@ -1,5 +1,5 @@
 import { API_URL, JSON_HEADERS } from "../config";
-import type { Gene } from "../types";
+import { type Locus, type Gene } from "../types";
 import { useState } from "react";
 
 interface GeneSectionProps {
@@ -15,6 +15,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
   // Dynamic display
   const [expandedGenes, setExpandedGenes] = useState<Set<number>>(new Set());
   const [editingGene, setEditingGene] = useState<Gene | null>(null);
+  const [editingLocus, setEditingLocus] = useState<Locus | null>(null);
 
   // Defaults
   const DEFAULT_ALLELE = { name: "", symbol: "", dominance: "", probability: "" };
@@ -231,15 +232,62 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
               {g.loci.map(locus => (
                 <div key={locus.id}>
-                  <span>{locus.name} | </span>
-                  <button type="button" onClick={(e) => { e.stopPropagation(); deleteLocus(locus.id); }}> DELETE </button>
-                  <button type="button" onClick={(e) => { e.stopPropagation(); setEditingLocus(locus);}}> EDIT</button>
-                  {locus.alleles.map(allele =>
-                    <div key={allele.id}>
-                      <span>Name: {allele.name} |</span>
-                      <span> Symbol: [{allele.symbol}] |</span>
-                      <span> Dominance: {allele.dominance} |</span>
-                      <span> Probability: {allele.probability}</span>
+                  {editingLocus?.id !== locus.id && (
+                    <div>
+                      <span>{locus.name} | </span>
+                      <button type="button" onClick={(e) => { e.stopPropagation(); deleteLocus(locus.id); }}> DELETE </button>
+                      <button type="button" onClick={(e) => { e.stopPropagation(); setEditingLocus(locus);}}> EDIT</button>
+                      {locus.alleles.map(allele =>
+                        <div key={allele.id}>
+                          <span>Name: {allele.name} |</span>
+                          <span> Symbol: [{allele.symbol}] |</span>
+                          <span> Dominance: {allele.dominance} |</span>
+                          <span> Probability: {allele.probability}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {editingLocus?.id === locus.id && (
+                    <div>
+                      <input placeholder="Locus name" value={editingLocus.name} onChange={(e) => setEditingLocus({ ...editingLocus, name: e.target.value })} />
+
+                      {editingLocus.alleles.map((allele, index) => (
+
+                        <div key={allele.id}>
+
+                          <span>Name:</span>
+                          <input value={allele.name} onChange={(e) => {
+                            const updated = [...editingLocus.alleles];
+                            updated[index] = { ...updated[index], name: e.target.value };
+                            setEditingLocus({ ... editingLocus, alleles: updated });
+                          }} />
+
+                          <span>Symbol: </span>
+                          <input value={allele.symbol} onChange={(e) => {
+                            const updated = [...editingLocus.alleles];
+                            updated[index] = { ...updated[index], symbol: e.target.value };
+                            setEditingLocus({ ...editingLocus, alleles: updated });
+                          }} />
+
+                          <span>Dominance:</span>
+                          <input value={allele.dominance} onChange={(e) => {
+                            const updated = [...editingLocus.alleles];
+                            updated[index] = { ...updated[index], symbol: e.target.value };
+                            setEditingLocus({ ...editingLocus, alleles: updated });
+                          }} />
+
+                          <span>Probability: </span>
+                          <input value={allele.probability} type="number" min="0" max="1" step="0.01" onChange={(e) => {
+                            const updated = [...editingLocus.alleles];
+                            updated[index] = { ...updated[index], probability: Number(e.target.value) };
+                            setEditingLocus({ ...editingLocus, alleles: updated });
+                          }} />
+
+                        </div>
+
+                      ))}
+
                     </div>
                   )}
                 </div>
