@@ -14,6 +14,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
   // Dynamic display
   const [expandedGenes, setExpandedGenes] = useState<Set<number>>(new Set());
+  const [editingGene, setEditingGene] = useState<Gene | null>(null);
 
   // Defaults
   const DEFAULT_ALLELE = { name: "", symbol: "", dominance: "", probability: "" };
@@ -81,12 +82,14 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
   }
 
   // PATCH
-  function editGene(id: number) {
-    fetch(`${API_URL}/species/${speciesId}/genes/${id}`, {
+  function saveGene(gene: Gene) {
+    fetch(`${API_URL}/species/${speciesId}/genes/${gene.id}`, {
       method: "PATCH",
       headers: JSON_HEADERS,
       body: JSON.stringify({
-        //tba
+        name: editingGene!.name,
+        category: editingGene!.category,
+        active: editingGene!.active
       })
     })
     .then(res => {
@@ -96,6 +99,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
     .then(newGene => {
       if(!newGene) return;
       onGeneUpdated(newGene);
+      setEditingGene(null);
     })
   }
 
@@ -169,7 +173,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
             <button type="button" onClick={() => {
               const updated = [...newGeneLoci];
-              updated.push({ name: "", alleles: [DEFAULT_ALLELE] });
+              updated.push(DEFAULT_LOCUS);
               setNewGeneLoci(updated);
             }}>
               Add Locus
@@ -214,10 +218,10 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
           <h3 onClick={() => toggleGene(g.id)}>
             {g.name} 
-            {expandedGenes.has(g.id) ? "Hide" : "View"}
-            <button onClick={deleteGene}>DELETE</button>
-            <button onClick={editGene}>EDIT</button>
-            </h3>
+            {expandedGenes.has(g.id) ? " Hide " : " View "}
+            <button type="button" onClick={(e) => { e.stopPropagation(); deleteGene(g.id); }}>DELETE</button>
+            <button type="button" onClick={(e) => { e.stopPropagation(); setEditingGene(g); }}>EDIT</button>
+          </h3>
 
           {expandedGenes.has(g.id) && (
 
@@ -225,7 +229,9 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
               {g.loci.map(locus => (
                 <div key={locus.id}>
-                  <span>{locus.name}</span>
+                  <span>{locus.name} | </span>
+                  <button type="button" onClick={(e) => { e.stopPropagation(); deleteLocus(locus.id); }}> DELETE </button>
+                  <button type="button" onClick={(e) => { e.stopPropagation(); setEditingLocus(locus);}}> EDIT</button>
                   {locus.alleles.map(allele =>
                     <div key={allele.id}>
                       <span>Name: {allele.name} |</span>
@@ -246,6 +252,19 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
 
             </div>
 
+          )}
+
+          {editingGene?.id === g.id && (
+            <div>
+              <input placeholder="Gene Name" value={editingGene.name} onChange={(e) => setEditingGene({ ...editingGene, name: e.target.value })} />
+              <input placeholder="Gene Category" value={editingGene.category} onChange={(e) => setEditingGene({ ...editingGene, category: e.target.value })} />
+              <label>
+                <input type="checkbox" checked={editingGene.active} onChange={(e) => setEditingGene({ ...editingGene, active: e.target.checked })} />
+                Active
+              </label>
+              <button onClick={() => saveGene(editingGene!)}> Save </button>
+              <button type="button" onClick={() => setEditingGene(null)}> Cancel </button>
+            </div>
           )}
 
         </div>
