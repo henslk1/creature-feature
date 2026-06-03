@@ -15,16 +15,25 @@ export function useGeneSection(
   const [editingLocus, setEditingLocus] = useState<Locus | null>(null);
   const [editingRule, setEditingRule] = useState<ExpressionRule | null>(null);
 
+  const [addingLocusToGene, setAddingLocusToGene] = useState<number | null>(null);
+  const [addingAlleleToLocus, setAddingAlleleToLocus] = useState<number | null>(null);
+  const [addingRuleToGene, setAddingRuleToGene] = useState<number | null>(null);
+
   // Defaults
   const DEFAULT_ALLELE = { name: "", symbol: "", dominance: "", probability: "" };
   const DEFAULT_LOCUS = { name: "", alleles: [DEFAULT_ALLELE] };
   const DEFAULT_RULE = { minDominantAlleles: "", expression: ""};
   const GENE_URL = `${API_URL}/species/${speciesId}/genes`;
+
   // Setters
   const [newGeneName, setNewGeneName] = useState("");
   const [newGeneCategory, setNewGeneCategory] = useState("");
-  const [newGeneLoci, setNewGeneLoci] = useState([DEFAULT_LOCUS])
-  const [newGeneExpressionRules, setNewGeneExpressionRules] = useState([DEFAULT_RULE])
+  const [newGeneLoci, setNewGeneLoci] = useState([DEFAULT_LOCUS]);
+  const [newGeneExpressionRules, setNewGeneExpressionRules] = useState([DEFAULT_RULE]);
+
+  const [newLocus, setNewLocus] = useState(DEFAULT_LOCUS);
+  const [newAllele, setNewAllele] = useState(DEFAULT_ALLELE);
+  const [newExpressionRule, setNewExpressionRule] = useState(DEFAULT_RULE)
 
   // Add form handler                                            
   const [showAddForm, setShowAddForm] = useState(false);
@@ -79,6 +88,19 @@ export function useGeneSection(
       onGeneAdded(newGene);
       resetForm();
     })
+  }
+
+  // ADD
+  function addLocus(geneId: number) {
+
+  }
+
+  function addAllele(locusId: number, geneId: number) {
+
+  }
+
+  function addRule(geneId: number) {
+    
   }
 
   // PATCH
