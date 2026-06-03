@@ -21,10 +21,16 @@ export function SpeciesProfilePage() {
       .then(data => setSpecies(data))
   }, []);
 
-  // POST
+  // Gene handlers
   function onGeneAdded(gene: Gene) {
     setSpecies({ ...species!, genes: [...species!.genes, gene ]});
-  }
+  };
+  function onGeneUpdated(gene: Gene) {
+    setSpecies({ ...species!, genes: species!.genes.map(g => g.id === gene.id ? gene : g) });
+  };
+  function onGeneDeleted(geneId: number) {
+    setSpecies({ ...species!, genes: species!.genes.filter(g => g.id !== geneId) });
+  };
 
   if(!species) return <div>Loading...</div>
 
