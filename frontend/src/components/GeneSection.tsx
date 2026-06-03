@@ -39,6 +39,14 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
     setExpandedGenes(updated);
   }
 
+  function resetForm() {
+    setShowAddForm(false);
+    setNewGeneName("");
+    setNewGeneCategory("");
+    setNewGeneLoci([DEFAULT_LOCUS]);
+    setNewGeneExpressionRules([DEFAULT_RULE])
+  }
+
   // POST
   function addGene() {
     fetch(`${API_URL}/species/${speciesId}/genes`, {
@@ -68,11 +76,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
     .then(newGene => {
       if(!newGene) return;
       onGeneAdded(newGene);
-      setShowAddForm(false);
-      setNewGeneName("");
-      setNewGeneCategory("");
-      setNewGeneLoci([DEFAULT_LOCUS]);
-      setNewGeneExpressionRules([DEFAULT_RULE]);
+      resetForm();
     })
   }
 
@@ -89,7 +93,10 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
       if(!res.ok) return;
       return res.json();
     })
-    .then()
+    .then(newGene => {
+      if(!newGene) return;
+      onGeneUpdated(newGene);
+    })
   }
 
   // DELETE
@@ -192,13 +199,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
             </button>
 
             <button onClick={addGene}> Save </button>
-            <button type="button" onClick={() =>{ 
-              setShowAddForm(false);
-              setNewGeneName("");
-              setNewGeneCategory("");
-              setNewGeneLoci([DEFAULT_LOCUS]);
-              setNewGeneExpressionRules([DEFAULT_RULE]);
-              }}>Cancel</button>
+            <button type="button" onClick={resetForm}>Cancel</button>
             
           </form>
         </div>
