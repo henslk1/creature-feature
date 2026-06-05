@@ -4,7 +4,6 @@ import { type Attribute } from "../types";
 
 export function useAttributeSection(
   speciesId: number,
-  attributes: Attribute[],
   onAttributeAdded: (attr: Attribute) => void,
   onAttributeDeleted: (attrId: number) => void,
   onAttributeUpdated: (attr: Attribute) => void
@@ -38,16 +37,84 @@ export function useAttributeSection(
     setExpandedAttr(updated);
   }
 
-  function addAttr() {
+  function resetForm() {
+    setNewAttrName("");
+    setNewAttrType("");
+    setNewAttrMin(0);
+    setNewAttrMax(0);
+    setNewAttrOptions([]);
+    setNewAttrOptional(false);
+    setNewAttrMutable(false);
+  }
 
+  function addAttr() {
+    const body: any = {
+      name: newAttrName,
+      type: newAttrType,
+      optional: newAttrOptional,
+      mutable: newAttrMutable,
+    };
+    if (newAttrType === "number") {
+      body.min = newAttrMin;
+      body.max = newAttrMax;
+    };
+    if (newAttrType === "enum") {
+      body.options = newAttrOptions;
+    };
+    fetch(`${ATTR_URL}`, {
+      method: "POST",
+      headers: JSON_HEADERS,
+      body: JSON.stringify(body)
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(newAttr => {
+      if(!newAttr) return;
+      onAttributeAdded(newAttr);
+      resetForm();
+    })
   }
 
   function saveAttr() {
-
+    const body: any = {
+      name: editingAttr?.name,
+      type: editingAttr?.type,
+      optional: editingAttr?.optional,
+      mutable: editingAttr?.mutable,
+    };
+    if (editingAttr?.type === "number") {
+      body.min = editingAttr.min;
+      body.max = editingAttr.max;
+    };
+    if (editingAttr?.type === "enum") {
+      body.options = editingAttr.options;
+    };
+    fetch(`${ATTR_URL}/${editingAttr?.id}`, {
+      method: "PATCH",
+      headers: JSON_HEADERS,
+      body: JSON.stringify(body)
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(updatedAttr => {
+      if(!updatedAttr) return;
+      onAttributeUpdated(updatedAttr);
+      setEditingAttr(null);
+    })
   }
 
   function deleteAttr(id: number) {
-
+    fetch(`${ATTR_URL}/${id}`, {
+      method: "DELETE"
+    })
+    .then(res => {
+      if(!res.ok) return;
+      onAttributeDeleted(id);
+    })
   }
 
   return {
