@@ -1,4 +1,5 @@
-import { API_URL } from "../config";
+import { useState } from "react";
+import { API_URL, JSON_HEADERS } from "../config";
 import {type Stat } from "../types";
 
 interface StatSectionProps {
@@ -14,24 +15,32 @@ export function StatSection({ speciesId, stats, onStatAdded, onStatDeleted, onSt
   const STAT_URL = `${API_URL}/species/${speciesId}/stats`;
 
   // Dynamic Display
-  // expanded stats, editing stats
-
-  // Default stat
+  const [expandedStats, setExpandingStats] = useState<Set<number>>(new Set());
+  const [editingStat, setEditingStat] = useState<Stat | null>(null);
 
   // Setters
-  // newStat fields
+  const [newStatName, setNewStatName] = useState("");
+  const [newStatMin, setNewStatMin] = useState(0);
+  const [newStatMax, setNewStatMax] = useState(0);
 
   // Add Form handler
+  const [showAddForm, setShowAddForm] = useState(false);
 
   // --- functions
   // Display
+  function resetForm() {
+    setShowAddForm(false);
+    setNewStatName("");
+    setNewStatMin(0);
+    setNewStatMax(0);
+  }
 
   // POST
 
   // PATCH
 
   // DELETE
-  
+
   return(
     <div>
 
