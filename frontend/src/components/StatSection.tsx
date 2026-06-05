@@ -15,7 +15,6 @@ export function StatSection({ speciesId, stats, onStatAdded, onStatDeleted, onSt
   const STAT_URL = `${API_URL}/species/${speciesId}/stats`;
 
   // Dynamic Display
-  const [expandedStats, setExpandingStats] = useState<Set<number>>(new Set());
   const [editingStat, setEditingStat] = useState<Stat | null>(null);
 
   // Setters
@@ -36,14 +35,42 @@ export function StatSection({ speciesId, stats, onStatAdded, onStatDeleted, onSt
   }
 
   // POST
+  function addStat() {
+
+  }
 
   // PATCH
+  function saveStat() {
+
+  }
 
   // DELETE
+  function deleteStat() {
+
+  }
 
   return(
     <div>
+      {!showAddForm && <button onClick={() => setShowAddForm(true)}>Add Stat</button>}
+      {showAddForm && (
 
+      )}
+
+      {stats.map(stat => (
+        <div key={stat.id}>
+          
+          {editingStat?.id !== stat.id && (
+            <div>
+
+            </div>
+          )}
+
+          {editingStat?.id === stat.id && (
+
+          )}
+
+        </div>
+      ))}
     </div>
   )
 }
