@@ -15,7 +15,6 @@ export function useGeneSection(
   const [editingLocus, setEditingLocus] = useState<Locus | null>(null);
   const [editingRule, setEditingRule] = useState<ExpressionRule | null>(null);
 
-  const [addingLocusToGene, setAddingLocusToGene] = useState<number | null>(null);
   const [addingAlleleToLocus, setAddingAlleleToLocus] = useState<number | null>(null);
   const [addingRuleToGene, setAddingRuleToGene] = useState<number | null>(null);
 
@@ -31,7 +30,6 @@ export function useGeneSection(
   const [newGeneLoci, setNewGeneLoci] = useState([DEFAULT_LOCUS]);
   const [newGeneExpressionRules, setNewGeneExpressionRules] = useState([DEFAULT_RULE]);
 
-  const [newLocus, setNewLocus] = useState(DEFAULT_LOCUS);
   const [newAllele, setNewAllele] = useState(DEFAULT_ALLELE);
   const [newExpressionRule, setNewExpressionRule] = useState(DEFAULT_RULE)
 
@@ -91,29 +89,6 @@ export function useGeneSection(
   }
 
   // ADD
-  function addLocus(geneId: number) {
-    const locusToAdd = {
-      ...newLocus,
-      alleles: newLocus.alleles.map(a => ({ ...a, probability: Number(a.probability) }))
-    };
-    const updatedLoci = [...genes.find(g => g.id === geneId)!.loci, locusToAdd];
-    fetch(`${GENE_URL}/${geneId}`, {
-      method: "PATCH",
-      headers: JSON_HEADERS,
-      body: JSON.stringify({ loci: updatedLoci})
-    })
-    .then(res => {
-      if(!res.ok) return;
-      return res.json();
-    })
-    .then(updatedGene => {
-      if(!updatedGene) return;
-      onGeneUpdated(updatedGene);
-      setAddingLocusToGene(null);
-      setNewLocus(DEFAULT_LOCUS);
-    })
-  }
-
   function addAllele(locusId: number, geneId: number) {
     const gene = genes.find(g => g.id === geneId)!;
     const alleleToAdd = { ...newAllele, probability: Number(newAllele.probability) };
@@ -300,17 +275,15 @@ export function useGeneSection(
     newGeneLoci, setNewGeneLoci,
     newGeneExpressionRules, setNewGeneExpressionRules,
     newAllele, setNewAllele,
-    newLocus, setNewLocus,
     newExpressionRule, setNewExpressionRule,
     showAddForm, setShowAddForm,
     addingAlleleToLocus, setAddingAlleleToLocus,
-    addingLocusToGene, setAddingLocusToGene,
     addingRuleToGene, setAddingRuleToGene,
     DEFAULT_ALLELE, DEFAULT_LOCUS, DEFAULT_RULE,
     toggleGene, resetForm,
     addGene, saveGene, saveLocus, saveRule,
     deleteGene, deleteLocus, deleteRule, deleteAllele,
-    addAllele, addRule, addLocus
+    addAllele, addRule
   };
 
 };

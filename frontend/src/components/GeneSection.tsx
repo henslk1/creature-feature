@@ -21,16 +21,14 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
     newGeneLoci, setNewGeneLoci, 
     newGeneExpressionRules, setNewGeneExpressionRules, 
     newAllele, setNewAllele,
-    newLocus, setNewLocus,
     newExpressionRule, setNewExpressionRule,
     addingAlleleToLocus, setAddingAlleleToLocus,
-    addingLocusToGene, setAddingLocusToGene,
     addingRuleToGene, setAddingRuleToGene,
     showAddForm, setShowAddForm, 
     DEFAULT_ALLELE, DEFAULT_LOCUS, DEFAULT_RULE, 
     toggleGene, resetForm, 
     addGene, saveGene, saveLocus, saveRule,
-    addAllele, addRule, addLocus, 
+    addAllele, addRule,
     deleteGene, deleteLocus, deleteRule, deleteAllele } = useGeneSection(speciesId, genes, onGeneAdded, onGeneDeleted, onGeneUpdated);
 
   return (
@@ -39,11 +37,19 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
       {showAddForm && (
         <div>
           <form>
+            <strong>New Gene</strong> 
+            
+            <br></br>
+            
             <input placeholder="Gene Name" value={newGeneName} onChange={(e) => setNewGeneName(e.target.value)} />
             <input placeholder="Category" value={newGeneCategory} onChange={(e) => setNewGeneCategory(e.target.value)} />
             {newGeneLoci.map((locus, index) => (
 
               <div key={index}>
+
+                <strong>New Locus </strong>
+
+                <br></br>
 
                 <input placeholder="Locus Name" value={locus.name} onChange={(e) => {
                   const updated = [...newGeneLoci];
@@ -51,8 +57,13 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
                   setNewGeneLoci(updated);
                 }} />
 
+                <br></br>
+
                 {locus.alleles.map((allele, alleleIndex) => (
                   <div key={alleleIndex}>
+                    <strong>New Allele</strong>
+
+                    <br></br>
 
                     <input placeholder="Allele Name" value={allele.name} onChange={(e) => {
                       const updated = [...newGeneLoci];
@@ -90,17 +101,12 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
             
             ))}
 
-            <button type="button" onClick={() => {
-              const updated = [...newGeneLoci];
-              updated.push(DEFAULT_LOCUS);
-              setNewGeneLoci(updated);
-            }}>
-              Add Locus
-            </button>
-
             {newGeneExpressionRules.map((rule, index) => (
 
               <div key={index}>
+                <strong>New Expression</strong>
+
+                <br></br>
 
                 <input placeholder="Dominant alleles" value={rule.minDominantAlleles} type="number" min="0" onChange={(e) => {
                   const updated = [...newGeneExpressionRules];
@@ -145,7 +151,6 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
             <div>
               <button type="button" onClick={(e) => { e.stopPropagation(); deleteGene(g.id); }}>DELETE</button>
               <button type="button" onClick={(e) => { e.stopPropagation(); setEditingGene(g); }}>EDIT</button>
-              <button type="button" onClick={(e) => { e.stopPropagation(); setAddingLocusToGene(g.id); }}>ADD LOCUS</button>
               <button type="button" onClick={(e) => { e.stopPropagation(); setAddingRuleToGene(g.id); }}>ADD RULE</button>
               
               <div></div>
@@ -154,13 +159,19 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
  
               {g.loci.map(locus => (
                 <div key={locus.id}>
-                  <button type="button" onClick={(e) => { e.stopPropagation(); setAddingAlleleToLocus(locus.id); }}>ADD ALLELE</button>
 
                   {editingLocus?.id !== locus.id && (
                     <div>
+                      <strong>Locus: </strong>
                       <span>{locus.name} | </span>
+
+                      <button type="button" onClick={(e) => { e.stopPropagation(); setAddingAlleleToLocus(locus.id); }}>ADD ALLELE</button>
                       <button type="button" onClick={(e) => { e.stopPropagation(); deleteLocus(locus.id, locus.geneId); }}> DELETE </button>
                       <button type="button" onClick={(e) => { e.stopPropagation(); setEditingLocus(locus);}}> EDIT</button>
+                      
+                      <br></br>
+                      <strong>Alleles</strong>
+
                       {locus.alleles.map(allele =>
                         <div key={allele.id}>
                           <span>Name: {allele.name} |</span>
@@ -256,41 +267,6 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
                   )}
                 </div>
               ))}
-
-              {addingLocusToGene === g.id && (
-                <div>
-
-                  <span>Name: </span>
-                  <input value={newLocus.name} onChange={(e) => setNewLocus({ ...newLocus, name: e.target.value })} />
-                  {newLocus.alleles.map((_, alleleIndex) => (
-
-                    <div key={alleleIndex}>
-                      
-                      <span>Allele Name: </span>
-                      <input value={newLocus.alleles[alleleIndex].name} onChange={(e) => setNewLocus({ ...newLocus, alleles: newLocus.alleles.map((a, i) => i === alleleIndex ? { ...a, name: e.target.value } : a) })} />
-                      
-                      <div></div>
-
-                      <span>Symbol: </span>
-                      <input value={newLocus.alleles[alleleIndex].symbol} onChange={(e) => setNewLocus({ ...newLocus, alleles: newLocus.alleles.map((a, i) => i === alleleIndex ? { ...a, symbol: e.target.value } : a) })} />
-                      
-                      <div></div>
-
-                      <span>Dominance: </span>
-                      <input value={newLocus.alleles[alleleIndex].dominance} onChange={(e) => setNewLocus({ ...newLocus, alleles: newLocus.alleles.map((a, i) => i === alleleIndex ? { ...a, dominance: e.target.value } : a) })} />
-                      
-                      <div></div>
-                      <span>Probability: </span>
-                      <input value={newLocus.alleles[alleleIndex].probability} type="number" min="0" max="1" step="0.01" onChange={(e) => setNewLocus({ ...newLocus, alleles: newLocus.alleles.map((a, i) => i === alleleIndex ? { ...a, probability: e.target.value } : a) })} />
-                    
-                    </div>
-                  ))}
-
-                  <button onClick={() => addLocus(g.id)}>Save</button>
-                  <button type="button" onClick={() => setAddingLocusToGene(null)}>Cancel</button>
-
-                </div>
-              )}
 
               <strong>Expression Rules:</strong>
 
