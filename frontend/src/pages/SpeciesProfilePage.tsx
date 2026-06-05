@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { API_URL } from "../config";
-import type { Species, Gene, Stat } from "../types";
+import type { Species, Gene, Stat, Attribute } from "../types";
 import { GeneSection } from "../components/GeneSection";
 import { StatSection } from "../components/StatSection";
 
@@ -44,6 +44,18 @@ export function SpeciesProfilePage() {
     setSpecies({ ...species!, stats: species!.stats.filter(s => s.id !== statId) });
   };
 
+  // Attribute handler
+  function onAttributeAdded(attribute: Attribute) {
+  setSpecies({ ...species!, attributes: [...species!.attributes, attribute] });
+  };
+  function onAttributeUpdated(attribute: Attribute) {
+    setSpecies({ ...species!, attributes: species!.attributes.map(a => a.id === attribute.id ? attribute : a) });
+  };
+  function onAttributeDeleted(attributeId: number) {
+    setSpecies({ ...species!, attributes: species!.attributes.filter(a => a.id !== attributeId) });
+  };
+
+
   if(!species) return <div>Loading...</div>
 
   return (
@@ -52,6 +64,13 @@ export function SpeciesProfilePage() {
       <p>{species.description}</p>
 
       <h2>Attributes</h2>
+        <AttributeSection
+        speciesId= {species.id}
+        attributes={species.attributes}
+        onAttributeAdded={onAttributeAdded}
+        onAttributeUpdated={onAttributeUpdated}
+        onAttributeDeleted={onAttributeDeleted}
+        />
 
       <h2>Genes</h2>
         <GeneSection
@@ -61,7 +80,7 @@ export function SpeciesProfilePage() {
         onGeneDeleted={onGeneDeleted}
         onGeneUpdated={onGeneUpdated}
         />
-        
+
       <h2>Stats</h2>
       <StatSection
       speciesId={species.id}
