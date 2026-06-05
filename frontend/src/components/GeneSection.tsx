@@ -25,7 +25,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
     addingAlleleToLocus, setAddingAlleleToLocus,
     addingRuleToGene, setAddingRuleToGene,
     showAddForm, setShowAddForm, 
-    DEFAULT_ALLELE, DEFAULT_LOCUS, DEFAULT_RULE, 
+    DEFAULT_ALLELE, DEFAULT_RULE, 
     toggleGene, resetForm, 
     addGene, saveGene, saveLocus, saveRule,
     addAllele, addRule,
