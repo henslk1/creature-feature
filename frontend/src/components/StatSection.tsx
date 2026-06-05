@@ -79,7 +79,19 @@ export function StatSection({ speciesId, stats, onStatAdded, onStatDeleted, onSt
         <div key={stat.id}>
           
           {editingStat?.id !== stat.id && (
-            
+            <div>
+              <h3>{stat.name}</h3>
+
+              <button type="button" onClick={(e) => { e.stopPropagation(); deleteStat(stat.id); }}>DELETE</button>
+              <button type="button" onClick={(e) => { e.stopPropagation(); setEditingStat(stat); }}>EDIT</button>
+
+              <br></br>
+
+              <span>Name: {stat.name}</span>
+              <span>Min: {stat.min}</span>
+              <span>Max: {stat.max}</span>
+
+            </div>
           )}
 
           {editingStat?.id === stat.id && (
