@@ -95,7 +95,21 @@ export function StatSection({ speciesId, stats, onStatAdded, onStatDeleted, onSt
           )}
 
           {editingStat?.id === stat.id && (
+            <div>
+
+              <span>Name: </span>
+              <input value={editingStat?.name} onChange={(e) => setEditingStat({ ...editingStat!, name: e.target.value })} />
+                  
+              <span>Min: </span>
+              <input value={editingStat?.min} type="number" min="0" onChange={(e) => setEditingStat({ ...editingStat!, min: Number(e.target.value) })} />
+                  
+              <span>Max: </span>
+              <input value={editingStat?.max} type="number" min="0" onChange={(e) => setEditingStat({ ...editingStat!, max: Number(e.target.value) })} />
+
+              <button onClick={() => saveStat()}>Save</button>
+              <button type="button" onClick={() => setEditingStat(null)}>Cancel</button> 
             
+            </div>
           )}
 
         </div>
