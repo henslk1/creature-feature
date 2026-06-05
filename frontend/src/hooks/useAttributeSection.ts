@@ -23,6 +23,7 @@ export function useAttributeSection(
   const [newAttrMin, setNewAttrMin] = useState(0);
   const [newAttrMax, setNewAttrMax] = useState(0);
   const [newAttrOptions, setNewAttrOptions] = useState<string[]>([]);
+  const [newOption, setNewOption] = useState("")
   const [newAttrOptional, setNewAttrOptional] = useState(false);
   const [newAttrMutable, setNewAttrMutable] = useState(false);
 
@@ -43,6 +44,7 @@ export function useAttributeSection(
     setNewAttrMin(0);
     setNewAttrMax(0);
     setNewAttrOptions([]);
+    setNewOption("");
     setNewAttrOptional(false);
     setNewAttrMutable(false);
   }
@@ -125,6 +127,7 @@ export function useAttributeSection(
     newAttrMax, setNewAttrMax,
     newAttrOptional, setNewAttrOptional,
     newAttrOptions, setNewAttrOptions,
+    newOption, setNewOption,
     newAttrMutable, setNewAttrMutable,
     editingAttr, setEditingAttr,
     addAttr, saveAttr, deleteAttr, toggleAttr
