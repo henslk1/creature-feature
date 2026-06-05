@@ -31,7 +31,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
     toggleGene, resetForm, 
     addGene, saveGene, saveLocus, saveRule,
     addAllele, addRule, addLocus, 
-    deleteGene, deleteLocus, deleteRule } = useGeneSection(speciesId, genes, onGeneAdded, onGeneDeleted, onGeneUpdated);
+    deleteGene, deleteLocus, deleteRule, deleteAllele } = useGeneSection(speciesId, genes, onGeneAdded, onGeneDeleted, onGeneUpdated);
 
   return (
     <div>
@@ -150,7 +150,7 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
               
               <div></div>
 
-              <strong>Loci</strong>\
+              <strong>Loci</strong>
  
               {g.loci.map(locus => (
                 <div key={locus.id}>
@@ -167,6 +167,8 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
                           <span> Symbol: [{allele.symbol}] |</span>
                           <span> Dominance: {allele.dominance} |</span>
                           <span> Probability: {allele.probability}</span>
+                          <button type="button" onClick={(e) => { e.stopPropagation(); deleteAllele(allele.id, locus.id, g.id); }}>DELETE</button>
+
                         </div>
                       )}
                     </div>
@@ -243,17 +245,52 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
                       <div></div>
 
                       <span>Probability: </span>
-                      <input value={newAllele.probability} type="number" min="0" max="1" step="0.01" onChange={(e) => setNewAllele({ ...newAllele, probability: Number(e.target.value) })} />
+                      <input value={newAllele.probability} type="number" min="0" max="1" step="0.01" onChange={(e) => setNewAllele({ ...newAllele, probability: e.target.value })} />
                       
                       <div></div>
 
                       <button onClick={() => addAllele(locus.id, g.id)}> Save </button>
                       <button type="button" onClick={() => setAddingAlleleToLocus(null)}> Cancel </button>
-                      
+
                     </div>
                   )}
                 </div>
               ))}
+
+              {addingLocusToGene === g.id && (
+                <div>
+
+                  <span>Name: </span>
+                  <input value={newLocus.name} onChange={(e) => setNewLocus({ ...newLocus, name: e.target.value })} />
+                  {newLocus.alleles.map((_, alleleIndex) => (
+
+                    <div key={alleleIndex}>
+                      
+                      <span>Allele Name: </span>
+                      <input value={newLocus.alleles[alleleIndex].name} onChange={(e) => setNewLocus({ ...newLocus, alleles: newLocus.alleles.map((a, i) => i === alleleIndex ? { ...a, name: e.target.value } : a) })} />
+                      
+                      <div></div>
+
+                      <span>Symbol: </span>
+                      <input value={newLocus.alleles[alleleIndex].symbol} onChange={(e) => setNewLocus({ ...newLocus, alleles: newLocus.alleles.map((a, i) => i === alleleIndex ? { ...a, symbol: e.target.value } : a) })} />
+                      
+                      <div></div>
+
+                      <span>Dominance: </span>
+                      <input value={newLocus.alleles[alleleIndex].dominance} onChange={(e) => setNewLocus({ ...newLocus, alleles: newLocus.alleles.map((a, i) => i === alleleIndex ? { ...a, dominance: e.target.value } : a) })} />
+                      
+                      <div></div>
+                      <span>Probability: </span>
+                      <input value={newLocus.alleles[alleleIndex].probability} type="number" min="0" max="1" step="0.01" onChange={(e) => setNewLocus({ ...newLocus, alleles: newLocus.alleles.map((a, i) => i === alleleIndex ? { ...a, probability: e.target.value } : a) })} />
+                    
+                    </div>
+                  ))}
+
+                  <button onClick={() => addLocus(g.id)}>Save</button>
+                  <button type="button" onClick={() => setAddingLocusToGene(null)}>Cancel</button>
+
+                </div>
+              )}
 
               <strong>Expression Rules:</strong>
 
@@ -288,6 +325,24 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
                   )}
                 </div>
               ))}
+
+              {addingRuleToGene === g.id && (
+                <div>
+                  
+                  <span>Min Dominant Alleles:</span>
+                  <input value={newExpressionRule.minDominantAlleles} onChange={(e) => setNewExpressionRule({ ...newExpressionRule, minDominantAlleles: e.target.value })} />
+
+                  <div></div>
+
+                  <span>Expression: </span>
+                  <input value={newExpressionRule.expression} onChange={(e) => setNewExpressionRule({ ...newExpressionRule, expression: e.target.value })} />
+
+                  <div></div>
+                  <button onClick={() => addRule(g.id)}>Save </button>
+                  <button type="button" onClick={() => setAddingRuleToGene(null)}>Cancel</button>
+                  
+                </div>
+              )}
 
             </div>
 

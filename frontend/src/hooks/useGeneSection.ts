@@ -92,7 +92,11 @@ export function useGeneSection(
 
   // ADD
   function addLocus(geneId: number) {
-    const updatedLoci = [...genes.find(g => g.id === geneId)!.loci, newLocus];
+    const locusToAdd = {
+      ...newLocus,
+      alleles: newLocus.alleles.map(a => ({ ...a, probability: Number(a.probability) }))
+    };
+    const updatedLoci = [...genes.find(g => g.id === geneId)!.loci, locusToAdd];
     fetch(`${GENE_URL}/${geneId}`, {
       method: "PATCH",
       headers: JSON_HEADERS,
@@ -112,10 +116,12 @@ export function useGeneSection(
 
   function addAllele(locusId: number, geneId: number) {
     const gene = genes.find(g => g.id === geneId)!;
+    const alleleToAdd = { ...newAllele, probability: Number(newAllele.probability) };
     const updatedLoci = gene.loci.map(l => l.id === locusId
-      ? { ...l, alleles: [...l.alleles, newAllele] }
+      ? { ...l, alleles: [...l.alleles, alleleToAdd] }
       : l
     );
+
     fetch(`${GENE_URL}/${geneId}`, {
       method: "PATCH",
       headers: JSON_HEADERS,
@@ -134,7 +140,8 @@ export function useGeneSection(
   }
 
   function addRule(geneId: number) {
-    const updatedRule = [...genes.find(g => g.id === geneId)!.expressionRules, newExpressionRule];
+    const ruleToAdd = { ...newExpressionRule, minDominantAlleles: Number(newExpressionRule.minDominantAlleles) };
+    const updatedRule = [...genes.find(g => g.id === geneId)!.expressionRules, ruleToAdd];
     fetch(`${GENE_URL}/${geneId}`, {
       method: "PATCH",
       headers: JSON_HEADERS,
@@ -261,6 +268,28 @@ export function useGeneSection(
     })
   }
 
+  function deleteAllele(alleleId: number, locusId: number, geneId: number) {
+    const gene = genes.find(g => g.id === geneId)!;
+    const updatedLoci = gene.loci.map(l => l.id === locusId
+      ? { ...l, alleles: l.alleles.filter(a => a.id !== alleleId) }
+      : l
+    );
+    fetch(`${GENE_URL}/${geneId}`, {
+      method: "PATCH",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({ loci: updatedLoci })
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(updatedGene => {
+      if(!updatedGene) return;
+      onGeneUpdated(updatedGene);
+    })
+  }
+
+
   return {
     expandedGenes,
     editingGene, setEditingGene,
@@ -280,7 +309,7 @@ export function useGeneSection(
     DEFAULT_ALLELE, DEFAULT_LOCUS, DEFAULT_RULE,
     toggleGene, resetForm,
     addGene, saveGene, saveLocus, saveRule,
-    deleteGene, deleteLocus, deleteRule,
+    deleteGene, deleteLocus, deleteRule, deleteAllele,
     addAllele, addRule, addLocus
   };
 
