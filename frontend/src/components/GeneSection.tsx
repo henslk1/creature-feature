@@ -20,6 +20,9 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
     newGeneCategory, setNewGeneCategory, 
     newGeneLoci, setNewGeneLoci, 
     newGeneExpressionRules, setNewGeneExpressionRules, 
+    addingAlleleToLocus, setAddingAlleleToLocus,
+    addingLocusToGene, setAddingLocusToGene,
+    addingRuleToGene, setAddingRuleToGene,
     showAddForm, setShowAddForm, 
     DEFAULT_ALLELE, DEFAULT_LOCUS, DEFAULT_RULE, 
     toggleGene, resetForm, 
@@ -131,18 +134,24 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
           <h3 onClick={() => toggleGene(g.id)}>
             {g.name} 
             {expandedGenes.has(g.id) ? " Hide " : " View "}
-            <button type="button" onClick={(e) => { e.stopPropagation(); deleteGene(g.id); }}>DELETE</button>
-            <button type="button" onClick={(e) => { e.stopPropagation(); setEditingGene(g); }}>EDIT</button>
-          </h3>
+            </h3>
 
           {expandedGenes.has(g.id) && (
 
             <div>
+              <button type="button" onClick={(e) => { e.stopPropagation(); deleteGene(g.id); }}>DELETE</button>
+              <button type="button" onClick={(e) => { e.stopPropagation(); setEditingGene(g); }}>EDIT</button>
+              <button type="button" onClick={(e) => { e.stopPropagation(); setAddingLocusToGene(g.id); }}>ADD LOCUS</button>
+              <button type="button" onClick={(e) => { e.stopPropagation(); setAddingRuleToGene(g.id); }}>ADD RULE</button>
+              
+              <div></div>
 
-              <strong>Loci:</strong>
-
+              <strong>Loci</strong>\
+ 
               {g.loci.map(locus => (
                 <div key={locus.id}>
+                  <button type="button" onClick={(e) => { e.stopPropagation(); setAddingAlleleToLocus(g.id); }}>ADD ALLELE</button>
+
                   {editingLocus?.id !== locus.id && (
                     <div>
                       <span>{locus.name} | </span>
@@ -210,6 +219,9 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
                       <button type="button" onClick={() => setEditingLocus(null)}> Cancel </button>
                     
                     </div>
+                  )}
+                  {addingAlleleToLocus === locus.id && (
+                    
                   )}
                 </div>
               ))}
