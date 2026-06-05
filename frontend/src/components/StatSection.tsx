@@ -53,20 +53,37 @@ export function StatSection({ speciesId, stats, onStatAdded, onStatDeleted, onSt
     <div>
       {!showAddForm && <button onClick={() => setShowAddForm(true)}>Add Stat</button>}
       {showAddForm && (
+        <div>
+          <form>
+            <strong>New Stat</strong>
 
+            <br></br>
+
+            <span>Name: </span>
+            <input value={newStatName} onChange={(e) => setNewStatName(e.target.value)} />
+                
+            <span>Min: </span>
+            <input value={newStatMin} type="number" min="0" onChange={(e) => setNewStatMin(Number(e.target.value))} />
+                
+            <span>Max: </span>
+            <input value={newStatMax} type="number" min="0" onChange={(e) => setNewStatMax(Number(e.target.value))} />
+
+            <button onClick={() => addStat()}>Save</button>
+            <button type="button" onClick={() => setShowAddForm(false)}>Cancel</button>
+            
+          </form>
+        </div>
       )}
 
       {stats.map(stat => (
         <div key={stat.id}>
           
           {editingStat?.id !== stat.id && (
-            <div>
-
-            </div>
+            
           )}
 
           {editingStat?.id === stat.id && (
-
+            
           )}
 
         </div>
