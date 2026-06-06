@@ -105,22 +105,42 @@ export function AttributeSection({ speciesId, attributes, onAttributeAdded, onAt
               <div>
 
                 <h3>
-                  <span onClick={() => attr.type !== "String" && toggleAttr(attr.id)}>
+                  <span onClick={() => attr.type !== "String" && attr.type !== "Boolean" && toggleAttr(attr.id)}>
                   <span> {attr.name} | {attr.type} </span>
-                  {attr.type !== "String" && (expandedAttr.has(attr.id) ? " Hide " : " View")}
+                  {attr.type !== "String" && attr.type !== "Boolean" && (expandedAttr.has(attr.id) ? " Hide " : " View")}
                   </span>
                 
                   <button type="button" onClick={(e) => { e.stopPropagation(); deleteAttr(attr.id); }}>DELETE</button>
                   <button type="button" onClick={(e) => { e.stopPropagation(); setEditingAttr(attr); }}>EDIT</button>
                 </h3>
 
-                {attr.type !== "String" && expandedAttr.has(attr.id) && (
+                {attr.type !== "String" && attr.type !== "Boolean" && expandedAttr.has(attr.id) && (
                   <div>
 
-                    <br></br>
-                    
+                    {attr.type === "Number" && (
+                      <div>
+                        <span>Min: {attr.min}</span>
+                        <br></br>
+                        <span>Max: {attr.max}</span>
+                      </div>
+                    )}
+
+                    {attr.type === "Enum" && (
+                      <ol>
+                        {attr.options.map((opt, index) => (
+                          <li key={index}>{opt}</li>))}
+                      </ol>
+                    )}
+
                   </div>
                 )}
+
+                <span>{attr.mutable ? "Mutable" : "Non-Mutable"} </span>
+
+                <br></br>
+
+                <span>{attr.optional ? "Optional" : "Non-Optional"}</span>
+                
               </div>
             )}
           </div>
