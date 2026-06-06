@@ -12,6 +12,7 @@ interface AttributeSectionProps {
 export function AttributeSection({ speciesId, attributes, onAttributeAdded, onAttributeDeleted, onAttributeUpdated }: AttributeSectionProps) {
 
   const {
+    expandedAttr, setExpandedAttr,
     showAddForm, setShowAddForm,
     newAttrType, setNewAttrType,
     newAttrName, setNewAttrName,
@@ -42,13 +43,13 @@ export function AttributeSection({ speciesId, attributes, onAttributeAdded, onAt
               <span>Type: </span>
               <select value={newAttrType} onChange={(e) => setNewAttrType(e.target.value)}>
                 <option value="">Select Type</option>
-                <option value="number">Number</option>
-                <option value="string">String</option>
-                <option value="enum">Enum</option>
-                <option value="boolean">Boolean</option>
+                <option value="Number">Number</option>
+                <option value="String">String</option>
+                <option value="Enum">Enum</option>
+                <option value="Boolean">Boolean</option>
               </select>
 
-              {newAttrType === "number" && (
+              {newAttrType === "Number" && (
                 <div>
                   <span>Min: </span>
                   <input value={newAttrMin} type="number" onChange={(e) => setNewAttrMin(Number(e.target.value))} />
@@ -59,7 +60,7 @@ export function AttributeSection({ speciesId, attributes, onAttributeAdded, onAt
                   <input value={newAttrMax} type="number" onChange={(e) => setNewAttrMax(Number(e.target.value))} />
                 </div>
               )}
-              {newAttrType === "enum" && (
+              {newAttrType === "Enum" && (
                 <div>
                   {newAttrOptions.map((opt, index) => (
                     <div key={index}>
@@ -89,7 +90,7 @@ export function AttributeSection({ speciesId, attributes, onAttributeAdded, onAt
               <input type="checkbox" checked={newAttrMutable} onChange={(e) => setNewAttrMutable(e.target.checked)} />
 
               <br></br>
-              
+
               <button type="button" onClick={addAttr}> Save </button>
               <button type="button" onClick={resetForm}>Cancel</button>
   
@@ -97,6 +98,33 @@ export function AttributeSection({ speciesId, attributes, onAttributeAdded, onAt
           </div>
         )}
 
+        {attributes.map(attr => (
+          <div key={attr.id}>
+            
+            {editingAttr?.id !== attr.id && (
+              <div>
+
+                <h3>
+                  <span onClick={() => attr.type !== "String" && toggleAttr(attr.id)}>
+                  <span> {attr.name} | {attr.type} </span>
+                  {attr.type !== "String" && (expandedAttr.has(attr.id) ? " Hide " : " View")}
+                  </span>
+                
+                  <button type="button" onClick={(e) => { e.stopPropagation(); deleteAttr(attr.id); }}>DELETE</button>
+                  <button type="button" onClick={(e) => { e.stopPropagation(); setEditingAttr(attr); }}>EDIT</button>
+                </h3>
+
+                {attr.type !== "String" && expandedAttr.has(attr.id) && (
+                  <div>
+
+                    <br></br>
+                    
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     )
 }
