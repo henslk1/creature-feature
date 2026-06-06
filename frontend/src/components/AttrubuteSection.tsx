@@ -22,7 +22,7 @@ export function AttributeSection({ speciesId, attributes, onAttributeAdded, onAt
     newOption, setNewOption,
     newAttrMutable, setNewAttrMutable,
     editingAttr, setEditingAttr,
-    addAttr, saveAttr, deleteAttr, toggleAttr } = useAttributeSection(speciesId, onAttributeAdded, onAttributeDeleted, onAttributeUpdated);
+    addAttr, saveAttr, deleteAttr, toggleAttr, resetForm } = useAttributeSection(speciesId, onAttributeAdded, onAttributeDeleted, onAttributeUpdated);
 
     return (
       <div>
@@ -77,6 +77,22 @@ export function AttributeSection({ speciesId, attributes, onAttributeAdded, onAt
                   }}>Add Option</button>
                 </div>
               )}
+
+              <br></br>
+              
+              <span>Optional: </span>
+              <input type="checkbox" checked={newAttrOptional} onChange={(e) => setNewAttrOptional(e.target.checked)} />
+
+              <br></br>
+              
+              <span>Mutable: </span>
+              <input type="checkbox" checked={newAttrMutable} onChange={(e) => setNewAttrMutable(e.target.checked)} />
+
+              <br></br>
+              
+              <button type="button" onClick={addAttr}> Save </button>
+              <button type="button" onClick={resetForm}>Cancel</button>
+  
             </form>
           </div>
         )}
