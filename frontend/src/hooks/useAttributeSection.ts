@@ -39,6 +39,7 @@ export function useAttributeSection(
   }
 
   function resetForm() {
+    setShowAddForm(false);
     setNewAttrName("");
     setNewAttrType("");
     setNewAttrMin(0);
@@ -130,6 +131,6 @@ export function useAttributeSection(
     newOption, setNewOption,
     newAttrMutable, setNewAttrMutable,
     editingAttr, setEditingAttr,
-    addAttr, saveAttr, deleteAttr, toggleAttr
+    addAttr, saveAttr, deleteAttr, toggleAttr, resetForm
   }
 }
