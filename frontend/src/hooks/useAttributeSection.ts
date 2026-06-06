@@ -57,11 +57,11 @@ export function useAttributeSection(
       optional: newAttrOptional,
       mutable: newAttrMutable,
     };
-    if (newAttrType === "number") {
+    if (newAttrType === "Number") {
       body.min = newAttrMin;
       body.max = newAttrMax;
     };
-    if (newAttrType === "enum") {
+    if (newAttrType === "Enum") {
       body.options = newAttrOptions;
     };
     fetch(`${ATTR_URL}`, {
@@ -87,11 +87,11 @@ export function useAttributeSection(
       optional: editingAttr?.optional,
       mutable: editingAttr?.mutable,
     };
-    if (editingAttr?.type === "number") {
+    if (editingAttr?.type === "Number") {
       body.min = editingAttr.min;
       body.max = editingAttr.max;
     };
-    if (editingAttr?.type === "enum") {
+    if (editingAttr?.type === "Enum") {
       body.options = editingAttr.options;
     };
     fetch(`${ATTR_URL}/${editingAttr?.id}`, {
