@@ -121,6 +121,7 @@ export function useAttributeSection(
   }
 
   return {
+    expandedAttr, setExpandedAttr,
     showAddForm, setShowAddForm,
     newAttrType, setNewAttrType,
     newAttrName, setNewAttrName,
