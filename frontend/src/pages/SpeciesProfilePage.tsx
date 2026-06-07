@@ -4,6 +4,7 @@ import { API_URL } from "../config";
 import type { Species, Gene, Stat, Attribute } from "../types";
 import { GeneSection } from "../components/GeneSection";
 import { StatSection } from "../components/StatSection";
+import { AttributeSection } from "../components/AttrubuteSection";
 
 export function SpeciesProfilePage() {
 
