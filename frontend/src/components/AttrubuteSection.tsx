@@ -12,7 +12,7 @@ interface AttributeSectionProps {
 export function AttributeSection({ speciesId, attributes, onAttributeAdded, onAttributeDeleted, onAttributeUpdated }: AttributeSectionProps) {
 
   const {
-    expandedAttr, setExpandedAttr,
+    expandedAttr,
     showAddForm, setShowAddForm,
     newAttrType, setNewAttrType,
     newAttrName, setNewAttrName,
@@ -140,9 +140,70 @@ export function AttributeSection({ speciesId, attributes, onAttributeAdded, onAt
                 <br></br>
 
                 <span>{attr.optional ? "Optional" : "Non-Optional"}</span>
-                
+
               </div>
             )}
+
+            {editingAttr?.id === attr.id && (
+              <div>
+                <strong>Editing Attribute</strong>
+
+                <br></br>
+
+                <span>Name: </span>
+                <input value={editingAttr.name} onChange={(e) => setEditingAttr({ ...editingAttr!, name: e.target.value })} />
+
+                {editingAttr.type === "Number" && (
+                  <div>
+                    <span>Min: </span>
+                    <input value={editingAttr.min} type="number" onChange={(e) => setEditingAttr({ ...editingAttr!, min: Number(e.target.value)})} />
+                    <br></br>
+                    <span>Max: </span>
+                    <input value={editingAttr.max} type="number" onChange={(e) => setEditingAttr({ ...editingAttr!, max: Number(e.target.value)})} />
+                  </div>
+                )}
+
+                {editingAttr.type === "Enum" && (
+                  <div>
+                    
+                    {editingAttr.options.map((opt, index) => (
+                      <div key={index}>
+
+                        <span>{opt} </span>
+                        <button type="button" onClick={() => setEditingAttr({
+                          ...editingAttr,
+                          options: editingAttr.options.filter((_, i) => i !== index)
+                        })}>Remove</button>
+
+                      </div>
+                    ))}
+
+                    <input value={newOption} onChange={(e) => setNewOption(e.target.value)} />
+                    <button type="button" onClick={() => {
+                      setEditingAttr({ ...editingAttr, options: [...editingAttr.options, newOption] });
+                      setNewOption("");
+                    }}>Add Option</button>
+
+                  </div>
+                )}
+
+                <br></br>
+
+                <span>Optional: </span>
+                <input type="checkbox" checked={editingAttr.optional} onChange={(e) => setEditingAttr({ ...editingAttr, optional: e.target.checked })} />
+
+                <br></br>
+              
+                <span>Mutable: </span>
+                <input type="checkbox" checked={editingAttr.mutable} onChange={(e) => setEditingAttr({ ...editingAttr, mutable: e.target.checked })} />
+
+                <br></br>
+
+                <button type="button" onClick={saveAttr}> Save </button>
+                <button type="button" onClick={() => setEditingAttr(null)}>Cancel</button>
+              </div>
+            )}
+
           </div>
         ))}
       </div>
