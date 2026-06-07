@@ -15,19 +15,35 @@ export function BreedSection({ speciesId, breeds, onBreedAdded, onBreedDeleted, 
   const BREED_URL = `${API_URL}/breeds`;
 
   // Dynamic Display
+  const [editingBreed, setEditingBreed] = useState<Breed | null>(null);
 
   // Setters
+  const [newBreedName, setNewBreedName] = useState("");
 
   // Add form handler
+  const [showAddForm, setShowAddForm] = useState(false);
 
   // --- functions
   // Display
+  function resetform() {
+    setShowAddForm(false);
+    setNewBreedName("");
+  }
 
   // Post
+  function addBreed() {
+
+  }
 
   // Update
+  function saveBreed() {
+
+  }
 
   // Delete
+  function deleteBreed(id: number) {
+    
+  }
 
   return (
     <div>
