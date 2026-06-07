@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { API_URL } from "../config";
-import type { Species, Gene, Stat, Attribute } from "../types";
+import type { Species, Gene, Stat, Attribute, Breed } from "../types";
 import { GeneSection } from "../components/GeneSection";
 import { StatSection } from "../components/StatSection";
 import { AttributeSection } from "../components/AttrubuteSection";
+import { BreedSection } from "../components/BreedSection";
 
 export function SpeciesProfilePage() {
 
@@ -56,7 +57,17 @@ export function SpeciesProfilePage() {
     setSpecies({ ...species!, attributes: species!.attributes.filter(a => a.id !== attributeId) });
   };
 
-
+  // Breeds handler
+  function onBreedAdded(breed: Breed) {
+    setSpecies({ ...species!, breeds: [...species!.breeds, breed] });
+  };
+  function onBreedUpdated(breed: Breed) {
+    setSpecies({ ...species!, breeds: species!.breeds.map(b => b.id === breed.id ? breed : b) });
+  };
+  function onBreedDeleted(breedId: number) {
+    setSpecies({ ...species!, breeds: species!.breeds.filter(b => b.id !== breedId) });
+  };
+  
   if(!species) return <div>Loading...</div>
 
   return (
@@ -92,6 +103,13 @@ export function SpeciesProfilePage() {
       />
 
       <h2>Breeds</h2>
+      <BreedSection
+      speciesId={species.id}
+      breeds={species.breeds}
+      onBreedAdded={onBreedAdded}
+      onBreedDeleted={onBreedDeleted}
+      onBreedUpdated={onBreedUpdated}
+      />
 
     </div>
   )
