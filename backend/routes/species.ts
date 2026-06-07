@@ -40,7 +40,11 @@ router.get("/:speciesId", async (req, res) => {
         },
         stats: true,
         attributes: true,
-        breeds: true
+        breeds: {
+          include: {
+            _count: { select: { animals: true } }
+          }
+        }
       }
     });
 
