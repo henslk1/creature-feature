@@ -89,7 +89,8 @@ export interface Breed {
   genes: Gene[],
   stats: Stat[],
   attributes: Attribute[],
-  speciesId: number
+  speciesId: number,
+  _count: { animals: number }
 }
 
 export interface Species {

@@ -57,7 +57,11 @@ router.post("/", validate(breedSchema), async (req, res) => {
 
   try {
     const newBreed = await prisma.breed.create({
-      data: { name: req.body.name, speciesId: req.body.speciesId }
+      data: { name: req.body.name, speciesId: req.body.speciesId,
+        include: {
+          _count: { select: { animals: true } }
+        }
+       }
     });
 
     logger.info({ breed: newBreed }, "New breed created");

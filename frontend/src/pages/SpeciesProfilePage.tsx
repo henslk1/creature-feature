@@ -59,7 +59,7 @@ export function SpeciesProfilePage() {
 
   // Breeds handler
   function onBreedAdded(breed: Breed) {
-    setSpecies({ ...species!, breeds: [...species!.breeds, breed] });
+    setSpecies({ ...species!, breeds: [...species!.breeds, { ...breed, _count: { animals: 0 } }] });
   };
   function onBreedUpdated(breed: Breed) {
     setSpecies({ ...species!, breeds: species!.breeds.map(b => b.id === breed.id ? breed : b) });
@@ -67,7 +67,7 @@ export function SpeciesProfilePage() {
   function onBreedDeleted(breedId: number) {
     setSpecies({ ...species!, breeds: species!.breeds.filter(b => b.id !== breedId) });
   };
-  
+
   if(!species) return <div>Loading...</div>
 
   return (

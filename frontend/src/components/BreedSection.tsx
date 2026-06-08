@@ -33,7 +33,21 @@ export function BreedSection({ speciesId, breeds, onBreedAdded, onBreedDeleted, 
 
   // Post
   function addBreed() {
-
+    fetch(`${BREED_URL}`, {
+      method:"POST",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({ name: newBreedName, speciesId: speciesId })
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(newBreed => {
+      if(!newBreed) return;
+      onBreedAdded(newBreed);
+      resetForm();
+    })
+  
   }
 
   // Update
