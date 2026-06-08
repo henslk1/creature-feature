@@ -180,6 +180,49 @@ export function BreedProfilePage() {
 
       <h2>Stats</h2>
 
+      {breed.stats.map(stat => (
+        <div key={stat.id}>
+          
+          {editingStat?.id !== stat.id && (
+            <div>
+
+              <h3>{stat.name}</h3>
+              <button type="button" onClick={(e) => { e.stopPropagation(); setEditingStat(stat); }}>EDIT</button>
+
+              <br></br>
+
+              <span>Name: {stat.name} | </span>
+              <span>Min: {stat.min} | </span>
+              <span>Max: {stat.max}</span>
+
+            </div>
+          )}
+
+          {editingStat?.id === stat.id && (
+            <div>
+              <strong>Edit Stat Range</strong>
+              
+              <br></br>
+
+              <span>Min: </span>
+              <input value={editingStat?.min} type="number" min="0" onChange={(e) => setEditingStat({ ...editingStat!, min: Number(e.target.value) })} />
+
+              <div></div>
+
+              <span>Max: </span>
+              <input value={editingStat?.max} type="number" min="0" onChange={(e) => setEditingStat({ ...editingStat!, max: Number(e.target.value) })} />
+
+              <div></div>
+
+              <button onClick={() => saveStat()}>Save</button>
+              <button type="button" onClick={() => setEditingStat(null)}>Cancel</button> 
+            
+            </div>
+          )}
+
+        </div>
+      ))}
+
     </div>
   )
 }
