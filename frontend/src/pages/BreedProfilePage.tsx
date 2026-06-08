@@ -15,6 +15,7 @@ export function BreedProfilePage() {
 
   // Display
   const [expandedAttr, setExpandedAttr] = useState<Set<number>>(new Set());
+  const [expandedGenes, setExpandedGenes] = useState<Set<number>>(new Set());
 
   function toggleAttr(id: number) {
     const updated = new Set(expandedAttr);
@@ -24,6 +25,16 @@ export function BreedProfilePage() {
       updated.add(id);
     }
     setExpandedAttr(updated);
+  }
+
+  function toggleGene(id: number) {
+    const updated = new Set(expandedGenes);
+    if(updated.has(id)) {
+      updated.delete(id);
+    } else {
+      updated.add(id);
+    }
+    setExpandedGenes(updated);
   }
 
   // Landing page
@@ -88,6 +99,61 @@ export function BreedProfilePage() {
         ))}
 
       <h2>Genes</h2>
+
+      {breed.genes.map(g => (
+        <div key={g.id}>
+
+          <h3 onClick={() => toggleGene(g.id)}>
+            {g.name} 
+            {expandedGenes.has(g.id) ? " Hide " : " View "}
+            </h3>
+
+          {expandedGenes.has(g.id) && (
+            <div>
+              
+              <strong>Loci</strong>
+ 
+              {g.loci.map(locus => (
+                <div key={locus.id}>
+                  
+                  <strong>Locus: </strong>
+                  <span>{locus.name}</span>
+
+                  <br></br>
+
+                  <strong>Alleles</strong>
+
+                  {locus.alleles.map(allele =>
+                    <div key={allele.id}>
+
+                      <span>Name: {allele.name} |</span>
+                      <span> Symbol: [{allele.symbol}] |</span>
+                      <span> Dominance: {allele.dominance} |</span>
+                      <span> Probability: {allele.probability}</span>
+                    
+                    </div>
+                  )}
+            
+                </div>
+
+              ))}
+
+              <strong>Expression Rules:</strong>
+
+              {g.expressionRules.map(rule => (
+                <div key={rule.id}>
+                 
+                  <span>Minimum number of dominant alleles: {rule.minDominantAlleles} | </span>
+                  <span>Expression: {rule.expression}</span>
+
+                </div>
+              ))}
+
+            </div>
+          )}
+
+        </div>
+      ))}
 
       <h2>Stats</h2>
 
