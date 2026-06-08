@@ -25,7 +25,7 @@ export function BreedSection({ speciesId, breeds, onBreedAdded, onBreedDeleted, 
 
   // --- functions
   // Display
-  function resetform() {
+  function resetForm() {
     setShowAddForm(false);
     setNewBreedName("");
   }
@@ -42,14 +42,24 @@ export function BreedSection({ speciesId, breeds, onBreedAdded, onBreedDeleted, 
 
   // Delete
   function deleteBreed(id: number) {
-    
+
   }
 
   return (
     <div>
-      {!showAddForm &&}
+      {!showAddForm && <button onClick={() => setShowAddForm(true)}>Add Breed</button>}
       {showAddForm && (
         <div>
+
+          <strong>New Breed</strong>
+          
+          <br></br>
+
+          <span>Name: </span>
+          <input value={newBreedName} onChange={(e) => setNewBreedName(e.target.value)} />
+
+          <button onClick={() => addBreed()}>Save</button>
+          <button type="button" onClick={resetForm}>Cancel</button>
 
         </div>
       )}
