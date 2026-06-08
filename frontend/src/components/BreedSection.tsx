@@ -47,17 +47,38 @@ export function BreedSection({ speciesId, breeds, onBreedAdded, onBreedDeleted, 
       onBreedAdded(newBreed);
       resetForm();
     })
-  
   }
 
   // Update
   function saveBreed() {
-
+    fetch(`${BREED_URL}/${editingBreed?.id}`, {
+      method: "PATCH",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        name: editingBreed?.name,
+        active: editingBreed?.active
+      })
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(updatedBreed => {
+      if(!updatedBreed) return;
+      onBreedUpdated(updatedBreed);
+      setEditingBreed(null);
+    })
   }
 
   // Delete
   function deleteBreed(id: number) {
-
+    fetch(`${BREED_URL}/${id}`, {
+      method: "DELETE"
+    })
+    .then(res => {
+      if(!res.ok) return;
+      onBreedDeleted(id);
+    })
   }
 
   return (
@@ -86,11 +107,22 @@ export function BreedSection({ speciesId, breeds, onBreedAdded, onBreedDeleted, 
             <div>
 
               <h3>{breed.name} </h3>
+              
+              <Link to={`/breeds/${breed.id}`}>View Profile</Link>
+
+              <br></br>
+
+              <span>{breed.active ? "Active" : "Not Active"}</span>
+              
+              <br></br>
+
+              <span>{breed._count.animals} animals</span>
+
+              <br></br>
+              <br></br>
+
               <button type="button" onClick={(e) => {e.stopPropagation(); deleteBreed(breed.id); }}>DELETE</button>
               <button type="button" onClick={(e) => { e.stopPropagation(); setEditingBreed(breed); }}>EDIT</button>
-              <span>{breed.active ? "Active" : "Not Active"}</span>
-              <span>{breed._count.animals} animals</span>
-              <Link to={`/breeds/${breed.id}`}>View Profile</Link>
 
             </div>
           )}

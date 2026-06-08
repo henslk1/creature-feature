@@ -86,11 +86,12 @@ router.patch("/:breedId", validate(breedPatchSchema), async (req, res) => {
   try {
     const updated = await prisma.breed.update({
       where: { id: Number(req.params.breedId) },
-      data: {
-        name: req.body.name,
-        active: req.body.active
+      data: { name: req.body.name, active: req.body.active },
+      include: {
+        _count: { select: { animals: true } }
       }
     });
+
 
     logger.info({ breed: updated }, "Breed updated");
     res.status(200).json(updated);
