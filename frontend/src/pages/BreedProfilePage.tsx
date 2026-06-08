@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { API_URL, JSON_HEADERS } from "../config";
-import { type Allele, type Attribute, type Stat, type Breed } from "../types";
+import { type Allele, type Stat, type Breed } from "../types";
 
 export function BreedProfilePage() {
 
@@ -123,16 +123,39 @@ export function BreedProfilePage() {
 
                   <strong>Alleles</strong>
 
-                  {locus.alleles.map(allele =>
-                    <div key={allele.id}>
+                    {locus.alleles.map(allele =>
+                      <div key={allele.id}>
 
-                      <span>Name: {allele.name} |</span>
-                      <span> Symbol: [{allele.symbol}] |</span>
-                      <span> Dominance: {allele.dominance} |</span>
-                      <span> Probability: {allele.probability}</span>
-                    
-                    </div>
-                  )}
+                        <span>Name: {allele.name} |</span>
+                        <span> Symbol: [{allele.symbol}] |</span>
+                        <span> Dominance: {allele.dominance} |</span>
+
+                        {editingAllele?.id !== allele.id && (  
+                          <div>
+                            <span> Probability: {allele.probability} | </span>
+
+                            <button type="button" onClick={(e) => { e.stopPropagation(); setEditingAllele(allele); }}>Edit Probability</button>
+                          </div>
+                        )}
+
+                        {editingAllele?.id === allele.id && (
+                          <div>
+
+                            <span> Edit Probability: </span>
+                            <input 
+                            value={editingAllele.probability} 
+                            type="number" min="0" max ="1" step="0.01" 
+                            onChange={(e) => setEditingAllele({ ...editingAllele, probability: Number(e.target.value) }) }
+                            />
+
+                            <button onClick={() => saveAllele()}> Save </button>
+                            <button type="button" onClick={() => setEditingAllele(null)}>Cancel</button>
+
+                            </div>
+                        )}
+
+                      </div>
+                    )}
             
                 </div>
 
