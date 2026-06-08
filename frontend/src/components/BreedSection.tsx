@@ -83,6 +83,22 @@ export function BreedSection({ speciesId, breeds, onBreedAdded, onBreedDeleted, 
 
           {editingBreed?.id === breed.id && (
             <div>
+              <strong>Editing Breed</strong>
+
+              <br></br>
+
+              <span>Name: </span>
+              <input value={editingBreed.name} onChange={(e) => setEditingBreed({ ...editingBreed, name: e.target.value} )} />
+
+              <br></br>
+
+              <span>Active: </span>
+              <input type="checkbox" checked={editingBreed.active} onChange={(e) => setEditingBreed({ ...editingBreed, active: e.target.checked })} />
+
+              <br></br>
+
+              <button type="button" onClick={saveBreed}> Save </button>
+              <button type="button" onClick={() => setEditingBreed(null)}>Cancel</button>
 
             </div>
           )}
