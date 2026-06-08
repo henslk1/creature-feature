@@ -8,6 +8,7 @@ export function BreedProfilePage() {
   const { breedId } = useParams();
 
   const [breed, setBreed] = useState<Breed | null>(null);
+  const BREED_URL = `${API_URL}/breeds/${breedId}`;
 
   // Edit
   const [editingAllele, setEditingAllele] = useState<Allele | null>(null);
@@ -35,6 +36,71 @@ export function BreedProfilePage() {
       updated.add(id);
     }
     setExpandedGenes(updated);
+  }
+
+  // Update
+  function addAlleleOverride(alleleId: number, probability: number) {
+    setBreed({
+      ...breed!,
+      genes: breed!.genes.map(gene => ({
+        ...gene,
+        loci: gene.loci.map( locus => ({
+          ...locus,
+          alleles: locus.alleles.map(allele => 
+            allele.id === alleleId ? { ...allele, probability } : allele
+          )
+        }))
+      }))
+    })
+  }
+
+  function addStatRange() {
+    setBreed({
+      ...breed!,
+      stats: breed!.stats.map(s =>
+        s.id === editingStat!.id ? editingStat! : s
+      )
+    })
+  }
+
+  function saveAllele() {
+    fetch(`${BREED_URL}/overrides`, {
+      method: "PUT",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        alleleId: editingAllele?.id,
+        probability: editingAllele!.probability
+      })
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(() => {
+      addAlleleOverride(editingAllele!.id, editingAllele!.probability);
+      setEditingAllele(null);
+    })
+  }
+
+  function saveStat() {
+    fetch(`${BREED_URL}/statRanges`, {
+      method: "PUT",
+      headers: JSON_HEADERS,
+      body: JSON.stringify({
+        stat: editingStat?.name,
+        breedId: breed?.id,
+        min: editingStat?.min,
+        max: editingStat?.max
+      })
+    })
+    .then(res => {
+      if(!res.ok) return;
+      return res.json();
+    })
+    .then(() => {
+      addStatRange();
+      setEditingStat(null);
+    })
   }
 
   // Landing page
@@ -187,13 +253,10 @@ export function BreedProfilePage() {
             <div>
 
               <h3>{stat.name}</h3>
-              <button type="button" onClick={(e) => { e.stopPropagation(); setEditingStat(stat); }}>EDIT</button>
 
-              <br></br>
-
-              <span>Name: {stat.name} | </span>
               <span>Min: {stat.min} | </span>
-              <span>Max: {stat.max}</span>
+              <span>Max: {stat.max} </span>
+              <button type="button" onClick={(e) => { e.stopPropagation(); setEditingStat(stat); }}>EDIT</button>
 
             </div>
           )}
@@ -205,7 +268,7 @@ export function BreedProfilePage() {
               <br></br>
 
               <span>Min: </span>
-              <input value={editingStat?.min} type="number" min="0" onChange={(e) => setEditingStat({ ...editingStat!, min: Number(e.target.value) })} />
+              <input value={editingStat?.min} type="number"  onChange={(e) => setEditingStat({ ...editingStat!, min: Number(e.target.value) })} />
 
               <div></div>
 
