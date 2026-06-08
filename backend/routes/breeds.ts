@@ -14,7 +14,8 @@ router.get("/", async (req, res) => {
 
   try {
     const getBreeds = await prisma.breed.findMany({
-      orderBy: { id: "asc" }
+      orderBy: { id: "asc" },
+      include: { species: { select: { name: true } } }
     });
 
     logger.info({ breeds: getBreeds }, "Breeds found");
