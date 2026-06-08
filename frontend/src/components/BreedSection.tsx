@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { API_URL, JSON_HEADERS } from "../config";
 import { type Breed } from "../types";
 
@@ -69,7 +70,14 @@ export function BreedSection({ speciesId, breeds, onBreedAdded, onBreedDeleted, 
 
           {editingBreed?.id !== breed.id && (
             <div>
-            
+
+              <h3>{breed.name} </h3>
+              <button type="button" onClick={(e) => {e.stopPropagation(); deleteBreed(breed.id); }}>DELETE</button>
+              <button type="button" onClick={(e) => { e.stopPropagation(); setEditingBreed(breed); }}>EDIT</button>
+              <span>{breed.active ? "Active" : "Not Active"}</span>
+              <span>{breed._count.animals} animals</span>
+              <Link to={`/breeds/${breed.id}`}>View Profile</Link>
+
             </div>
           )}
 
