@@ -1,11 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { type Breed, type Animal } from "../types";
 import { API_URL, JSON_HEADERS } from "../config";
 
 export function GeneratePage() {
-
-  const navigate = useNavigate();
 
   // GET
   const [breeds, setBreeds] = useState<Breed[]>([]);
