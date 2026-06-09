@@ -15,7 +15,10 @@ router.get("/", async (req, res) => {
   try {
     const getBreeds = await prisma.breed.findMany({
       orderBy: { id: "asc" },
-      include: { species: { select: { name: true } } }
+      include: { 
+        species: { select: { name: true } },
+        _count: { select: { animals: true } }
+     }
     });
 
     logger.info({ breeds: getBreeds }, "Breeds found");
@@ -58,11 +61,10 @@ router.post("/", validate(breedSchema), async (req, res) => {
 
   try {
     const newBreed = await prisma.breed.create({
-      data: { name: req.body.name, speciesId: req.body.speciesId,
-        include: {
-          _count: { select: { animals: true } }
-        }
-       }
+      data: { name: req.body.name, speciesId: req.body.speciesId},
+      include: {
+        _count: { select: { animals: true } }
+      }
     });
 
     logger.info({ breed: newBreed }, "New breed created");
