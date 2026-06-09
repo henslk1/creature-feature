@@ -13,7 +13,8 @@ router.get("/", async (req, res) => {
 
   try {
     const getAnimals = await prisma.animal.findMany({
-      orderBy: { id: "asc" }
+      orderBy: { id: "asc" },
+      include: { breed: { select: { name: true } } }
     });
 
     logger.info({ animals: getAnimals }, "Animals found");

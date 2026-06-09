@@ -76,7 +76,8 @@ export interface Animal {
   expressedTraits: any,
   stats: any,
   attributes: any,
-  modifier?: any
+  modifier?: any,
+  breed?: { name: string }
 }
 
 export interface Breed {
