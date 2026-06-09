@@ -25,6 +25,12 @@ export function AnimalsPage() {
     setExpandedAnimal(updated);
   }
 
+  // DELETE
+  function deleteAnimal(id: number) {
+    fetch(`${API_URL}/animals/${id}`, { method: "DELETE" })
+      .then(res => { if (!res.ok) return; setAnimals(animals.filter(a => a.id !== id)); })
+  }
+
   return (
     <div>
 
@@ -35,6 +41,7 @@ export function AnimalsPage() {
             <th style={{ width: "50px" }}>ID</th>
             <th style={{ width: "150px" }}>Name</th>
             <th style={{ width: "150px" }}>Breed</th>
+            <th style={{ width: "100px" }}></th>
             <th style={{ width: "100px" }}></th>
           </tr>
         </thead>
@@ -48,6 +55,9 @@ export function AnimalsPage() {
                 <td>{a.breed?.name}</td>
                 <td>
                   <button type="button" onClick={() => toggleAnimal(a.id)}>Details</button>
+                </td>
+                <td>
+                  <button type="button" onClick={() => deleteAnimal(a.id)}>Delete</button>
                 </td>
               </tr>
               {expandedAnimal.has(a.id) && (
