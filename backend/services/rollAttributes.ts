@@ -5,14 +5,17 @@ export function rollAttributes(attributes: any[]): Record<string, any> {
 
   for (const attribute of attributes) {
     switch (attribute.type) {
-      case "number":
+      case "Number":
         result[attribute.name] = rollInRange(attribute.min, attribute.max);
         break;
-      case "string":
+      case "String":
         result[attribute.name] = "";
         break;
-      case "enum":
+      case "Enum":
         result[attribute.name] = rollEnum(attribute.options);
+        break;
+      case "Boolean":
+        result[attribute.name] = Math.random() < 0.5;
         break;
       default:
         break;
