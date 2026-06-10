@@ -1,6 +1,7 @@
 import { useState, useEffect, Fragment } from "react";
 import { type Animal } from "../types";
 import { API_URL } from "../config";
+import { Button } from "@/components/ui/button";
 
 export function AnimalsPage() {
 
@@ -54,7 +55,7 @@ export function AnimalsPage() {
                 <td>{a.name}</td>
                 <td>{a.breed?.name}</td>
                 <td>
-                  <button type="button" onClick={() => toggleAnimal(a.id)}>Details</button>
+                  <Button type="button" onClick={() => toggleAnimal(a.id)}>Details</Button>
                 </td>
                 <td>
                   <button type="button" onClick={() => deleteAnimal(a.id)}>Delete</button>
