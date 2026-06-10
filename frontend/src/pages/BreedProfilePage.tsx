@@ -166,7 +166,17 @@ export function BreedProfilePage() {
 
       <h2>Genes</h2>
 
-      {breed.genes.map(g => (
+      {Object.entries(
+        breed.genes.reduce((acc, g) => {
+          const cat = g.category || "Uncategorized";
+          if (!acc[cat]) acc[cat] = [];
+          acc[cat].push(g);
+          return acc;
+        }, {} as Record<string, typeof breed.genes>)
+      ).map(([category, categoryGenes]) => (
+        <div key={category}>
+          <h3>{category}</h3>
+          {categoryGenes.map(g => (
         <div key={g.id}>
 
           <h3 onClick={() => toggleGene(g.id)}>
@@ -241,6 +251,8 @@ export function BreedProfilePage() {
             </div>
           )}
 
+        </div>
+          ))}
         </div>
       ))}
 

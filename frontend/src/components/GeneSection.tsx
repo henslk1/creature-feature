@@ -138,7 +138,17 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
         </div>
       )}
 
-      {genes.map(g => (
+      {Object.entries(
+        genes.reduce((acc, g) => {
+          const cat = g.category || "Uncategorized";
+          if (!acc[cat]) acc[cat] = [];
+          acc[cat].push(g);
+          return acc;
+        }, {} as Record<string, typeof genes>)
+      ).map(([category, categoryGenes]) => (
+        <div key={category}>
+          <h4>{category}</h4>
+          {categoryGenes.map(g => (
         <div key={g.id}>
 
           <h3 onClick={() => toggleGene(g.id)}>
@@ -337,6 +347,8 @@ export function GeneSection({ speciesId, genes, onGeneAdded, onGeneDeleted, onGe
             </div>
           )}
 
+        </div>
+          ))}
         </div>
       ))}
     </div>
