@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { API_URL, JSON_HEADERS } from "../config";
-import {type Stat } from "../types";
+import { type Stat } from "../types";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface StatSectionProps {
   speciesId: number,
@@ -14,19 +18,12 @@ export function StatSection({ speciesId, stats, onStatAdded, onStatDeleted, onSt
 
   const STAT_URL = `${API_URL}/species/${speciesId}/stats`;
 
-  // Dynamic Display
   const [editingStat, setEditingStat] = useState<Stat | null>(null);
-
-  // Setters
   const [newStatName, setNewStatName] = useState("");
   const [newStatMin, setNewStatMin] = useState(0);
   const [newStatMax, setNewStatMax] = useState(0);
-
-  // Add Form handler
   const [showAddForm, setShowAddForm] = useState(false);
 
-  // --- functions
-  // Display
   function resetForm() {
     setShowAddForm(false);
     setNewStatName("");
@@ -34,140 +31,100 @@ export function StatSection({ speciesId, stats, onStatAdded, onStatDeleted, onSt
     setNewStatMax(0);
   }
 
-  // POST
   function addStat() {
-    fetch(`${STAT_URL}`, {
-      method:"POST",
+    fetch(STAT_URL, {
+      method: "POST",
       headers: JSON_HEADERS,
-      body: JSON.stringify({
-        name: newStatName,
-        min: newStatMin,
-        max: newStatMax
-      })
+      body: JSON.stringify({ name: newStatName, min: newStatMin, max: newStatMax })
     })
-    .then(res => {
-      if(!res.ok) return;
-      return res.json();
-    })
-    .then(newStat => {
-      if(!newStat) return;
-      onStatAdded(newStat);
-      resetForm();
-    })
+    .then(res => { if(!res.ok) return; return res.json(); })
+    .then(newStat => { if(!newStat) return; onStatAdded(newStat); resetForm(); })
   }
 
-  // PATCH
   function saveStat() {
     fetch(`${STAT_URL}/${editingStat?.id}`, {
       method: "PATCH",
       headers: JSON_HEADERS,
-      body: JSON.stringify({
-        name: editingStat!.name,
-        min: editingStat!.min,
-        max: editingStat!.max
-      })
+      body: JSON.stringify({ name: editingStat!.name, min: editingStat!.min, max: editingStat!.max })
     })
-    .then(res => {
-      if(!res.ok) return;
-      return res.json();
-    })
-    .then(updatedStat => {
-      if(!updatedStat) return;
-      onStatUpdated(updatedStat);
-      setEditingStat(null);
-    })
+    .then(res => { if(!res.ok) return; return res.json(); })
+    .then(updatedStat => { if(!updatedStat) return; onStatUpdated(updatedStat); setEditingStat(null); })
   }
 
-  // DELETE
   function deleteStat(id: number) {
-    fetch(`${STAT_URL}/${id}`, {
-      method: "DELETE"
-    })
-    .then(res => {
-      if(!res.ok) return;
-      onStatDeleted(id)
-    })
+    fetch(`${STAT_URL}/${id}`, { method: "DELETE" })
+    .then(res => { if(!res.ok) return; onStatDeleted(id); })
   }
 
-  return(
+  return (
     <div>
-      {!showAddForm && <button onClick={() => setShowAddForm(true)}>Add Stat</button>}
-      {showAddForm && (
-        <div>
-          <form>
-            <strong>New Stat</strong>
-
-            <br></br>
-
-            <span>Name: </span>
-            <input value={newStatName} onChange={(e) => setNewStatName(e.target.value)} />
-            
-            <br></br>
-
-            <span>Min: </span>
-            <input value={newStatMin} type="number" min="0" onChange={(e) => setNewStatMin(Number(e.target.value))} />
-
-            <br></br>    
-
-            <span>Max: </span>
-            <input value={newStatMax} type="number" min="0" onChange={(e) => setNewStatMax(Number(e.target.value))} />
-
-            <br></br>
-
-            <button onClick={() => addStat()}>Save</button>
-            <button type="button" onClick={resetForm}>Cancel</button>
-            
-          </form>
+      {!showAddForm && (
+        <div className="mb-3">
+          <Button size="sm" onClick={() => setShowAddForm(true)}>Add Stat</Button>
         </div>
       )}
 
-      {stats.map(stat => (
-        <div key={stat.id}>
-          
-          {editingStat?.id !== stat.id && (
-            <div>
-              <h3>{stat.name}</h3>
-              <button type="button" onClick={(e) => { e.stopPropagation(); deleteStat(stat.id); }}>DELETE</button>
-              <button type="button" onClick={(e) => { e.stopPropagation(); setEditingStat(stat); }}>EDIT</button>
-
-              <br></br>
-
-              <span>Name: {stat.name} | </span>
-              <span>Min: {stat.min} | </span>
-              <span>Max: {stat.max}</span>
-
+      {showAddForm && (
+        <Card className="mb-4 max-w-md">
+          <CardHeader><CardTitle className="text-base">New Stat</CardTitle></CardHeader>
+          <CardContent className="flex flex-col gap-3">
+            <div className="flex flex-col gap-1">
+              <Label>Name</Label>
+              <Input value={newStatName} onChange={(e) => setNewStatName(e.target.value)} />
             </div>
-          )}
-
-          {editingStat?.id === stat.id && (
-            <div>
-              <strong>Edit Stat</strong>
-              
-              <br></br>
-
-              <span>Name: </span>
-              <input value={editingStat?.name} onChange={(e) => setEditingStat({ ...editingStat!, name: e.target.value })} />
-                  
-              <div></div>
-
-              <span>Min: </span>
-              <input value={editingStat?.min} type="number" min="0" onChange={(e) => setEditingStat({ ...editingStat!, min: Number(e.target.value) })} />
-
-              <div></div>
-
-              <span>Max: </span>
-              <input value={editingStat?.max} type="number" min="0" onChange={(e) => setEditingStat({ ...editingStat!, max: Number(e.target.value) })} />
-
-              <div></div>
-
-              <button onClick={() => saveStat()}>Save</button>
-              <button type="button" onClick={() => setEditingStat(null)}>Cancel</button> 
-            
+            <div className="flex gap-4">
+              <div className="flex flex-col gap-1">
+                <Label>Min</Label>
+                <Input className="w-24" value={newStatMin} type="number" min="0" onChange={(e) => setNewStatMin(Number(e.target.value))} />
+              </div>
+              <div className="flex flex-col gap-1">
+                <Label>Max</Label>
+                <Input className="w-24" value={newStatMax} type="number" min="0" onChange={(e) => setNewStatMax(Number(e.target.value))} />
+              </div>
             </div>
-          )}
+            <div className="flex gap-2">
+              <Button size="sm" onClick={addStat}>Save</Button>
+              <Button size="sm" variant="outline" onClick={resetForm}>Cancel</Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
-        </div>
-      ))}
+      <div className="rounded-md border divide-y">
+        {stats.map(stat => (
+          <div key={stat.id} className="p-3">
+            {editingStat?.id !== stat.id && (
+              <div className="flex items-center gap-4">
+                <span className="font-medium w-40">{stat.name}</span>
+                <span className="text-sm text-muted-foreground">Min: {stat.min}</span>
+                <span className="text-sm text-muted-foreground">Max: {stat.max}</span>
+                <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); setEditingStat(stat); }}>Edit</Button>
+                <Button variant="destructive" size="sm" onClick={(e) => { e.stopPropagation(); deleteStat(stat.id); }}>Delete</Button>
+              </div>
+            )}
+            {editingStat?.id === stat.id && (
+              <div className="flex items-center gap-3 flex-wrap">
+                <div className="flex flex-col gap-1">
+                  <Label className="text-xs">Name</Label>
+                  <Input className="w-36 h-8" value={editingStat.name} onChange={(e) => setEditingStat({ ...editingStat!, name: e.target.value })} />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <Label className="text-xs">Min</Label>
+                  <Input className="w-24 h-8" value={editingStat.min} type="number" min="0" onChange={(e) => setEditingStat({ ...editingStat!, min: Number(e.target.value) })} />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <Label className="text-xs">Max</Label>
+                  <Input className="w-24 h-8" value={editingStat.max} type="number" min="0" onChange={(e) => setEditingStat({ ...editingStat!, max: Number(e.target.value) })} />
+                </div>
+                <div className="flex gap-2 self-end">
+                  <Button size="sm" onClick={saveStat}>Save</Button>
+                  <Button size="sm" variant="outline" onClick={() => setEditingStat(null)}>Cancel</Button>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }

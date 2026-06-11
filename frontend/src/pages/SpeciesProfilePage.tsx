@@ -68,49 +68,58 @@ export function SpeciesProfilePage() {
     setSpecies({ ...species!, breeds: species!.breeds.filter(b => b.id !== breedId) });
   };
 
-  if(!species) return <div>Loading...</div>
+  if(!species) return <div className="container mx-auto p-6">Loading...</div>
 
-  return (
-    <div>
-      <h1>{species.name}</h1>
-      <p>{species.description}</p>
+return (
+  <div className="container mx-auto p-6">
+    <div className="mb-6">
+      <h1 className="text-2xl font-bold">{species.name}</h1>
+      {species.description && <p className="text-muted-foreground mt-1">{species.description}</p>}
+    </div>
 
-      <h2>Attributes</h2>
-        <AttributeSection
-        speciesId= {species.id}
+    <section className="mb-8">
+      <h2 className="text-xl font-semibold mb-3">Attributes</h2>
+      <AttributeSection
+        speciesId={species.id}
         attributes={species.attributes}
         onAttributeAdded={onAttributeAdded}
         onAttributeUpdated={onAttributeUpdated}
         onAttributeDeleted={onAttributeDeleted}
-        />
+      />
+    </section>
 
-      <h2>Genes</h2>
-        <GeneSection
+    <section className="mb-8">
+      <h2 className="text-xl font-semibold mb-3">Genes</h2>
+      <GeneSection
         speciesId={species.id}
         genes={species.genes}
         onGeneAdded={onGeneAdded}
         onGeneDeleted={onGeneDeleted}
         onGeneUpdated={onGeneUpdated}
-        />
+      />
+    </section>
 
-      <h2>Stats</h2>
+    <section className="mb-8">
+      <h2 className="text-xl font-semibold mb-3">Stats</h2>
       <StatSection
-      speciesId={species.id}
-      stats={species.stats}
-      onStatAdded={onStatAdded}
-      onStatDeleted={onStatDeleted}
-      onStatUpdated={onStatUpdated}
+        speciesId={species.id}
+        stats={species.stats}
+        onStatAdded={onStatAdded}
+        onStatDeleted={onStatDeleted}
+        onStatUpdated={onStatUpdated}
       />
+    </section>
 
-      <h2>Breeds</h2>
+    <section className="mb-8">
+      <h2 className="text-xl font-semibold mb-3">Breeds</h2>
       <BreedSection
-      speciesId={species.id}
-      breeds={species.breeds}
-      onBreedAdded={onBreedAdded}
-      onBreedDeleted={onBreedDeleted}
-      onBreedUpdated={onBreedUpdated}
+        speciesId={species.id}
+        breeds={species.breeds}
+        onBreedAdded={onBreedAdded}
+        onBreedDeleted={onBreedDeleted}
+        onBreedUpdated={onBreedUpdated}
       />
-
-    </div>
+    </section>
+  </div>
   )
 }
